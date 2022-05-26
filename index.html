@@ -1,0 +1,36 @@
+<html>
+    <head>
+        
+    </head>
+    <body>
+        <button id="enableButton">enable SnapAlgo</button>
+        <script src="dist/index_bundle.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/algosdk@1.16.0/dist/browser/algosdk.min.js"></script>
+        <button id="getHealthButton">get health</button>
+        <script>
+            const snapalgo = new SnapAlgo.Wallet();
+            document.getElementById('getHealthButton').addEventListener('click', () => {
+                getHealth();
+            });
+            console.log(window.algorand)
+            document.getElementById('enableButton').addEventListener('click', function() {
+                
+                algorand.enable();
+            });
+            async function getHealth(){
+                let client = await algorand.getAlgorandV2Client();
+                console.log(client)
+                let health =  await client.get('/health')
+                console.log(health)
+                const algodClient = new algosdk.Algodv2(client);
+                console.log(algodClient)
+                let status = await algodClient.status().do();
+                console.log("status is")
+                console.log(status)
+                let block = await algodClient.block(18038133).do();
+                console.log("block is")
+                console.log(block)
+            }
+        </script>
+    </body>
+</html>

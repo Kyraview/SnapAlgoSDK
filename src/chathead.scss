@@ -1,0 +1,186 @@
+
+  #snapAlgoWalletContainer{
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0px;
+    height: 0px;
+    background-color: white;
+    border-radius: 10%;
+    border: 0.5px solid black;
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .wallet-html-box{
+    height: 100%;
+    width: 100%;
+    color:white;
+    flex-grow: 1;
+    background-color: #222;
+  }
+
+  
+  .bubble{
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    position: fixed;
+    z-index: 1000000;
+    top: 50%;
+    left: -25px;
+    box-shadow: 0 0px 20px rgba(0,0,0,0.19), 0 0px 6px rgba(0,0,0,0.23);
+    background: url("https://s2.coinmarketcap.com/static/img/coins/200x200/4030.png") white;
+    background-size: cover;
+    cursor: pointer;
+    border: 1px solid white;
+    
+  }
+  .bubble:hover{
+    transition: transform 0.3s;
+    transform: scale(1.1);
+  }
+
+  .wallet-body {
+    background-color: #222;
+    margin: auto;
+    width: calc(100% - 6px);
+    height: calc(100% - 6px);
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    
+    
+  }
+
+  .wallet-icon {
+    width: 20px;
+    height: 20px;
+    margin-top:auto;
+    margin-bottom: auto;
+    margin-left: 2px;
+    margin-right: 2px;
+    cursor: pointer;
+  }
+  .wallet-footer {
+    background-color: #333;
+    /*border-top: 1px solid white;*/
+    width: 100%;
+    min-height: 30px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .gradient-button {
+    --border-width: 1px;
+  
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 200px;
+    opacity: 0;
+    font-family: Lato, sans-serif;
+
+    color: white;
+    background: #222;
+    border-radius: 5px;
+
+    
+  
+    &::after {
+      position: absolute;
+      content: "";
+      top: calc(-1 * var(--border-width));
+      left: calc(-1 * var(--border-width));
+      z-index: -1;
+      width: calc(100% + var(--border-width) * 2);
+      height: calc(100% + var(--border-width) * 2);
+      background: linear-gradient(
+        60deg,
+        hsl(224, 85%, 66%),
+        hsl(269, 85%, 66%),
+        hsl(314, 85%, 66%),
+        hsl(359, 85%, 66%),
+        hsl(44, 85%, 66%),
+        hsl(89, 85%, 66%),
+        hsl(134, 85%, 66%),
+        hsl(179, 85%, 66%)
+      );
+      background-size: 300% 300%;
+      background-position: 0 50%;
+      border-radius: 10px;
+      animation: moveGradient 4s alternate infinite;
+    }
+  }
+  
+  .gradient-border {
+    --border-width: 3px;
+  
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 200px;
+    opacity: 0;
+    font-family: Lato, sans-serif;
+
+    color: white;
+    background: #222;
+    border-radius: 5px;
+  
+    &::after {
+      position: absolute;
+      content: "";
+      top: calc(-1 * var(--border-width));
+      left: calc(-1 * var(--border-width));
+      z-index: -1;
+      width: calc(100% + var(--border-width) * 2);
+      height: calc(100% + var(--border-width) * 2);
+      background: linear-gradient(
+        60deg,
+        hsl(224, 85%, 66%),
+        hsl(269, 85%, 66%),
+        hsl(314, 85%, 66%),
+        hsl(359, 85%, 66%),
+        hsl(44, 85%, 66%),
+        hsl(89, 85%, 66%),
+        hsl(134, 85%, 66%),
+        hsl(179, 85%, 66%)
+      );
+      background-size: 300% 300%;
+      background-position: 0 50%;
+      border-radius: calc(2 * var(--border-width));
+      animation: moveGradient 4s alternate infinite;
+    }
+  }
+
+  .snapAlgoWalletButton{
+    background: linear-gradient(120deg, #ffffff, #ffffff, #f37915, #ffee00);
+    background-size: 800% 800%;
+  }
+  .snapAlgoWalletButton:hover{
+    
+    animation: buttonHover 0.4s;
+    animation-direction: both;
+    animation-fill-mode: both;
+  }
+  
+  @keyframes moveGradient {
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  @keyframes buttonHover{
+    0%{background-position:1% 0%; transform:scale(1)}
+    100%{background-position:99% 100% ;transform: scale(1.15)}
+    
+}
+  
