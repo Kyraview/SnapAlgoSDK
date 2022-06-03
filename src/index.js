@@ -1,7 +1,9 @@
-import Swal from 'sweetalert2'
+const base64 = require('base64-arraybuffer')
+import { encodeUnsignedTransaction } from 'algosdk';
 import './Errors.js';
 import WalletBubble from './WalletBubble';
 import connectedGif from './images/connected.gif';
+import HTTPClient from './HTTPClient.js';
 export class Wallet{
     constructor(){
       this.enabled = false;
@@ -9,7 +11,7 @@ export class Wallet{
       this.genisisId = null;
       this.enabledAccounts = [];
       this.accounts = []
-
+      this.network = "";
       this.bubble = new WalletBubble();
       window.algorand = this;
     }
@@ -172,7 +174,8 @@ export class Wallet{
               //close the screen then set screen to the wallet screen
               //requires binding to the bubble
               this.bubble.close()
-              .then(this.bubble.showWalletScreen.bind(this.bubble));
+              .then(this.bubble.showWalletScreen.bind(this.bubble))
+              
             }, 
             700 //leave connected message on for 700ms, and uses this time to load price data for the wallet screen
           )
@@ -187,92 +190,23 @@ export class Wallet{
       
     }
     getAlgorandV2Client(){
-      return new Promise((resolve)=>{
-        let baseHTTPClient = {}
-        baseHTTPClient.get = (relativePath, query, requestHeaders) => {
-            console.log("executing get")
-            relativePath = "/algod"+relativePath;
-            console.log(relativePath)
-            console.log(query)
-            console.log(requestHeaders)
-            if(query){
-              query = new URLSearchParams(query).toString();
-              if(query.length > 0){
-                query = "?"+query;
-              }
-              console.log(query);
-              
-            }
-            else{
-              query = ''
-            }
-            if(!requestHeaders){
-              requestHeaders = {}
-            }
-            return ethereum.request({
-                method: 'wallet_invokeSnap',
-                params:[
-                    'npm:algorand',
-                    {
-                        'method': 'queryServer',
-                        'relativePath': relativePath,
-                        'query': query,
-                        'requestHeaders': requestHeaders,
-                        "httpMethod": "get"
-                    }
-                ]
-            }).then((res) => {
-              console.log(res);
-              let data = res.data.data;
-              res.body = new Uint8Array(data);
-              delete res.data
-              console.log(res);
-              return res;
-            })
-        }
-        
-        baseHTTPClient.post = (relativePath, data, query, requestHeaders) => {
-            relativePath = "/algod"+relativePath
-            return window.etherium.request({
-                method: 'wallet_invokeSnap',
-                params:[
-                    snapId,
-                    {
-                        'relativePath': relativePath,
-                        'data': data,
-                        'query': query,
-                        'requestHeaders': requestHeaders,
-                        "httpMethod": "POST"
-                    }
-                ]
-            });
-        }
-       
-        baseHTTPClient.delete = (relativePath, data, query, requestHeaders) => {
-          relativePath = "/algod"+relativePath
-            return window.etherium.request({
-                method: 'wallet_invokeSnap',
-                params:[
-                    snapId,
-                    {
-                        'relativePath': relativePath,
-                        'data': data,
-                        'query': query,
-                        'requestHeaders': requestHeaders,
-                        "httpMethod": "DELETE"
-                    }
-                ]
-            })
-        }
-        resolve(baseHTTPClient)
-        
-
-      })
-
+      const networkTable = {
+        "mainnet-v1.0": "mainnet",
+        "testnet-v1.0": "testnet",
+        "betanet-v1.0": "betanet"
+      }
+      const network = networkTable[this.genisisId];
+      return new HTTPClient().get("algod", network);
     }
       
     getIndexerClient(){
-      
+      const networkTable = {
+        "mainnet-v1.0": "mainnet",
+        "testnet-v1.0": "testnet",
+        "betanet-v1.0": "betanet"
+      }
+      const network = networkTable[this.genisisId];
+      return new HTTPClient().get("index", network);
     }
     signTxns(){
       
@@ -283,6 +217,12 @@ export class Wallet{
 
     openBubble(){
       
+    }
+
+    SNAPALGO_EncodeTxn(txn){
+      const output = base64.encode(encodeUnsignedTransaction(txn))
+      console.log(output);
+      return output;
     }
   
   

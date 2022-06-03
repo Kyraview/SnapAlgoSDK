@@ -33,7 +33,16 @@ module.exports = {
           // Compiles Sass to CSS
           "sass-loader",
         ],
-      }
+      },
+      {resolve: {
+        alias: {
+            '@': path.resolve('resources/js'),
+        },
+        fallback: {
+            crypto: require.resolve('crypto-browserify'),
+            stream: require.resolve('stream'),
+        },
+      }},
     ],
   },
   mode: "development",

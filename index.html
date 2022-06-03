@@ -7,6 +7,7 @@
         <script src="dist/index_bundle.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/algosdk@1.16.0/dist/browser/algosdk.min.js"></script>
         <button id="getHealthButton">get health</button>
+        <button id="encodeTransactionButton">encodeTransaction</button>
         <script>
             const snapalgo = new SnapAlgo.Wallet();
             document.getElementById('getHealthButton').addEventListener('click', () => {
@@ -17,6 +18,7 @@
                 
                 algorand.enable();
             });
+            document.getElementById("encodeTransactionButton").addEventListener("click", encodeTransaction);
             async function getHealth(){
                 let client = await algorand.getAlgorandV2Client();
                 console.log(client)
@@ -31,6 +33,46 @@
                 console.log("block is")
                 console.log(block)
             }
+
+            async function encodeTransaction(){
+                let client = await algorand.getAlgorandV2Client();
+                const algodClient = new algosdk.Algodv2(client);
+                let params = await algodClient.getTransactionParams().do();
+                const receiver = "HZ57J3K46JIJXILONBBZOHX6BKPXEM2VVXNRFSUED6DKFD5ZD24PMJ3MVA";
+                const sender = '37G4YMHO2N4MBRUN4NMUIZEOO5A44UMKRF26O3WIN7WRUTDPT6Z2NU46RE';
+                let txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+                from: sender, 
+                to: receiver, 
+                amount: 1000000,  
+                suggestedParams: params
+                });
+                let encoded = algorand.snapAlgoEncodeTxn(txn);
+                console.log(encoded);
+            }
+
+            async function signTransaction(){
+                let client = await algorand.getAlgorandV2Client();
+                const algodClient = new algosdk.Algodv2(client);
+                let params = await algodClient.getTransactionParams().do();
+                const receiver = "HZ57J3K46JIJXILONBBZOHX6BKPXEM2VVXNRFSUED6DKFD5ZD24PMJ3MVA";
+                const sender = '37G4YMHO2N4MBRUN4NMUIZEOO5A44UMKRF26O3WIN7WRUTDPT6Z2NU46RE';
+                let txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+                from: sender, 
+                to: receiver, 
+                amount: 1000000,  
+                suggestedParams: params
+                });
+                let signedTxn = await ethereum.request({
+                method: 'wallet_invokeSnap',
+                params: ["npm:algorand", {
+                    method: 'signTxns',
+                    txns: txn
+                }]
+                })
+            };
+
+            
         </script>
     </body>
 </html>
+

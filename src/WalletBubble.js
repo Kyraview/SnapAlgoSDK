@@ -3,8 +3,8 @@ require("jquery-ui/ui/widgets/draggable");
 import './chathead.scss';
 import walletImg from './images/wallet.png';
 import settingsImg from './images/settings.png';
-import WalletScreen from "./WalletScreen";
 
+import WalletUI from "./WalletUI";
 export default class WalletBubble{
     constructor(){        
         this.isMoving = false;
@@ -20,7 +20,7 @@ export default class WalletBubble{
         this.network = "";
         this.html = "";
         this.receiveScreenOpen = false;
-        this.walletScreen = new WalletScreen(this);
+        this.walletUi = new WalletUI(this);
         this.buildUi();
         this.bubble = document.getElementById("snapAlgoChatHeadBubble");
         this.testnet = false;
@@ -151,6 +151,10 @@ export default class WalletBubble{
       this.html = html;
       this.walletHtmlBox.innerHTML = html;
     }
+    setElement(element){
+      this.walletHtmlBox.innerHTML = "";
+      this.walletHtmlBox.appendChild(element);
+    }
 
     open(screen){
       if(screen){
@@ -181,8 +185,8 @@ export default class WalletBubble{
       $(this.walletContainer)
       .css("width", this.width+"px")
       .css("height", this.height+"px")
-      .css("opacity", "1")
-      .css("transition", "width 0.2s ease 0.3s, height 0.2s ease 0.3s, opacity 0s ease 0.3s");
+      .css("visibility", "visible")
+      .css("transition", "width 0.2s ease 0.3s, height 0.2s ease 0.3s, visibility 0s ease 0.3s");
       this.walletMode = true;
     }
     close(){
@@ -195,9 +199,9 @@ export default class WalletBubble{
       $(this.walletContainer)
         .css("width", "0px")
         .css("height", "0px")
-        .css("opacity", "0")
+        .css("visibility", "hidden")
         .css("transition", "width 0.4s");
-      $(this.walletContainer).css("transition", "height 0.2s ease 0s, opacity 0s ease 0.2s, width 0.2s ease 0s");
+      $(this.walletContainer).css("transition", "height 0.2s ease 0s, visibility 0s ease 0.2s, width 0.2s ease 0s");
       this.walletMode = false;
       return new Promise((resolve)=>{
         setTimeout(()=>{
@@ -229,17 +233,40 @@ export default class WalletBubble{
     }
 
     preLoad(){
-      console.log("bubble preload called");
-      console.log("wallet screen is: ");
-      console.log(this.walletScreen);
       
-      return this.walletScreen.preLoad();
+      
+      return this.walletUi.preLoad();
     }
+    render(screen){
+      
+      
+      
+      
+      
+      
+      this.setElement(screen.element);
+      
+      if(!screen.hasOwnProperty('silent')){
+          screen.silent = false;
+      }
+      if(!screen.silent){
+        if(screen.hasOwnProperty("width")){
+          this.setWidth(screen.width);
+        }
+        if(screen.hasOwnProperty("height")){
+          this.setHeight(screen.height);
+        }
+      }
+
+
+  }
 
     showWalletScreen(){
-      console.log("bubble show wallet called");
-      console.log(this.walletScreen);
-      return this.walletScreen.render();
+      //console.log("bubble show wallet called");
+      //console.log(this.walletScreen);
+      //return this.walletScreen.render(this.walletScreen.updateWalletScreen(), {"silent": true});
+      
+      this.render(this.walletUi.getScreen());
     }
     
     /**

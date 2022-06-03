@@ -11,11 +11,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "algosdk": "^1.16.0",
+    "base64-arraybuffer": "^1.0.2",
+    "crypto": "^1.0.1",
+    "crypto-browserify": "^3.12.0",
     "crypto-price": "^0.0.6",
     "jquery": "^3.6.0",
     "jquery-ui": "^1.13.1",
     "qrcode": "^1.5.0",
-    "sweetalert2": "^11.4.14"
+    "stream": "^0.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",
