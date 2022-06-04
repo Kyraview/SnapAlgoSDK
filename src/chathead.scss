@@ -57,6 +57,29 @@
     
   }
 
+  
+  .SnapAlgoLedgerContainer::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  .SnapAlgoLedgerContainer::-webkit-scrollbar-track {
+    background: #0000;
+    border-radius: 10px; 
+  }
+   
+  /* Handle */
+  .SnapAlgoLedgerContainer::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  .SnapAlgoLedgerContainer::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+    border-radius: 10px;
+  }
+
   .wallet-icon {
     width: 20px;
     height: 20px;

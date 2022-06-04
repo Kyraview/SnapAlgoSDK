@@ -1,5 +1,4 @@
 const base64 = require('base64-arraybuffer')
-import { encodeUnsignedTransaction } from 'algosdk';
 import './Errors.js';
 import WalletBubble from './WalletBubble';
 import connectedGif from './images/connected.gif';
@@ -220,9 +219,7 @@ export class Wallet{
     }
 
     SNAPALGO_EncodeTxn(txn){
-      const output = base64.encode(encodeUnsignedTransaction(txn))
-      console.log(output);
-      return output;
+      //will be implemented later
     }
   
   

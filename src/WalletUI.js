@@ -3,14 +3,18 @@ import sendImg from './images/send.png';
 import qrImg from './images/qr.png';
 import logImg from './images/log.png';
 import pasteImg from './images/paste.png';
+import viewImg from './images/view.png';
 import QRCode from 'qrcode'
+
+
 
 export default class WalletUI{
 
     constructor(wallet){
         this.wallet = wallet;
-        this.price = "yo";
+        this.price = null;
         this.userBalance = null;
+        this.transactions = null;
         this.screen = "base";
 
     }
@@ -41,11 +45,22 @@ export default class WalletUI{
         Promise.all([price, balance]).then(
             this.renderScreen.bind(this)
         )
+        .then(this.preLoadTransactions.bind(this))
         
     }
 
-    preLoadTransaction(){
-
+    preLoadTransactions(){
+        return window.ethereum.request({ method: 'wallet_invokeSnap', 
+            params: ['npm:algorand',
+                {
+                    method: 'getTransactions',
+                    testnet: this.wallet.testnet
+                }
+            ] 
+        }).then((result)=>{
+            this.transactions = result;
+            return result;
+        })
     }
 
     #createImgButton(img){
@@ -65,6 +80,90 @@ export default class WalletUI{
         button.style =  "background-color:white; color:black; width:80px; height:30px; border-radius: 20px;  border: white; cursor: pointer;"; 
         button.className = "snapAlgoWalletButton";
         return button;
+
+    }
+
+    async #generateLedgerScreen(){
+        if(this.transactions==null){
+            console.log("transaction preload failed, retrying");
+            return this.preLoadTransactions().then(this.#generateLedgerScreen.bind(this));
+        }
+        let holder = document.createElement("div");
+        holder.style = "justify-content: center; display: flex; flex-direction: column; align-items: center;";
+        let title = document.createElement('p');
+        title.innerHTML = "Transactions";
+        title.style = "font-size: 20px; margin-top: 20px; align-self: left;";
+        holder.appendChild(title);
+        let transactionContainer = document.createElement("div");
+        transactionContainer.style = "overflow-y: auto; height: 300px; width: 95%; display: flex; flex-direction: column; align-items: center;";
+        console.log(this.transactions);
+        transactionContainer.className = "SnapAlgoLedgerContainer";
+        holder.appendChild(transactionContainer);
+        
+        for(let transaction of this.transactions.transactions){
+            console.log(transaction);
+            let transactionDiv = document.createElement('div');
+            
+            transactionDiv.style = `
+                display: flex; 
+                flex-direction: row; 
+                justify-content: space-between; 
+                margin-top: 10px; 
+                /*background-color: #444; */
+                padding: 10px;
+                width: 90%;
+                /*box-shadow: 0px 1px 5px rgba(255,255,255,0.2);*/
+                border-radius: 10px;
+            `;
+            
+            let type = document.createElement('p');
+            type.style = "font-size: 11px;";
+            if(transaction['tx-type'] == "pay"){
+                if(transaction.sender == this.wallet.accounts[0].addr){
+                    type.innerHTML = `Sent ${transaction["payment-transaction"].amount/1000000} Algo to 
+                    ${
+                        transaction["payment-transaction"].receiver.substring(0,4) 
+                        + "..." 
+                        + transaction["payment-transaction"].receiver.substring(54)    
+                    }`;
+                }
+                else{
+                    type.innerHTML = `received ${transaction["payment-transaction"].amount/1000000} Algo from ${
+                        transaction.sender.substring(0,4)
+                        + "..."
+                        + transaction.sender.substring(54)
+                    }`;
+                }
+                
+            }
+            else{
+                type.innerHTML = transaction['tx-type'];
+                
+            
+                let sender = document.createElement('p');
+                sender.style = "font-size: 11px; word-break: break-all;";
+                sender.innerHTML = transaction.sender.substring(0,4)+"..."+transaction.sender.substring(54);
+
+
+                transactionDiv.appendChild(sender);
+            }
+            let link = document.createElement('a');
+            
+            link.href = `https://${this.wallet.testnet ? "testnet." : ""}algoexplorer.io/tx/${transaction.id}`;
+            link.target = "_blank";
+            const viewIcon = document.createElement('img');
+            viewIcon.src = viewImg;
+            link.appendChild(viewIcon);
+            transactionDiv.appendChild(type);
+            transactionDiv.appendChild(link);
+            transactionContainer.appendChild(transactionDiv);
+        
+        }
+
+        let screen = this.getScreen();
+        screen.height = 500;
+        screen.element.appendChild(holder);
+        this.wallet.render(screen);
 
     }
 
@@ -270,9 +369,7 @@ export default class WalletUI{
         let transactionsButton = this.#createImgButton(logImg);
         transactionsButton.id = "SnapAlgoWalletTransactionsButton";
         transactionsButton.addEventListener("click", ()=>{ 
-            let output = document.createElement('p'); 
-            output.innerHTML = "Transactions"; 
-            walletContainer.appendChild(output) });
+            this.#generateLedgerScreen()});
         functionsDiv.appendChild(transactionsButton);
         functionsDiv.appendChild(sendButton);
         functionsDiv.appendChild(receiveButton);
