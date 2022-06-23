@@ -46,9 +46,11 @@
                 amount: 1000000,  
                 suggestedParams: params
                 });
-                let encoded = algorand.snapAlgoEncodeTxn(txn);
+                let encoded = algorand._SNAPALGO_EncodeTxn(txn);
                 console.log(encoded);
             }
+
+            
 
             async function signTransaction(){
                 let client = await algorand.getAlgorandV2Client();

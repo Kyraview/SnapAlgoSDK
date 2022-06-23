@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "algo-msgpack-with-bigint": "^2.1.1",
     "base64-arraybuffer": "^1.0.2",
     "crypto": "^1.0.1",
     "crypto-browserify": "^3.12.0",

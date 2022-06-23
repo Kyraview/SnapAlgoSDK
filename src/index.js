@@ -3,6 +3,7 @@ import './Errors.js';
 import WalletBubble from './WalletBubble';
 import connectedGif from './images/connected.gif';
 import HTTPClient from './HTTPClient.js';
+
 export class Wallet{
     constructor(){
       this.enabled = false;
@@ -54,6 +55,7 @@ export class Wallet{
         }]
       })
       console.log("this.accounts COMPLETED!");
+      console.log(this.accounts)
       let genisisIdProvided = false;
       let genisisHashProvided = false;
       let accountsProvided = false;
@@ -207,7 +209,8 @@ export class Wallet{
       const network = networkTable[this.genisisId];
       return new HTTPClient().get("index", network);
     }
-    signTxns(){
+    signTxns(walletTransaction){
+      
       
     }
     postTxns(){
@@ -218,8 +221,13 @@ export class Wallet{
       
     }
 
-    SNAPALGO_EncodeTxn(txn){
+    _SNAPALGO_EncodeTxn(txn){
+      const msgpack = require('./encoding.js');
+      const b64 = require('base64-arraybuffer');
       //will be implemented later
+      let obj = txn.get_obj_for_encoding()
+      obj = msgpack.encode(obj);
+      return b64.encode(obj);
     }
   
   
