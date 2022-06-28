@@ -187,8 +187,14 @@ export class Wallet{
     }
   
     
-    signAndPostTxns(){
-      
+    signAndPostTxns(walletTransactions){
+      return await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: [snapId, {
+          method: 'signAndPostTxns',
+          txns: walletTransactions
+        }]
+      })
     }
     getAlgorandV2Client(){
       const networkTable = {
@@ -209,25 +215,50 @@ export class Wallet{
       const network = networkTable[this.genisisId];
       return new HTTPClient().get("index", network);
     }
-    signTxns(walletTransaction){
-      
+    async signTxns(walletTransactions){
+      return await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: [snapId, {
+          method: 'signTxns',
+          txns: walletTransactions
+        }]
+      })
       
     }
-    postTxns(){
-      
+    postTxns(stxns){
+      return await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: [snapId, {
+          method: 'signTxns',
+          stxns: stxns
+        }]
+      })
     }
 
     openBubble(){
       
     }
 
-    _SNAPALGO_EncodeTxn(txn){
+    encodeTxn(txn){
       const msgpack = require('./encoding.js');
       const b64 = require('base64-arraybuffer');
       //will be implemented later
       let obj = txn.get_obj_for_encoding()
       obj = msgpack.encode(obj);
       return b64.encode(obj);
+    }
+
+    async EZsign(txn){
+      const b64 = require('base64-arraybuffer');
+      txn = [{txn:this.encodeTxn(txn)}];
+      let signedTxs = await this.signTxns(txn);
+      return signedTxs.map(stxB64 => b64.decode(stxB64).buffer)
+    }
+
+    async EZsignAndPost(txn){
+      const b64 = require('base64-arraybuffer');
+      txn = [{txn:this.encodeTxn(txn)}];
+      return this.signAndPostTxns(txn);
     }
   
   

@@ -11,10 +11,12 @@ export default class BaseScreen{
     }
     #createImgButton(img){
         let button = document.createElement('button');
-        button.style =  " color:white; width:35px; height:35px; border-radius: 100%;  border: white; cursor: pointer; margin: 5px;";
+        //button.style =  " color:white; width:35px; height:35px; border-radius: 100%;  border: white; cursor: pointer; margin: 5px;";
+        button.style = "border: none; background: none;"
+
         let buttonImg = document.createElement('img');
         buttonImg.src = img;
-        buttonImg.style = "width: 20px; height: 20px; margin: auto;";
+        buttonImg.style = "width: 35px; height: 35px; margin: auto; cursor: pointer;";
         button.className = "snapAlgoWalletButton";
         button.appendChild(buttonImg);
         return button;
