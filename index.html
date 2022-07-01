@@ -1,6 +1,11 @@
 <html>
     <head>
-        
+        <style>
+            body {
+                background-color: black;
+            }
+            
+        </style>
     </head>
     <body>
         <button id="enableButton">enable SnapAlgo</button>
@@ -8,6 +13,7 @@
         <script src="https://cdn.jsdelivr.net/npm/algosdk@1.16.0/dist/browser/algosdk.min.js"></script>
         <button id="getHealthButton">get health</button>
         <button id="encodeTransactionButton">encodeTransaction</button>
+        <button id="logicSigButton">testLogicSig</button>
         <script>
             const snapalgo = new SnapAlgo.Wallet();
             document.getElementById('getHealthButton').addEventListener('click', () => {
@@ -18,6 +24,7 @@
                 
                 algorand.enable();
             });
+            document.getElementById('logicSigButton').addEventListener("click", testLogicSig);
             document.getElementById("encodeTransactionButton").addEventListener("click", encodeTransaction);
             async function getHealth(){
                 let client = await algorand.getAlgorandV2Client();
@@ -48,6 +55,28 @@
                 });
                 let encoded = algorand._SNAPALGO_EncodeTxn(txn);
                 console.log(encoded);
+            }
+
+            async function testLogicSig(){
+                console.log("here")
+                let logic = `  
+                arg_0
+                btoi
+                int 12345
+                ==
+                `
+                console.log(logic);
+                let client = await algorand.getAlgorandV2Client();
+                const algodClient = new algosdk.Algodv2(client);
+                console.log("about to compile teal");
+                let data = (await algodClient.compile(logic).do()).result;
+                data = algorand.base64Decode(data);
+                let logicSigAccount = new algosdk.LogicSigAccount(data);
+                console.log("result is")
+                console.log(data);
+                const signed = algorand.EZsignSmartSig(logicSigAccount);
+                console.log(signed)
+                return signed;
             }
 
             

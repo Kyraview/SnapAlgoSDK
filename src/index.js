@@ -187,7 +187,7 @@ export class Wallet{
     }
   
     
-    signAndPostTxns(walletTransactions){
+    async signAndPostTxns(walletTransactions){
       return await ethereum.request({
         method: 'wallet_invokeSnap',
         params: [snapId, {
@@ -225,7 +225,7 @@ export class Wallet{
       })
       
     }
-    postTxns(stxns){
+    async postTxns(stxns){
       return await ethereum.request({
         method: 'wallet_invokeSnap',
         params: [snapId, {
@@ -255,10 +255,64 @@ export class Wallet{
       return signedTxs.map(stxB64 => b64.decode(stxB64).buffer)
     }
 
+    base64Encode(arraybuffer){
+      console.log("recieved ArrayBuffer is ")
+      console.log(arraybuffer)
+      const b64 = require('base64-arraybuffer');
+      const base64Output = b64.encode(arraybuffer);
+      console.log("base64 output is ...");
+      console.log(base64Output);
+      return base64Output;
+    }
+
+    base64Decode(arraybuffer){
+      console.log(arraybuffer);
+      const b64 = require('base64-arraybuffer');
+      arraybuffer = b64.decode(arraybuffer);
+      return new Uint8Array(arraybuffer);
+    }
+
     async EZsignAndPost(txn){
       const b64 = require('base64-arraybuffer');
       txn = [{txn:this.encodeTxn(txn)}];
       return this.signAndPostTxns(txn);
+    }
+
+    async EZsignSmartSig(logicSigAccount){
+      const msgpack = require('./encoding.js');
+      let EncodedLogicSigAccount = this.base64Encode(logicSigAccount.toByte());
+      const EncodedSignedAccount = await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: ["npm:algorand", {
+          method: 'signLogicSig',
+          logicSigAccount: EncodedLogicSigAccount,
+        }]
+      })
+      let encodedMsgPack = this.base64Decode(EncodedSignedAccount);
+      let decodedMsgPack = msgpack.decode(encodedMsgPack);
+      console.log(decodedMsgPack);
+      
+      
+      /*
+      lsig
+        const lsig = new LogicSig(encoded.l, encoded.arg);
+        lsig.sig = encoded.sig;
+        lsig.msig = encoded.msig;
+        return lsig;
+      
+      logicSigAccount
+        static from_obj_for_encoding(encoded: EncodedLogicSigAccount) {
+          const lsigAccount = new LogicSigAccount(encoded.lsig.l, encoded.lsig.arg);
+          lsigAccount.lsig = LogicSig.from_obj_for_encoding(encoded.lsig);
+          lsigAccount.sigkey = encoded.sigkey;
+          return lsigAccount;
+        }
+      */
+      logicSigAccount.sigkey = decodedMsgPack.sigkey;
+      logicSigAccount.lsig.sig = decodedMsgPack.lsig.sig;
+      console.log(logicSigAccount)
+      return logicSigAccount
+      
     }
   
   

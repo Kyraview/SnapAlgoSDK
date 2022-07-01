@@ -3,6 +3,7 @@ require("jquery-ui/ui/widgets/draggable");
 import './chathead.scss';
 import walletImg from './images/wallet.png';
 import settingsImg from './images/settings.png';
+import snapAlgoImg from './images/snapAlgoLogo.png'
 
 import WalletUI from "./WalletUI";
 export default class WalletBubble{
@@ -51,7 +52,12 @@ export default class WalletBubble{
       const bubbleElement = document.createElement('div');
       bubbleElement.className = "bubble";
       bubbleElement.id = "snapAlgoChatHeadBubble";
+      
+      const logo = document.createElement('img');
+      logo.src = snapAlgoImg;
+      logo.style = "width:100%; height:100%; margin:0px;";
       document.body.appendChild(bubbleElement);
+      bubbleElement.appendChild(logo);
       $("#snapAlgoChatHeadBubble").draggable();
 
       //wallet container

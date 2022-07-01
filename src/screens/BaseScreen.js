@@ -16,7 +16,7 @@ export default class BaseScreen{
 
         let buttonImg = document.createElement('img');
         buttonImg.src = img;
-        buttonImg.style = "width: 35px; height: 35px; margin: auto; cursor: pointer;";
+        buttonImg.style = "width: 40px; height: 40px; margin: auto; cursor: pointer;";
         button.className = "snapAlgoWalletButton";
         button.appendChild(buttonImg);
         return button;
@@ -25,7 +25,7 @@ export default class BaseScreen{
         console.log("screen Update");
         let walletContainer = document.createElement("div");
         let networkDiv = document.createElement("div");
-        networkDiv.style = "display:block; position: absolute; top: 4px; right:4px; text-align: right; margin-right: 3px;";
+        networkDiv.style = "text-align: right; height: 0px; padding-top: 5px; padding-right: 5px;";
         networkDiv.innerHTML = `${this.wallet.testnet?"testnet":"mainnet"}`
         walletContainer.appendChild(networkDiv);
 
@@ -35,7 +35,7 @@ export default class BaseScreen{
 
         let AccountName = document.createElement("p");
         AccountName.innerHTML = `${this.wallet.accounts[0].name}`;
-        AccountName.style = "margin-left: 70px; margin-top: 10px; margin-bottom: 0px; font-size: 22px;";
+        AccountName.style = "margin-left: 70px; margin-top: 10px; margin-bottom: 0px; font-size: 30px; font-family: Futura,Trebuchet MS,Arial,sans-serif; ";
         AccountNameDiv.appendChild(AccountName);
 
         console.log(this.walletUI.price)
@@ -43,9 +43,9 @@ export default class BaseScreen{
         if(this.price !== null && this.userBalance !== null){
             console.log("preloaded fine");
             let balanceUsd = document.createElement('p');
-            balanceUsd.style = "margin-top: 0px; margin-bottom: 0px; margin-left: 70px; font-size: 10px;";
+            balanceUsd.style = "margin-top: 0px; margin-bottom: 0px; margin-left: 70px; font-size: 15px;";
             let UsdTotal = "$" + (this.walletUI.price*(this.walletUI.userBalance/1000000)).toFixed(2);
-            let AlgoTotal = " " + this.walletUI.userBalance/1000000 + "Algo";
+            let AlgoTotal = " " + (this.walletUI.userBalance/1000000).toFixed(3) + " Algo";
             console.log(UsdTotal);
             console.log(AlgoTotal);
             balanceUsd.innerHTML = `${AlgoTotal}  ~  ${UsdTotal}`;
@@ -74,11 +74,11 @@ export default class BaseScreen{
         accountButton.addEventListener('click', this.walletUI.toggleAccountScreen.bind(this.walletUI));
 
         functionsDiv.appendChild(assetButton);
-        functionsDiv.appendChild(receiveButton);
         functionsDiv.appendChild(sendButton);
+        functionsDiv.appendChild(receiveButton);
         functionsDiv.appendChild(transactionsButton);
         functionsDiv.appendChild(accountButton);
         
-        return {"element":walletContainer, height:200, width:400};
+        return {"element":walletContainer, height:175, width:400};
   }
 }

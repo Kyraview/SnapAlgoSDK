@@ -229,7 +229,7 @@ export default class AssetScreen{
             console.log(Asset);
             let assetDiv = document.createElement("div");
             assetDiv.style = `
-            text-align: center; 
+            
             margin-left: 2.5px; 
             margin-right: 2.5px; 
             display: flex; 
@@ -255,8 +255,8 @@ export default class AssetScreen{
             assetName.style = "color: white; font-size: 10px; margin-left: 5px; margin-top: 7px; margin-bottom: 0px;";
             assetName.innerHTML = Asset.asset[0].params['unit-name'];
 
-            info.appendChild(assetAmount);
             info.appendChild(assetName);
+            info.appendChild(assetAmount);
             assetDiv.appendChild(info);
 
             assetDiv.addEventListener('click', ()=>{
@@ -337,7 +337,7 @@ export default class AssetScreen{
         title.innerHTML = asset.asset[0].params['name']
         titleHolder.appendChild(title);
         let amount = document.createElement('p');
-        amount.innerHTML = `${Number(asset.amount)/(10**asset.asset[0].params.decimals)} ${asset.asset[0].params['unit-name']}`;
+        amount.innerHTML = `${Number(asset.amount)/(10**asset.asset[0].params.decimals)} ${asset.asset[0].params['unit-name'].toUpperCase()}`;
         amount.style = "margin: 0;";
         titleHolder.appendChild(amount);
         titleDiv.appendChild(titleHolder);
@@ -346,7 +346,7 @@ export default class AssetScreen{
 
     getTopDiv(){
         let topDiv = document.createElement("div");
-        topDiv.style = "display: flex; margin-left: 30px; margin-right: 30px;";
+        topDiv.style = "display: flex; margin-left: 37px; margin-right: 30px;";
         let searchButton = this.#createImgButton(searchImg);
         searchButton.addEventListener("click", (e)=>{
             this.searchOpen = !this.searchOpen;
@@ -362,7 +362,7 @@ export default class AssetScreen{
         topDiv.appendChild(searchButton);
         let title = document.createElement('p');
         title.innerHTML = "Assets";
-        title.style = "font-size: 20px; margin-left: 20px;";
+        title.style = "font-size: 20px; margin-left: 10px;";
         topDiv.appendChild(title);
 
         return topDiv

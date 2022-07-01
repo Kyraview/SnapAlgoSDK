@@ -33,10 +33,13 @@
     top: 50%;
     left: -25px;
     box-shadow: 0 0px 20px rgba(0,0,0,0.19), 0 0px 6px rgba(0,0,0,0.23);
-    background: url("https://s2.coinmarketcap.com/static/img/coins/200x200/4030.png") white;
-    background-size: cover;
+    /*background: url("https://s2.coinmarketcap.com/static/img/coins/200x200/4030.png") white;*/
+    
+    padding:0px;
+    margin: 0px;
+    
     cursor: pointer;
-    border: 1px solid white;
+    
     
   }
   .bubble:hover{
@@ -124,7 +127,7 @@
       z-index: -1;
       width: calc(100% + var(--border-width) * 2);
       height: calc(100% + var(--border-width) * 2);
-      background: linear-gradient(
+      /*background: linear-gradient(
         60deg,
         hsl(224, 85%, 66%),
         hsl(269, 85%, 66%),
@@ -135,6 +138,8 @@
         hsl(134, 85%, 66%),
         hsl(179, 85%, 66%)
       );
+      */
+      background: linear-gradient(90deg,#963beb,#830bba,#c00fb4,#e9d596);
       background-size: 300% 300%;
       background-position: 0 50%;
       border-radius: 10px;
@@ -166,6 +171,7 @@
       z-index: -1;
       width: calc(100% + var(--border-width) * 2);
       height: calc(100% + var(--border-width) * 2);
+      /*
       background: linear-gradient(
         60deg,
         hsl(224, 85%, 66%),
@@ -177,10 +183,20 @@
         hsl(134, 85%, 66%),
         hsl(179, 85%, 66%)
       );
-      background-size: 300% 300%;
+      */
+      background: linear-gradient(30deg,
+      #963beb,
+      #830bba,
+      #c00fb4,
+      #e5c274,
+      #c00fb4,
+      #830bba,
+      #963beb,
+      );
+      background-size: 400% 400%;
       background-position: 0 50%;
       border-radius: calc(2 * var(--border-width));
-      animation: moveGradient 4s alternate infinite;
+      animation: moveGradient 6s alternate infinite;
     }
   }
 
@@ -238,6 +254,14 @@
   }
   .lds-ring div:nth-child(3) {
     animation-delay: -0.15s;
+  }
+  @keyframes close-SNAPALGO-animation{
+    0%{
+      
+    }
+    100%{
+
+    }
   }
   @keyframes lds-ring {
     0% {
