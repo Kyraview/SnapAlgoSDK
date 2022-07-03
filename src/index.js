@@ -169,7 +169,14 @@ export class Wallet{
             </center>`,
             height: 250
           })
-          this.bubble.preLoad();
+          await ethereum.request({
+            method: 'wallet_invokeSnap',
+            params: ['npm:algorand', {
+              method: 'setAccount',
+              address: 	this.enabledAccounts[0]
+            }]        
+          })
+          await this.bubble.preLoad();
           setTimeout(
             ()=>{
               //close the screen then set screen to the wallet screen
@@ -178,7 +185,7 @@ export class Wallet{
               .then(this.bubble.showWalletScreen.bind(this.bubble))
               
             }, 
-            700 //leave connected message on for 700ms, and uses this time to load price data for the wallet screen
+            100 //leave connected message on for 700ms, and uses this time to load price data for the wallet screen
           )
       }
       

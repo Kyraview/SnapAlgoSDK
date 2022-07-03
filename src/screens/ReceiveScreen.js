@@ -13,7 +13,8 @@ export default class ReceiveScreen{
         holder.style = "display: flex; justify-content: center; margin-top: 20px;";
         let assetcontainer = document.createElement('div');
         document.createElement("p");
-
+        console.log("accounts is: ");
+        console.log(this.wallet.accounts);
         let addressQR = (await QRCode.toDataURL(this.wallet.accounts[0].addr));
         
         let recDiv = document.createElement('div');

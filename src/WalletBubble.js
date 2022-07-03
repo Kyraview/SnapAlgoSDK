@@ -126,7 +126,7 @@ export default class WalletBubble{
       $(this.walletContainer)
         .css("top", this.bubble.style.top)
         .css("left", this.bubble.style.left)
-        .css("transform", "translate(5%,5%)")
+        .css("transform", "translate(20px,20px)")
         .css("transition", "all 0s");
       if(this.walletMode){ 
         $(this.walletContainer).css("transition-delay", "0s");
@@ -186,7 +186,7 @@ export default class WalletBubble{
       $(this.walletContainer)
       .css("top", this.lastY)
       .css("left",this.lastX)
-      .css("transform", "translate(5%,5%)")
+      .css("transform", "translate(20px,20px)")
       .css("transition", "all 0s");
       $(this.walletContainer)
       .css("width", this.width+"px")
@@ -238,10 +238,10 @@ export default class WalletBubble{
       }
     }
 
-    preLoad(){
+    async preLoad(){
       
       
-      return this.walletUi.preLoad();
+      return await this.walletUi.preLoad();
     }
     render(screen){
       

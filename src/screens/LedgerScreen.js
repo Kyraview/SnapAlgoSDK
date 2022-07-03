@@ -17,7 +17,7 @@ export default class LedgerScreen{
         title.style = "font-size: 20px; margin-top: 20px; align-self: left;";
         holder.appendChild(title);
         let transactionContainer = document.createElement("div");
-        transactionContainer.style = "overflow-y: auto; height: 300px; width: 95%; display: flex; flex-direction: column; align-items: center;";
+        transactionContainer.style = "overflow-y: auto; height: 275px; width: 95%; display: flex; flex-direction: column; align-items: center;";
         console.log(this.transactions);
         transactionContainer.className = "SnapAlgoLedgerContainer";
         holder.appendChild(transactionContainer);
