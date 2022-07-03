@@ -32,7 +32,7 @@ export default class WalletUI{
 
     }
 
-    preLoad(){
+    async preLoad(){
         console.log("wallet Screen preLoad");
         
         let price = fetch("https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd")
@@ -54,12 +54,12 @@ export default class WalletUI{
             this.userBalance = balance;
           })
           .catch(console.log);
-    
-        Promise.all([price, balance]).then(
+        let transactions = this.preLoadTransactions();
+        let assets = this.preLoadAssets();
+        await Promise.all([price, balance, transactions, assets]).then(
             this.renderScreen.bind(this)
         )
-        .then(this.preLoadTransactions.bind(this))
-        .then(this.preLoadAssets.bind(this))
+        
         
     }
 
@@ -77,21 +77,22 @@ export default class WalletUI{
         })
     }
 
-    preLoadAssets(){
-        return window.ethereum.request({ method: 'wallet_invokeSnap',
+    async preLoadAssets(){
+        const result = await window.ethereum.request({ method: 'wallet_invokeSnap',
             params: ['npm:algorand',
                 {
                     method: 'getAssets',
                 }
             ]
         })
-        .then((result)=>{
-            console.log("preload assets");
-            
-            this.assets = result;
-            console.log(this.assets);
-            return result;
-        });
+        
+        console.log("preload assets");
+        
+        this.assets = result;
+        console.log(this.assets);
+        console.log(this.assets);
+        return result;
+        
     }
 
 

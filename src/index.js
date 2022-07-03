@@ -177,15 +177,15 @@ export class Wallet{
             }]        
           })
           await this.bubble.preLoad();
+          await this.bubble.close();
           setTimeout(
             ()=>{
               //close the screen then set screen to the wallet screen
               //requires binding to the bubble
-              this.bubble.close()
-              .then(this.bubble.showWalletScreen.bind(this.bubble))
+              //this.bubble.showWalletScreen.bind(this.bubble)
               
             }, 
-            100 //leave connected message on for 700ms, and uses this time to load price data for the wallet screen
+            400 //leave connected message on for 700ms, and uses this time to load price data for the wallet screen
           )
       }
       
