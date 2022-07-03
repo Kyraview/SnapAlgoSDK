@@ -140,6 +140,7 @@ export class Wallet{
           </center>`,
           "title": "Select Network and Account",
           "height":300,
+          "width":400,
           callback:()=>{
             let network = document.getElementById("snapAlgoNetworkSelect").value;
             let account = document.getElementById("snapAlgoAccountSelect").value;
