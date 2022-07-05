@@ -3,7 +3,8 @@ require("jquery-ui/ui/widgets/draggable");
 import './chathead.scss';
 import walletImg from './images/wallet.png';
 import settingsImg from './images/settings.png';
-import snapAlgoImg from './images/snapAlgoLogo.png'
+import snapAlgoImg from './images/snapAlgoLogo.png';
+import connectedGif from './images/connected.gif';
 
 import WalletUI from "./WalletUI";
 export default class WalletBubble{
@@ -20,6 +21,7 @@ export default class WalletBubble{
         this.accounts = [];
         this.network = "";
         this.html = "";
+        this.lastElement = null;
         this.receiveScreenOpen = false;
         this.walletUi = new WalletUI(this);
         this.buildUi();
@@ -273,6 +275,30 @@ export default class WalletBubble{
       //return this.walletScreen.render(this.walletScreen.updateWalletScreen(), {"silent": true});
       
       this.render(this.walletUi.getScreen());
+    }
+
+    openLoader(text, screen){
+      if(screen === undefined){
+        screen = this.walletUi.getScreen();
+      }
+      this.lastElement = screen;
+      let holder = document.createElement("center");
+      let title = document.createElement("p");
+      title.innerHTML = text;
+      holder.appendChild(title);
+      let loader = document.createElement("img");
+      loader.src = connectedGif;
+      loader.style = "width: 150px; height: 150px;";
+      holder.appendChild(loader);
+      this.setHeight(250);
+      this.setWidth(350);
+      this.setElement(holder);
+    }
+    closeLoader(){
+      if(this.lastElement === null){
+        this.lastElement = this.walletUi.getScreen();
+      }
+      this.setElement(this.lastElement);
     }
     
     /**

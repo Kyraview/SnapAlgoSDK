@@ -228,6 +228,21 @@
     100%{background-position:99% 100% ;transform: scale(1.15)}
     
   }
+  .snapAlgoHoverEffect2:hover{
+    animation: buttonHover2 0.2s;
+    animation-direction: both;
+    animation-fill-mode: both;
+  }
+  @keyframes buttonHover2{
+    0%{
+      
+      transform:scale(1)
+    }
+    100%{
+      
+      transform: scale(1.08)
+    }
+  }
   .lds-ring {
     display: inline-block;
     position: relative;

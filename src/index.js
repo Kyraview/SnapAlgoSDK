@@ -177,6 +177,7 @@ export class Wallet{
               address: 	this.enabledAccounts[0]
             }]        
           })
+          this.bubble.walletUi.screen = 'base';
           await this.bubble.preLoad();
           await this.bubble.close();
           setTimeout(
