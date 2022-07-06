@@ -44,7 +44,7 @@ export class Wallet{
           return;
         }
         else{
-          Swal.fire("you must install metamask flask to use this libary")
+          alert("you must install metamask flask to use this libary")
           throw(e);
         }
       }
@@ -225,6 +225,9 @@ export class Wallet{
       return new HTTPClient().get("index", network);
     }
     async signTxns(walletTransactions){
+      if(!this.enabled){
+        throw("not enabled");
+      }
       return await ethereum.request({
         method: 'wallet_invokeSnap',
         params: [snapId, {

@@ -35,6 +35,7 @@ export default class AccountScreen{
         border-radius: 10px`;
         importAccountButton.innerHTML = "Import Account";
         importAccountButton.className = "snapAlgoHoverEffect2"
+        importAccountButton.addEventListener('click', this.toggleImportScreen.bind(this));
         holder.appendChild(importAccountButton);
 
         let switchAccountButton = document.createElement('button');
@@ -66,6 +67,17 @@ export default class AccountScreen{
             this.screen = 'start';
         }else{
             this.screen = 'infoScreen';
+        }
+        this.render();
+    }
+
+    async toggleImportScreen(){
+        console.log("Importing account toggle");
+        if(this.screen === 'importScreen'){
+            this.screen = 'start';
+        }
+        else{
+            this.screen = 'importScreen';
         }
         this.render();
     }
@@ -120,6 +132,27 @@ export default class AccountScreen{
         return holder;
     }
 
+    getImportScreen(){
+        let holder = document.createElement("div");
+        holder.style = `
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100px;
+        
+        `
+        let importButton = document.createElement('button');
+        importButton.innerHTML = "Import Account";
+        importButton.addEventListener('click', ()=>{
+            window.open("https://snapalgo.com/importaccount", '_blank');
+        });
+        importButton.style = `
+        margin: auto;
+        `
+        holder.appendChild(importButton);
+        return holder;
+    }
+
     async createAccount(){
         let accountName = this.accountNameElement.value;
         this.wallet.openLoader("Creating Account");
@@ -156,6 +189,12 @@ export default class AccountScreen{
 
         if(this.screen === 'infoScreen'){
             holder.appendChild(this.getInfoScreen());
+            height = 350;
+        }
+
+        if(this.screen === 'importScreen'){
+            
+            holder.appendChild(this.getImportScreen());
             height = 350;
         }
 
