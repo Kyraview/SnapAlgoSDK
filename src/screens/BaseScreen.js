@@ -25,7 +25,14 @@ export default class BaseScreen{
         console.log("screen Update");
         let walletContainer = document.createElement("div");
         let networkDiv = document.createElement("div");
-        networkDiv.style = "text-align: right; height: 0px; padding-top: 5px; padding-right: 5px;";
+        networkDiv.style = `
+        text-align: right; 
+        height: 0px; 
+        padding-top: 5px; 
+        padding-right: 5px;
+        background-color: 
+        `;
+        networkDiv.className = "mainFont";
         networkDiv.innerHTML = `${this.wallet.testnet?"testnet":"mainnet"}`
         walletContainer.appendChild(networkDiv);
 
@@ -35,7 +42,12 @@ export default class BaseScreen{
 
         let AccountName = document.createElement("p");
         AccountName.innerHTML = `${this.wallet.accounts[0].name}`;
-        AccountName.style = "margin-left: 70px; margin-top: 10px; margin-bottom: 0px; font-size: 30px; font-family: Futura,Trebuchet MS,Arial,sans-serif; ";
+        AccountName.style = `
+        margin-left: 70px; 
+        margin-top: 10px; 
+        margin-bottom: 0px; 
+        font-size: 30px;`;
+        AccountName.className = "mainFont";
         AccountNameDiv.appendChild(AccountName);
 
         console.log(this.walletUI.price)
@@ -44,6 +56,7 @@ export default class BaseScreen{
             console.log("preloaded fine");
             let balanceUsd = document.createElement('p');
             balanceUsd.style = "margin-top: 0px; margin-bottom: 0px; margin-left: 70px; font-size: 15px;";
+            balanceUsd.className = "secoundaryFont";
             let UsdTotal = "$" + (this.walletUI.price*(this.walletUI.userBalance/1000000)).toFixed(2);
             let AlgoTotal = " " + (this.walletUI.userBalance/1000000).toFixed(3) + " Algo";
             console.log(UsdTotal);

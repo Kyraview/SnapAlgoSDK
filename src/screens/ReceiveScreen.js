@@ -31,7 +31,7 @@ export default class ReceiveScreen{
         let addressDiv = document.createElement('div');
         addressDiv.style = "display: flex; flex-direction: column; justify-content: center; margin-left: 10px; width: 150px;";
         let address = document.createElement('p');
-        address.style = "font-size: 11px; word-break: break-all;";
+        address.style = "font-size: 15px; word-break: break-all;";
         address.innerHTML = this.wallet.accounts[0].addr;
         let copyButton = document.createElement('button');
         copyButton.id = "SnapAlgoWalletRecieveCopyButton";
@@ -43,7 +43,8 @@ export default class ReceiveScreen{
         );
         
 
-        copyButton.style = "width: 100%;  border: white; cursor: pointer;";
+        copyButton.style = "width: 100%; cursor: pointer;";
+        copyButton.className = "snapAlgoDefaultButton alt";
         copyButton.innerHTML = "Copy Address";
         addressDiv.appendChild(address);
         addressDiv.appendChild(copyButton);

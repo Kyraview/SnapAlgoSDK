@@ -28,7 +28,7 @@ export default class WalletUI{
         console.log(this.sendScreen);
         console.log(this.receiveScreen);
         console.log(this.ledgerScreen);
-
+        setInterval(this.preLoad.bind(this), 5000);
 
     }
 
@@ -56,9 +56,7 @@ export default class WalletUI{
           .catch(console.log);
         let transactions = this.preLoadTransactions();
         let assets = this.preLoadAssets();
-        await Promise.all([price, balance, transactions, assets]).then(
-            this.renderScreen.bind(this)
-        )
+        return await Promise.all([price, balance, transactions, assets])
         
         
     }

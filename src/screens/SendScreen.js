@@ -17,8 +17,9 @@ export default class SendScreen{
         return button;
     }
 
-    updateAmount(){
-        
+    async updateAndRender(){
+        await this.walletUi.preLoad();
+        this.render();
     }
 
     async render(opts){
@@ -93,8 +94,11 @@ export default class SendScreen{
         const sendButtonDiv = document.createElement('div');
         sendButtonDiv.style = "display:flex; justify-content: center;";
         container.appendChild(sendButtonDiv);
-        let sendButton = this.#createButton("send");
-        sendButton.id = "SnapAlgoWalletSendTransferButton";
+        let sendButton = document.createElement('button');
+        sendButton.innerHTML = "send";
+        sendButton.style = "font-size: 15px;"
+        sendButton.className = "snapAlgodefaultButton alt";
+
         
         const sendFunction = () => {
                 console.log(this.wallet.testnet);
@@ -117,11 +121,11 @@ export default class SendScreen{
                             to: sendAddress.value,
                             amount: Number(amount.value)*1000000
                         }]
-                    });
+                    }).then(this.updateAndRender.bind(this));
                 }
                 else{
                     console.log(assetId);
-                    return window.ethereum.request({
+                    window.ethereum.request({
                         method:  'wallet_invokeSnap',
                         params: ['npm:algorand', {
                             

@@ -3,7 +3,7 @@ import './Errors.js';
 import WalletBubble from './WalletBubble';
 import connectedGif from './images/connected.gif';
 import HTTPClient from './HTTPClient.js';
-
+import importIcon from './images/receive.png';
 export class Wallet{
     constructor(){
       this.enabled = false;
@@ -124,27 +124,33 @@ export class Wallet{
         console.log(this.bubble);
         const connectModal = await this.bubble.modal({"html":
           `
-          <center>
+          <div style="display: flex; justify-content: right;">
+            <img style="height:40px; width: 40px; margin:5px; cursor: pointer;" src="${importIcon}" onclick="window.open('https://snapalgo.com/importaccount', '_blank')"/>
+          </div>
+          <center style="transform: translateY(-10%); margin:0px;">
           <p style="text-align: center;">Select a Network</p>
           
-          <select class="swal2-select" id="snapAlgoNetworkSelect">
+          <select  id="snapAlgoNetworkSelect">
             <option value="mainnet-v1.0">Mainnet</option>
             <option value="testnet-v1.0">Testnet</option>
             <option value="betanet-v1.0">Betanet</option>
           </select>
           
           <p style="text-align:center;">Select an Account</p>
-            <select class="swal2-select" id="snapAlgoAccountSelect">
+            <select  id="snapAlgoAccountSelect">
               ${Addrs.map((addr)=>`<option value="${addr}">${Accounts[addr].name}</option>`).join("")}
             </select>
+            <br/>
+            <br/>
+            
           </center>`,
           "title": "Select Network and Account",
           "height":300,
           "width":400,
           callback:()=>{
-            let network = document.getElementById("snapAlgoNetworkSelect").value;
-            let account = document.getElementById("snapAlgoAccountSelect").value;
-            return {"network":network, "account":account};
+            this.network = document.getElementById("snapAlgoNetworkSelect").value;
+            this.account = document.getElementById("snapAlgoAccountSelect").value;
+            return {"network":this.network, "account":this.account};
           },
           confirmText: "Connect"
       });
@@ -154,8 +160,10 @@ export class Wallet{
             console.log("here")
             throw("user Reject Connection");
           }
+          console.log("connection modal is");
           console.log(connectModal);
           console.log(await connectModal);
+          console.log(await connectModal.data.network);
           this.genisisId = await connectModal.data.network;
           this.genisisHash = IdTable[ await this.genisisId]
           this.enabledAccounts = [await connectModal.data.account];

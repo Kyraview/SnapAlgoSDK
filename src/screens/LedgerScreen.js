@@ -13,8 +13,9 @@ export default class LedgerScreen{
         let holder = document.createElement("div");
         holder.style = "justify-content: center; display: flex; flex-direction: column; align-items: center;";
         let title = document.createElement('p');
-        title.innerHTML = "Transactions";
+        title.innerHTML = "Transaction history";
         title.style = "font-size: 20px; margin-top: 20px; align-self: left;";
+        title.className = "mainFont";
         holder.appendChild(title);
         let transactionContainer = document.createElement("div");
         transactionContainer.style = "overflow-y: auto; height: 275px; width: 95%; display: flex; flex-direction: column; align-items: center;";
@@ -58,9 +59,14 @@ export default class LedgerScreen{
                 }
                 
             }
+            
             else{
-                type.innerHTML = transaction['tx-type'];
-                
+                if(transaction['tx-type'] === 'axfer'){
+                   type.innerHTML = "Asset Transfer"
+                }
+                else{
+                    type.innerHTML = transaction['tx-type'];
+                }
             
                 let sender = document.createElement('p');
                 sender.style = "font-size: 11px; word-break: break-all;";

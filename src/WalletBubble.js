@@ -48,6 +48,9 @@ export default class WalletBubble{
       if(this.network === "testnet-v1.0"){
         this.testnet = true;
       }
+      else{
+        this.testnet = false;
+      }
     }
     buildUi(){
       //bubble chat head thing
@@ -98,8 +101,12 @@ export default class WalletBubble{
       this.settingsfooterIcon.id = "snapAlgoWalletWalletFooterIcon";
       this.settingsfooterIcon.className = "wallet-icon";
 
-      this.walletFooter.appendChild(this.walletfooterIcon);
-      this.walletFooter.appendChild(this.settingsfooterIcon);
+
+      //footer bar -------------------------------------------------->
+      //
+      //this.walletFooter.appendChild(this.walletfooterIcon);
+      //this.walletFooter.appendChild(this.settingsfooterIcon);
+      //---------------------------------------------------------------->
       
     }
 
@@ -243,7 +250,7 @@ export default class WalletBubble{
     async preLoad(){
       
       
-      return await this.walletUi.preLoad();
+      this.walletUi.preLoad().then(this.showWalletScreen.bind(this));
     }
     render(screen){
       

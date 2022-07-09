@@ -2,6 +2,10 @@ import searchImg from '../images/search.png';
 import coinsImg from '../images/coins.png';
 import coinImg from '../images/coin.png';
 import backImg from '../images/back.png';
+import sendAltImg from '../images/send2.png';
+import receiveImg from '../images/qr1.png';
+import QRCode from 'qrcode';
+
 export default class AssetScreen{
     constructor(walletUI, wallet){
         this.walletUI = walletUI;
@@ -13,6 +17,7 @@ export default class AssetScreen{
         this.topDivOpen = true;
         this.viewAsset = null;
         this.loading = false;
+        this.subScreen = "none";
         this.currentSearch = [];
         this.assetList = [
             {
@@ -113,7 +118,7 @@ export default class AssetScreen{
             let searchResult = document.createElement("div");
             searchResult.style = "display: flex;  justify-content: space-between;";
             let termTitle = document.createElement("p");
-            termTitle.innerHTML = Object.values(searchTerm)[0][0];
+            termTitle.innerHTML = Object.values(searchTerm)[0][0].toUpperCase();
             termTitle.style = "font-size: 15px;";
             searchResult.coinId = Object.keys(searchTerm)[0][0];
             searchResult.appendChild(termTitle);
@@ -210,7 +215,7 @@ export default class AssetScreen{
         space-between; 
         margin-left: 30px; 
         margin-right: 30px; 
-        height: 125px; 
+        height: 110px; 
         overflow-y: scroll;
         overflow-x: hidden;
         padding: 5px;
@@ -253,7 +258,7 @@ export default class AssetScreen{
             //asset name
             let assetName = document.createElement("p");
             assetName.style = "color: white; font-size: 10px; margin-left: 5px; margin-top: 7px; margin-bottom: 0px;";
-            assetName.innerHTML = Asset.asset[0].params['unit-name'];
+            assetName.innerHTML = Asset.asset[0].params['unit-name'].toUpperCase();
 
             info.appendChild(assetName);
             info.appendChild(assetAmount);
@@ -292,6 +297,26 @@ export default class AssetScreen{
         this.topDivOpen = true;
         this.render();
     }
+
+    toggleReceive(){
+        if(this.subScreen === "receive"){
+            this.subScreen = "none"
+        }
+        else{
+            this.subScreen = "receive"
+        }
+        this.render();
+    }
+    toggleSend(){
+        if(this.subScreen === "send"){
+            this.subScreen = "none"
+        }
+        else{
+            this.subScreen = "send"
+        }
+        this.render();
+    }
+
     async getAssetScreen(asset){
         let holder = document.createElement('div');
         holder.style = `
@@ -306,17 +331,15 @@ export default class AssetScreen{
         let backButton = document.createElement('img');
         backButton.style = `
         position: absolute;
-        width: 30px;
-        height: 30px;
+        width: 35px;
+        height: 35px;
         border-radius: 100%;
-        background-color: white;
-        border: 0.5px solid #555;
         left: 32px;
-        top: 107px;
+        top: 127px;
         cursor: pointer;
         `
         backButton.src = backImg;
-        backButton.className = "snapAlgoHoverEffect";
+        backButton.className = "snapAlgoDefaultButton alt";
         backButton.addEventListener('click', ()=>{
             this.exitViewAssetScreen();
         });
@@ -341,6 +364,83 @@ export default class AssetScreen{
         amount.style = "margin: 0;";
         titleHolder.appendChild(amount);
         titleDiv.appendChild(titleHolder);
+
+        let actionHolder = document.createElement("div");
+        actionHolder.style = "display: flex;";
+        
+        let receiveButton = document.createElement('img');
+        receiveButton.src = receiveImg;
+        receiveButton.style = "width: 35px; height: 35px;";
+        receiveButton.className = "snapAlgoHoverEffect";
+        receiveButton.addEventListener('click', this.toggleReceive.bind(this));
+        actionHolder.appendChild(receiveButton);
+        
+
+        let sendButton = document.createElement('img');
+        sendButton.src = sendAltImg;
+        sendButton.style="width: 35px; height: 35px;";
+        sendButton.className = "snapAlgoHoverEffect";
+        sendButton.addEventListener('click', this.toggleSend.bind(this));
+
+        actionHolder.appendChild(sendButton);
+
+        titleHolder.appendChild(actionHolder);
+
+        if(this.subScreen === "receive"){
+            let receiveDiv = document.createElement("div");
+            receiveDiv.style = "display: flex; justify-content:center; margin-top: 20px;";
+            const address = this.wallet.accounts[0].addr
+            let addressQR = (await QRCode.toDataURL(address));
+            let qrCodeImage = document.createElement('img');
+            qrCodeImage.src = addressQR;
+            qrCodeImage.style = "width: 100px; height: 100px; margin-left: 10px;";
+            receiveDiv.appendChild(qrCodeImage);
+            let addressText = document.createElement('p');
+            addressText.style = "color:white; font-size: 10px; width: 75px; margin-left:10px; word-break: break-all;";
+            addressText.innerHTML = address;
+            receiveDiv.appendChild(addressText)
+            holder.appendChild(receiveDiv);
+        }
+        console.log("internal Asset is: ");
+        console.log(asset);
+        if(this.subScreen === "send"){
+            
+            let sendDiv = document.createElement("div");
+            sendDiv.style = "display: flex; flex-direction: column; justify-content:center; margin-top: 20px;";
+            let addressInput = document.createElement('input');
+            addressInput.style = "width: 90%; height: 30px; font-size: 9px; margin: auto;";
+            addressInput.placeholder = "Address";
+            sendDiv.appendChild(addressInput);
+            let amountInput = document.createElement('input');
+            amountInput.style = "width: 90%; height: 30px; margin-left: 10px; margin: auto;";
+            amountInput.type = "number";
+            amountInput.placeholder = "Amount";
+            sendDiv.appendChild(amountInput);
+
+            let sendButton = document.createElement('button');
+            sendButton.style = "width: 100px; height: 30px; margin: auto; margin-top: 10px;";
+            sendButton.className = "snapAlgoDefaultButton alt";
+            sendButton.innerHTML = "Send";
+            sendDiv.appendChild(sendButton);
+            sendButton.addEventListener('click', ()=>{
+                console.log("amount", amountInput.value);
+                console.log("address", addressInput.value);
+                console.log(asset);
+                const decimals = asset.asset[0].params.decimals;
+                return window.ethereum.request({
+                    method:  'wallet_invokeSnap',
+                    params: ['npm:algorand', {
+                        
+                        method:  'transferAsset',
+                        assetIndex: Number(asset['asset-id']),
+                        to: addressInput.value,
+                        amount: Number(amountInput.value)*(10**Number(decimals)),
+                    }]
+                })
+            });
+            holder.appendChild(sendDiv);
+        }
+
         return holder;
     }
 
@@ -396,7 +496,14 @@ export default class AssetScreen{
         if(this.viewOpen){
             let assetView = await this.getAssetScreen(this.viewAsset);
             holder.appendChild(assetView);
-            viewHeight = 400;
+            viewHeight = 250;
+            viewHeight = 275;
+            if(this.subScreen === "receive"){
+                viewHeight = 400;
+            }
+            if(this.subScreen === "send"){
+                viewHeight = 450;
+            }
         }
 
 
