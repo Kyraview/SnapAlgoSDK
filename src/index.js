@@ -207,7 +207,7 @@ export class Wallet{
     async signAndPostTxns(walletTransactions){
       return await ethereum.request({
         method: 'wallet_invokeSnap',
-        params: [snapId, {
+        params: ["npm:algorand", {
           method: 'signAndPostTxns',
           txns: walletTransactions
         }]
@@ -238,7 +238,7 @@ export class Wallet{
       }
       return await ethereum.request({
         method: 'wallet_invokeSnap',
-        params: [snapId, {
+        params: ["npm:algorand", {
           method: 'signTxns',
           txns: walletTransactions
         }]
@@ -248,7 +248,7 @@ export class Wallet{
     async postTxns(stxns){
       return await ethereum.request({
         method: 'wallet_invokeSnap',
-        params: [snapId, {
+        params: ["npm:algorand", {
           method: 'signTxns',
           stxns: stxns
         }]
