@@ -274,7 +274,7 @@ export default class AssetScreen{
         for(let i = 0; i<3-(userAssets.length%3); i++){
             let ghostDiv = document.createElement("div");
             ghostDiv.style = `
-            width: 75px;
+            width: 100px;
             height: 40px;
             `;
             holder.appendChild(ghostDiv);

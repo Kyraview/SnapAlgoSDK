@@ -213,7 +213,7 @@ export class Wallet{
         }]
       })
     }
-    getAlgorandV2Client(){
+    getAlgodv2Client(){
       const networkTable = {
         "mainnet-v1.0": "mainnet",
         "testnet-v1.0": "testnet",
