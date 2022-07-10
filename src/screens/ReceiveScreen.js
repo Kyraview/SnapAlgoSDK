@@ -22,7 +22,13 @@ export default class ReceiveScreen{
         holder.appendChild(document.createElement('br'));
         holder.appendChild(document.createElement('br'));
         holder.appendChild(recDiv);
-
+        let reciveFlow = document.createElement('iframe');
+        reciveFlow.style = "width: 100%; height: 150px;";
+        reciveFlow.src = "https://snapalgo.com/receive";
+        reciveFlow.scrolling = "no";
+        reciveFlow.frameBorder = "0";
+        recDiv.appendChild(reciveFlow);
+        /*
         let qrCodeImage = document.createElement('img');
         qrCodeImage.src = addressQR;
         qrCodeImage.style = "width: 150px; height: 150px; margin-left: 10px;";
@@ -49,6 +55,7 @@ export default class ReceiveScreen{
         addressDiv.appendChild(address);
         addressDiv.appendChild(copyButton);
         recDiv.appendChild(addressDiv);
+        */
         let screen = this.walletUI.getScreen();
         screen.element.appendChild(holder);
         screen.height = 350;

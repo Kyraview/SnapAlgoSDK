@@ -28,7 +28,7 @@ export default class WalletUI{
         console.log(this.sendScreen);
         console.log(this.receiveScreen);
         console.log(this.ledgerScreen);
-        setInterval(this.preLoad.bind(this), 5000);
+        
 
     }
 

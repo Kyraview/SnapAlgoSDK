@@ -251,6 +251,7 @@ export default class WalletBubble{
       
       
       this.walletUi.preLoad().then(this.showWalletScreen.bind(this));
+      setInterval(this.walletUi.preLoad.bind(this.walletUi), 5000);
     }
     render(screen){
       
