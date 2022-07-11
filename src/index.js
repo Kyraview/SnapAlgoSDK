@@ -271,8 +271,11 @@ export class Wallet{
     async EZsign(txn){
       const b64 = require('base64-arraybuffer');
       txn = [{txn:this.encodeTxn(txn)}];
+      console.log(txn);
       let signedTxs = await this.signTxns(txn);
-      return signedTxs.map(stxB64 => b64.decode(stxB64).buffer)
+      console.log("signedTxs");
+      console.log(signedTxs);
+      return Array.from(signedTxs.map(stxB64 => b64.decode(stxB64).buffer));
     }
 
     base64Encode(arraybuffer){
