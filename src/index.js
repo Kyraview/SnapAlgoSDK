@@ -249,7 +249,7 @@ export class Wallet{
       return await ethereum.request({
         method: 'wallet_invokeSnap',
         params: ["npm:algorand", {
-          method: 'signTxns',
+          method: 'postTxns',
           stxns: stxns
         }]
       })

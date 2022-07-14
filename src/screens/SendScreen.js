@@ -39,6 +39,24 @@ export default class SendScreen{
         container.appendChild(sendAddresLabel);
         container.appendChild(sendDiv);
 
+
+        let sendAddress = document.createElement('input');
+        sendAddress.maxLength="58";
+        sendAddress.style = "width: 100%; border-radius: 5px; font-family: monospace;";
+        sendAddress.id = "SnapAlgoWalletSendAddress";
+        sendDiv.appendChild(sendAddress);
+        let pasteButton = document.createElement('img');
+        pasteButton.src = pasteImg;
+        pasteButton.id = "SnapAlgoWalletSendPasteButton";
+        pasteButton.style = "width: 20px; border: white; cursor: pointer; background-color: white; border-radius: 100%; padding:3px;";
+        sendDiv.appendChild(pasteButton);
+        let sendAmountLabel = document.createElement('p');
+        sendAmountLabel.innerHTML = "amount";
+        container.appendChild(sendAmountLabel);
+
+        let amountDiv = document.createElement('div');
+        amountDiv.style = "display:flex; justify-content: left;";
+
         this.coinDropDown = document.createElement('select');
         this.coinDropDown.value = "algo";
         function setAsset(e){
@@ -70,25 +88,19 @@ export default class SendScreen{
             this.coinDropDown.appendChild(option);
             options.push(option);
         }
-        sendDiv.appendChild(this.coinDropDown);
-        let sendAddress = document.createElement('input');
-        sendAddress.maxLength="58";
-        sendAddress.style = "width: 100%; border-radius: 5px; font-family: monospace;";
-        sendAddress.id = "SnapAlgoWalletSendAddress";
-        sendDiv.appendChild(sendAddress);
-        let pasteButton = document.createElement('img');
-        pasteButton.src = pasteImg;
-        pasteButton.id = "SnapAlgoWalletSendPasteButton";
-        pasteButton.style = "width: 20px; border: white; cursor: pointer; background-color: white; border-radius: 100%; padding:3px;";
-        sendDiv.appendChild(pasteButton);
-        let sendAmountLabel = document.createElement('p');
-        sendAmountLabel.innerHTML = "amount";
-        container.appendChild(sendAmountLabel);
+        
+
+
         let amount = document.createElement('input');
         amount.type = "number";
-        amount.style = "width: 200px; border-radius: 5px; font-family: monospace; font-size: 20px;";
+        amount.style = "width: 100%; text-align: center; border-radius: 5px; font-family: monospace; font-size: 20px;";
         amount.id = "SnapAlgoWalletSendAmount";
-        container.appendChild(amount);
+
+        amountDiv.appendChild(this.coinDropDown);
+        amountDiv.appendChild(amount);
+        
+        
+        container.appendChild(amountDiv);
         container.appendChild(document.createElement('br'));
         container.appendChild(document.createElement('br'));
         const sendButtonDiv = document.createElement('div');
@@ -97,7 +109,7 @@ export default class SendScreen{
         let sendButton = document.createElement('button');
         sendButton.innerHTML = "send";
         sendButton.style = "font-size: 15px;"
-        sendButton.className = "snapAlgodefaultButton alt";
+        sendButton.className = "snapAlgoDefaultButton alt";
 
         
         const sendFunction = () => {
