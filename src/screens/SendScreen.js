@@ -70,7 +70,7 @@ export default class SendScreen{
         let options = []
         let options1 = document.createElement('option');
         options1.value = "algo";
-        options1.innerHTML = "Algo";
+        options1.innerHTML = "ALGO";
         options1.dataset.decimals = "6";
         options1.dataset.isAlgo = "true";
         this.coinDropDown.appendChild(options1);
@@ -93,7 +93,7 @@ export default class SendScreen{
 
         let amount = document.createElement('input');
         amount.type = "number";
-        amount.style = "width: 100%; text-align: center; border-radius: 5px; font-family: monospace; font-size: 20px;";
+        amount.style = "width: 85%; text-align: center; border-radius: 5px; font-family: monospace; font-size: 20px;";
         amount.id = "SnapAlgoWalletSendAmount";
 
         amountDiv.appendChild(this.coinDropDown);

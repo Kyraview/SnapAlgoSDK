@@ -13,7 +13,7 @@ export default class LedgerScreen{
         let holder = document.createElement("div");
         holder.style = "justify-content: center; display: flex; flex-direction: column; align-items: center;";
         let title = document.createElement('p');
-        title.innerHTML = "Transaction history";
+        title.innerHTML = "Transaction History";
         title.style = "font-size: 20px; margin-top: 20px; align-self: left;";
         title.className = "mainFont";
         holder.appendChild(title);
