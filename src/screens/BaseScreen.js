@@ -33,7 +33,7 @@ export default class BaseScreen{
         background-color: 
         `;
         networkDiv.className = "mainFont";
-        networkDiv.innerHTML = `${this.wallet.testnet?"testnet":"mainnet"}`
+        networkDiv.innerHTML = `${this.wallet.testnet?"Testnet":"Mainnet"}`
         walletContainer.appendChild(networkDiv);
 
         let AccountNameDiv = document.createElement("div");
