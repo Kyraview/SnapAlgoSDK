@@ -80,6 +80,7 @@ export default class WalletUI{
             params: ['npm:algorand',
                 {
                     method: 'getAssets',
+                    testnet: this.wallet.testnet
                 }
             ]
         })

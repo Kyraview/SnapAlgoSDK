@@ -19,42 +19,6 @@ export default class AssetScreen{
         this.loading = false;
         this.subScreen = "none";
         this.currentSearch = [];
-        this.assetList = [
-            {
-                312769 : ["USDt", "tether", "tether usdt"]
-            },
-            {
-                27165954 : ["PLANET","planets"]
-            },
-            {
-                31566704 : ["usdc", "usdca", "usdc(a)"]
-            },
-            {
-                283820866: ["XET", "Xfinite entertainment token"]
-            },
-            {
-                287867876: ["OPUL","Opulous"]
-            },
-            {
-                163650:["ARCC","Asia Reserve Currency Coin"]
-            },
-            {
-                6547014: ["MCAU","Meld Gold"]
-            },
-            {
-                
-                137594422:["HEADLINE","HDL"],
-            },
-            {
-                142838028:["FAME","ALGO FAM TOKEN"]
-            },
-            {
-                226701642: ["Yieldly","Yieldly Token"]
-            },
-            {
-                230946361: ["AlgoGems","GEMS"]
-            }
-          ];
     }
     #createImgButton(img){
         let button = document.createElement('button');
@@ -69,41 +33,13 @@ export default class AssetScreen{
         button.appendChild(buttonImg);
         return button;
     }
-    searchFor(search){
-        function trimString(s) {
-            let l = 0;
-            let r = s.length-1;
-            while(l < s.length && s[l] == ' ') l++;
-            while(r > l && s[r] == ' ') r-=1;
-            return s.substring(l, r+1);
-          }
-          
-          function compareObjects(o1, o2) {
-            var k = '';
-            for(k in o1) if(o1[k] != o2[k]) return false;
-            for(k in o2) if(o1[k] != o2[k]) return false;
-            return true;
-          }
-          
-          function itemExists(haystack, needle) {
-            for(let i=0; i<haystack.length; i++) if(compareObjects(haystack[i], needle)) return true;
-            return false;
-          }
-          
-          function searchForAsset(search, assetList) {
-            let results = [];
-            search = trimString(search).toLowerCase(); // trim it
-            for(let i=0; i<assetList.length; i++) {
-              for(let name of Object.values(assetList[i])[0]) {
-                if(name.toLowerCase().indexOf(search)!=-1) {
-                  if(!itemExists(results, assetList[i])) results.push(assetList[i]);
-                }
-              }
-            }
-            return results;
-          }
-          
-          return searchForAsset(search, this.assetList);
+    async searchFor(search){
+        const url = "https://free-api.vestige.fi/assets/search?query=" + search;
+        let results = await fetch(url)
+        this.currentSearch = await results.json();
+        console.log(this.currentSearch);
+        return this.currentSearch;
+
     }
     renderSearchTerms(searchTerms){
         searchTerms.innerHTML = "";
@@ -111,27 +47,32 @@ export default class AssetScreen{
         for(let searchTerm of this.currentSearch){
             let optIn_optOut = "optIn";
             for(let asset of this.walletUI.assets){
-                if(asset['asset-id'] === Number(Object.keys(searchTerm)[0])){
+                if(asset['asset-id'] === Number(searchTerm['id'])){
                     optIn_optOut = "optOut";
                 }
             }
             let searchResult = document.createElement("div");
             searchResult.style = "display: flex;  justify-content: space-between;";
             let termTitle = document.createElement("p");
-            termTitle.innerHTML = Object.values(searchTerm)[0][0].toUpperCase();
+            termTitle.innerHTML = searchTerm.ticker.toUpperCase();
             termTitle.style = "font-size: 15px;";
-            searchResult.coinId = Object.keys(searchTerm)[0][0];
+            searchResult.coinId = searchTerm.id;
             searchResult.appendChild(termTitle);
             let optInButton = document.createElement("button");
             if(optIn_optOut === "optIn"){
                 optInButton.innerHTML = "Opt In";
+                console.log("testnet is: ");
+                console.log(this.walletUI.wallet.testnet)
                 optInButton.addEventListener("click", async (e)=>{
-                    console.log(Object.keys(searchTerm)[0])
+                    console.log("opt in");
+                    console.log("testnet is: ");
+                    console.log(this.walletUI.wallet.testnet);
                     ethereum.request({
                         method: 'wallet_invokeSnap',
                         params: ['npm:algorand', {
                           method: 'AssetOptIn',
-                          assetIndex: Number(Object.keys(searchTerm)[0])
+                          assetIndex: Number(searchTerm.id),
+                          testnet : this.walletUI.wallet.testnet
                         }]        
                       }).then(
                         async ()=>{
@@ -146,11 +87,13 @@ export default class AssetScreen{
             else{
                 optInButton.innerHTML = "Opt Out";
                 optInButton.addEventListener("click", async (e)=>{  
+                    console.log(this.walletUI.wallet.testnet);
                     ethereum.request({
                         method: 'wallet_invokeSnap',
                         params: ['npm:algorand', {
                             method: 'AssetOptOut',
-                            assetIndex: Number(Object.keys(searchTerm)[0])
+                            assetIndex: Number(searchTerm.id),
+                            testnet: this.walletUI.wallet.testnet
                         }]
                     }).then(
                         async ()=>{
@@ -179,12 +122,12 @@ export default class AssetScreen{
         search.style = "margin-left: 30px"
         search.placeholder = "asset Id or name";
         searchHolder.appendChild(search);
-        search.addEventListener("keyup", (e)=>{
+        search.addEventListener("keyup", async (e)=>{
             let possibleIdNumber = Number(e.target.value);
             if(Number.isInteger(possibleIdNumber) && possibleIdNumber > 0){
                 //done
             }
-            this.currentSearch = this.searchFor(e.target.value);
+            this.currentSearch = await this.searchFor(e.target.value);
             this.renderSearchTerms(searchTerms);
         });
         if(this.importOpen){
