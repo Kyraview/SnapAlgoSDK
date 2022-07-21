@@ -42,7 +42,7 @@ export default class SendScreen{
 
         let sendAddress = document.createElement('input');
         sendAddress.maxLength="58";
-        sendAddress.style = "width: 100%; border-radius: 5px; font-family: monospace;";
+        sendAddress.style = "width: 580px; border-radius: 5px; font-family: monospace;";
         sendAddress.id = "SnapAlgoWalletSendAddress";
         sendDiv.appendChild(sendAddress);
         let pasteButton = document.createElement('img');
@@ -93,7 +93,9 @@ export default class SendScreen{
 
         let amount = document.createElement('input');
         amount.type = "number";
-        amount.style = "width: 85%; text-align: center; border-radius: 5px; font-family: monospace; font-size: 20px;";
+        amount.min = "0";
+        amount.step = "0.1";
+        amount.style = "width: 100%; text-align: center; border-radius: 5px; font-family: monospace; font-size: 20px;";
         amount.id = "SnapAlgoWalletSendAmount";
 
         amountDiv.appendChild(this.coinDropDown);
