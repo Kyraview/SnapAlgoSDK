@@ -3,6 +3,9 @@
   "version": "1.0.5",
   "description": "",
   "main": "dist/index_bundle.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "npx webpack",
     "start": "npx serve"
