@@ -1,8 +1,8 @@
 {
   "name": "snapalgo-sdk",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
-  "main": "dist/index_bundle.js",
+  "main": "./dist/index_bundle.js",
   "files": [
     "dist"
   ],
