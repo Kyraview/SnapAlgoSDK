@@ -18,11 +18,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|ttf)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-          },
-        ],
+        type: 'asset/resource'
       },
       {
         test: /\.s[ac]ss$/i,
