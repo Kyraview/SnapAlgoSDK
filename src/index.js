@@ -202,16 +202,28 @@ export class Wallet{
 
 
     }
+
+    #formatError(error){
+      let err = error.message.split("\n");
+      let code = err[0];
+      let msg = err[1];
+      throw({message: msg, code: code});
+    }
   
     
     async signAndPostTxns(walletTransactions){
-      return await ethereum.request({
-        method: 'wallet_invokeSnap',
-        params: ["npm:algorand", {
-          method: 'signAndPostTxns',
-          txns: walletTransactions
-        }]
-      })
+      try{
+        return await ethereum.request({
+          method: 'wallet_invokeSnap',
+          params: ["npm:algorand", {
+            method: 'signAndPostTxns',
+            txns: walletTransactions
+          }]
+        })
+      }
+      catch(error){
+        this.#formatError(error);
+      }
     }
     getAlgodv2Client(){
       const networkTable = {
@@ -236,23 +248,33 @@ export class Wallet{
       if(!this.enabled){
         throw("not enabled");
       }
-      return await ethereum.request({
-        method: 'wallet_invokeSnap',
-        params: ["npm:algorand", {
-          method: 'signTxns',
-          txns: walletTransactions
-        }]
-      })
+      try{
+        return await ethereum.request({
+          method: 'wallet_invokeSnap',
+          params: ["npm:algorand", {
+            method: 'signTxns',
+            txns: walletTransactions
+          }]
+        })
+      }
+      catch(error){
+        this.#formatError(error);
+      }
       
     }
     async postTxns(stxns){
-      return await ethereum.request({
-        method: 'wallet_invokeSnap',
-        params: ["npm:algorand", {
-          method: 'postTxns',
-          stxns: stxns
-        }]
-      })
+      try{
+        return await ethereum.request({
+          method: 'wallet_invokeSnap',
+          params: ["npm:algorand", {
+            method: 'postTxns',
+            stxns: stxns
+          }]
+        })
+      }
+      catch(error){
+        this.#formatError(error);
+      }
     }
 
     openBubble(){
@@ -304,33 +326,21 @@ export class Wallet{
     async EZsignSmartSig(logicSigAccount){
       const msgpack = require('./encoding.js');
       let EncodedLogicSigAccount = this.base64Encode(logicSigAccount.toByte());
-      const EncodedSignedAccount = await ethereum.request({
-        method: 'wallet_invokeSnap',
-        params: ["npm:algorand", {
-          method: 'signLogicSig',
-          logicSigAccount: EncodedLogicSigAccount,
-        }]
-      })
+      try{
+        const EncodedSignedAccount = await ethereum.request({
+          method: 'wallet_invokeSnap',
+          params: ["npm:algorand", {
+            method: 'signLogicSig',
+            logicSigAccount: EncodedLogicSigAccount,
+          }]
+        })
+      }
+      catch(error){
+        this.#formatError(error);
+      }
       let encodedMsgPack = this.base64Decode(EncodedSignedAccount);
       let decodedMsgPack = msgpack.decode(encodedMsgPack);
       console.log(decodedMsgPack);
-      
-      
-      /*
-      lsig
-        const lsig = new LogicSig(encoded.l, encoded.arg);
-        lsig.sig = encoded.sig;
-        lsig.msig = encoded.msig;
-        return lsig;
-      
-      logicSigAccount
-        static from_obj_for_encoding(encoded: EncodedLogicSigAccount) {
-          const lsigAccount = new LogicSigAccount(encoded.lsig.l, encoded.lsig.arg);
-          lsigAccount.lsig = LogicSig.from_obj_for_encoding(encoded.lsig);
-          lsigAccount.sigkey = encoded.sigkey;
-          return lsigAccount;
-        }
-      */
       logicSigAccount.sigkey = decodedMsgPack.sigkey;
       logicSigAccount.lsig.sig = decodedMsgPack.lsig.sig;
       console.log(logicSigAccount)

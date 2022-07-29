@@ -21,6 +21,7 @@ export default class WalletBubble{
         this.accounts = [];
         this.network = "";
         this.html = "";
+        this.element = null;
         this.lastElement = null;
         this.receiveScreenOpen = false;
         this.walletUi = new WalletUI(this);
@@ -107,6 +108,17 @@ export default class WalletBubble{
       //this.walletFooter.appendChild(this.walletfooterIcon);
       //this.walletFooter.appendChild(this.settingsfooterIcon);
       //---------------------------------------------------------------->
+
+      //Default Screen
+      const defaultScreen = document.createElement('div');
+      defaultScreen.style = "width:100%; height:100%; display:flex; justify-content:center;";
+      const enableButton = document.createElement('button');
+      enableButton.style = 'margin: auto;';
+      enableButton.className = "snapAlgoDefaultButton alt";
+      enableButton.innerHTML = "Enable Wallet";
+      enableButton.addEventListener('click', ()=>window.algorand.enable())
+      defaultScreen.appendChild(enableButton);
+      this.setElement(defaultScreen);
       
     }
 

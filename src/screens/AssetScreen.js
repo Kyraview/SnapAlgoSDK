@@ -149,6 +149,8 @@ export default class AssetScreen{
         return holder;
     }
 
+    
+
     async getAssetList(){
         let holder = document.createElement("div");
         holder.style = `
@@ -171,13 +173,26 @@ export default class AssetScreen{
             userAssets = await this.walletUI.preLoadAssets();
         }
         
+
+        const algo = {amount:this.walletUI.userBalance, "asset-id": 0, asset: [{
+            "index": 0,
+            "asset-id": 0,
+            deleted: false,
+            "created-at-round": 0,
+            "params": {
+                decimals: 6,
+                name: "Algorand",
+                "unit-name": "Algo",                    
+            }
+        }]};
+        userAssets.unshift(algo);
         for(let Asset of userAssets){
+
             
             console.log("here")
             console.log(Asset);
             let assetDiv = document.createElement("div");
-            assetDiv.style = `
-            
+            assetDiv.style = `    
             margin-left: 2.5px; 
             margin-right: 2.5px; 
             display: flex; 
@@ -190,7 +205,14 @@ export default class AssetScreen{
             icon.addEventListener('error', (e)=>{
                 e.target.src = coinImg;
             })
-            icon.src = "https://asa-list.tinyman.org/assets/"+Asset['asset-id']+"/icon.png";
+            if(Asset['asset-id'] === 0){
+                console.log("is algo");
+                icon.src = "https://res.cloudinary.com/startup-grind/image/upload/c_fill,f_auto,g_center,q_auto:good/v1/gcs/platform-data-algorand/contentbuilder/C_Algorand-Event-Thumbnail-400x400_EjNd7dj.png";
+                console.log(icon.src);
+            }
+            else{
+                icon.src = "https://asa-list.tinyman.org/assets/"+Asset['asset-id']+"/icon.png";
+            }
             icon.style = "width: 30px; height: 30px; min-width: 30px; min-height: 30px;";
             assetDiv.appendChild(icon);
             let info = document.createElement("div");
@@ -370,6 +392,17 @@ export default class AssetScreen{
                 console.log("address", addressInput.value);
                 console.log(asset);
                 const decimals = asset.asset[0].params.decimals;
+                if(asset.asset[0]['asset-id'] === 0){
+                    return window.ethereum.request({
+                        method: 'wallet_invokeSnap',
+                        params: ["npm:algorand",{
+                            method: 'transfer',
+                            to: addressInput.value,
+                            amount: Number(amountInput.value)*(10**6),
+                            testnet: this.wallet.testnet,
+                        }]
+                    });
+                }
                 return window.ethereum.request({
                     method:  'wallet_invokeSnap',
                     params: ['npm:algorand', {
@@ -378,6 +411,7 @@ export default class AssetScreen{
                         assetIndex: Number(asset['asset-id']),
                         to: addressInput.value,
                         amount: Number(amountInput.value)*(10**Number(decimals)),
+                        testnet: this.wallet.testnet,
                     }]
                 })
             });
