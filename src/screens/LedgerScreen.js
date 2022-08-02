@@ -1,5 +1,5 @@
-
-import viewImg from '../images/view.png';
+const IPFSURL = "https://snapalgo-imgs.netlify.app/imgs"
+const viewImg = IPFSURL+'/search.svg';
 export default class LedgerScreen{
     constructor(WalletUi, wallet){
         this.WalletUi = WalletUi;
@@ -81,6 +81,7 @@ export default class LedgerScreen{
             link.target = "_blank";
             const viewIcon = document.createElement('img');
             viewIcon.src = viewImg;
+            viewIcon.style="width: 20px; height: 20px;";
             link.appendChild(viewIcon);
             transactionDiv.appendChild(type);
             transactionDiv.appendChild(link);

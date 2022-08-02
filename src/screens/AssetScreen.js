@@ -1,10 +1,14 @@
-import searchImg from '../images/search.png';
-import coinsImg from '../images/coins.png';
-import coinImg from '../images/coin.png';
-import backImg from '../images/back.png';
-import sendAltImg from '../images/send2.png';
-import receiveImg from '../images/qr1.png';
-import QRCode from 'qrcode';
+const IPFSURL = 'https://snapalgo-imgs.netlify.app/imgs';
+
+
+const searchImg = IPFSURL+'/search.svg';
+const coinImg = 'https://img.icons8.com/ios-filled/344/cheap-2.png';
+const backImg = IPFSURL+'/back-button.svg';
+const sendAltImg = IPFSURL+'/send-outline.svg';
+const receiveImg = IPFSURL+'/receive-outline.svg';
+
+const QRCode = require('qrcode');
+
 
 export default class AssetScreen{
     constructor(walletUI, wallet){
@@ -25,11 +29,11 @@ export default class AssetScreen{
         button.style =  `
         color:white; width:30px; height:30px; 
         min-width: 30px; min-height:30px; 
-        border-radius: 100%;  border: white; cursor: pointer; margin: auto 0 auto 0;`;
+        border-radius: 100%;  border: black; cursor: pointer; margin: auto 0 auto 0;`;
         let buttonImg = document.createElement('img');
         buttonImg.src = img;
-        buttonImg.style = `width: 15px; height: 15px; min-width: 15px; min-height: 15px;`;
-        button.className = "snapAlgoWalletButton";
+        buttonImg.style = `width: 15px; height: 15px; min-width: 15px; min-height: 15px; background-color: #0000;`;
+        button.className = "snapAlgoDefaultButton alt";
         button.appendChild(buttonImg);
         return button;
     }
@@ -333,6 +337,14 @@ export default class AssetScreen{
         let actionHolder = document.createElement("div");
         actionHolder.style = "display: flex;";
         
+        let sendButton = document.createElement('img');
+        sendButton.src = sendAltImg;
+        sendButton.style="width: 35px; height: 35px;";
+        sendButton.className = "snapAlgoHoverEffect";
+        sendButton.addEventListener('click', this.toggleSend.bind(this));
+
+        actionHolder.appendChild(sendButton);
+
         let receiveButton = document.createElement('img');
         receiveButton.src = receiveImg;
         receiveButton.style = "width: 35px; height: 35px;";
@@ -341,13 +353,7 @@ export default class AssetScreen{
         actionHolder.appendChild(receiveButton);
         
 
-        let sendButton = document.createElement('img');
-        sendButton.src = sendAltImg;
-        sendButton.style="width: 35px; height: 35px;";
-        sendButton.className = "snapAlgoHoverEffect";
-        sendButton.addEventListener('click', this.toggleSend.bind(this));
-
-        actionHolder.appendChild(sendButton);
+        
 
         titleHolder.appendChild(actionHolder);
 

@@ -1,4 +1,5 @@
-import QRCode from 'qrcode'
+
+const QRCode = require('qrcode')
 export default class ReceiveScreen{
     constructor(walletUI, wallet){
         this.walletUI = walletUI;

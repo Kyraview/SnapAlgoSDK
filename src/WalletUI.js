@@ -1,6 +1,4 @@
 
-
-import QRCode from 'qrcode'
 import ReceiveScreen from './screens/ReceiveScreen';
 import SendScreen from './screens/SendScreen';
 import LedgerScreen from './screens/LedgerScreen';
@@ -61,8 +59,8 @@ export default class WalletUI{
         
     }
 
-    preLoadTransactions(){
-        return window.ethereum.request({ method: 'wallet_invokeSnap', 
+    async preLoadTransactions(){
+        return await window.ethereum.request({ method: 'wallet_invokeSnap', 
             params: ['npm:algorand',
                 {
                     method: 'getTransactions',

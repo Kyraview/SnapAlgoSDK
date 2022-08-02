@@ -1,10 +1,13 @@
 import $ from "jquery";
 require("jquery-ui/ui/widgets/draggable");
 import './chathead.scss';
-import walletImg from './images/wallet.png';
-import settingsImg from './images/settings.png';
-import snapAlgoImg from './images/snapAlgoLogo.png';
-import connectedGif from './images/connected.gif';
+
+const IPFSURL = 'https://snapalgo-imgs.netlify.app/imgs';
+
+const walletImg = IPFSURL+"/wallet.svg";
+const settingsImg = IPFSURL+"/settings-outline.svg";
+const snapAlgoImg = IPFSURL+"/logo.svg"; 
+const connectedGif = IPFSURL+"/connected.gif";
 
 import WalletUI from "./WalletUI";
 export default class WalletBubble{

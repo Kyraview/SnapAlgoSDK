@@ -1,4 +1,5 @@
-import pasteImg from '../images/paste.png';
+
+const pasteImg = "https://snapalgo-imgs.netlify.app/imgs/paste-outline.svg"
 export default class SendScreen{
     constructor(walletUi, wallet){
         this.walletUi = walletUi;

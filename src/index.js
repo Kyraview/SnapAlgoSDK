@@ -1,9 +1,10 @@
 const base64 = require('base64-arraybuffer')
 import './Errors.js';
 import WalletBubble from './WalletBubble';
-import connectedGif from './images/connected.gif';
 import HTTPClient from './HTTPClient.js';
-import importIcon from './images/receive.png';
+const IPFSURL = 'https://snapalgo-imgs.netlify.app/imgs' 
+const importIcon = IPFSURL + '/import-wallet.svg'
+const connectedGif = IPFSURL + '/connected.gif'
 export class Wallet{
     constructor(){
       this.enabled = false;
@@ -61,11 +62,18 @@ export class Wallet{
       let accountsProvided = false;
       let matchVerified = false;
       if(opts.hasOwnProperty('genisisID')){
+        if(!(opts.genisisId in IdTable)){
+          throw({code: 4300, "message": "network is not supported"});
+        }
         this.genisisId = opts.genisisId;
         genisisIdProvided = true;
+        
       }
       
       if(opts.hasOwnProperty('genisisHash')){
+        if(!Object.values(IdTable).includes(opts.genisisHash)){
+          throw({code: 4300, "message": "network is not supported"});
+        }
         this.genisisHash = opts.genisisHash;
         genisisHashProvided = true;
       }
@@ -74,134 +82,118 @@ export class Wallet{
         this.enabledAccounts = opts.accounts;
         accountsProvided = true;
       }
-
-      
-      
-      if(genisisHashProvided && genisisIdProvided){
-        if(IdTable.hasOwnProperty(this.genisisId)){
-          if(IdTable[this.genisisId] == this.genisisHash){
-            matchVerified = true;
-          }
-          if(IdTable[this.genisisId] !== this.genisisHash){
-            //revise error later
-            throw("error")
-          }
-        }
-        if(Object.values(IdTable).includes(this.genisisHash)){
-          //hash is valid for official network but genisis id does not match
-          if(!matchVerified){
-            throw("error")
-          }
+      if(genisisIdProvided && genisisHashProvided){
+        if(IdTable[this.genisisId] !== this.genisisHash){
+          throw({code: 4300, "message": "network Id and Network Hash do not match"});
         }
       }
       if(genisisIdProvided && !genisisHashProvided){
-        if(IdTable.hasOwnProperty(this.genisisId)){
-          this.genisisHash = IdTable[this.genisisId]
-        }
-        else{
-          console.log("unknown network")
-        }
+        this.genisisHash = IdTable[this.genisisId];
+        genisisHashProvided = true;
       }
-      if(genisisHashProvided && !genisisHashProvided){
-        let keys = Object.keys(IdTable);
-        let keyFound = false;
-        for(let i = 0; i<keys.length; i++){
-          if(IdTable[keys[i]] === this.genisisHash){
-            this.genisisId = keys[i];
-            keyFound = true;
-            break;
-          }
-        }
-        if(!keyFound){
-          console.log("unknown network")
-        }
+      if(genisisHashProvided && !genisisIdProvided){
+        this.genisisId = Object.keys(IdTable).find(key => IdTable[key] === this.genisisHash);
+        genisisIdProvided = true;
       }
-      
-      if(!genisisHashProvided && !genisisIdProvided && !accountsProvided){
-        const Accounts = this.accounts
-        const Addrs = Object.keys(Accounts)
-        console.log(this)
-        console.log(this.bubble);
-        const connectModal = await this.bubble.modal({"html":
-          `
-          <div style="display: flex; justify-content: right;">
-            <img style="height:40px; width: 40px; margin:5px; cursor: pointer;" src="${importIcon}" onclick="window.open('https://snapalgo.com/importaccount', '_blank')"/>
-          </div>
-          <center style="transform: translateY(-10%); margin:0px;">
-          <p style="text-align: center;">Select a Network</p>
-          
-          <select  id="snapAlgoNetworkSelect">
-            <option value="mainnet-v1.0">Mainnet</option>
-            <option value="testnet-v1.0">Testnet</option>
-            <option value="betanet-v1.0">Betanet</option>
-          </select>
-          
-          <p style="text-align:center;">Select an Account</p>
-            <select  id="snapAlgoAccountSelect">
-              ${Addrs.map((addr)=>`<option value="${addr}">${Accounts[addr].name}</option>`).join("")}
-            </select>
-            <br/>
-            <br/>
+      if(!genisisIdProvided || !genisisHashProvided || !accountsProvided){
+        let masterDiv = document.createElement('div');
+        let importWalletButton = document.createElement('img');
+        let importDiv = document.createElement('div');
+        importDiv.style = "display:flex; justify-content:right;";
+        masterDiv.appendChild(importDiv);
+        importWalletButton.src = importIcon;
+        importWalletButton.style.width = "50px";
+        importWalletButton.style.height = "50px";
+        importWalletButton.style.cursor = "pointer";
+        importWalletButton.style.margin = "5px";
+        importWalletButton.addEventListener('click', ()=>{window.open("https://snapalgo.com/importaccount", "_blank")})
+        importDiv.appendChild(importWalletButton);
+        let megaDiv = document.createElement('div');
+        megaDiv.style = "display:flex; justify-content:center; text-align: center; transform: translateY(-10%);";
+        let mainDiv = document.createElement('div');
+        
+        mainDiv.style = "display:flex; justify-content:center; flex-direction: column; text-align: center;";
+        megaDiv.appendChild(mainDiv);
+        masterDiv.appendChild(megaDiv);
+        
+        if(!genisisIdProvided || !genisisHashProvided){
+          let networkTitle = document.createElement('p');
+          networkTitle.innerHTML = "Select a Network";
+          mainDiv.appendChild(networkTitle);
+          this.networkSelect = document.createElement('select');
+          this.networkSelect.style = "width: 200px; height: 25px; text-align: center;";
+          this.networkSelect.innerHTML = Object.keys(IdTable).map(key => `<option value="${key}">${
+            key.split('-')[0][0].toUpperCase() //get just the network name and capitalize the first letter
+            +
+            key.split('-')[0].slice(1) //combine with the rest of the network name
+          }</option>`).join('');
+          mainDiv.appendChild(this.networkSelect);
+        }
+        if(!accountsProvided){
+          let accountsTitle = document.createElement('p');
+          accountsTitle.innerHTML = "Select an Account";
+          mainDiv.appendChild(accountsTitle);
+          this.accountSelect = document.createElement('select');
+          this.accountSelect.style = "width: 200px; height: 25px; text-align: center;";
+          const Addrs = Object.keys(this.accounts)
+          this.accountSelect.innerHTML = Addrs.map((addr)=>`<option value="${addr}">${this.accounts[addr].name}</option>`).join("");
+          mainDiv.appendChild(this.accountSelect);
+        }
+        let center = document.createElement('center');
+        mainDiv.appendChild(document.createElement('br'));
+        
+        let connectButton = document.createElement('button');
+        connectButton.innerHTML = "Connect";
+        const selectFunc = () => {
+          if(this.networkSelect){
+            this.genisisId = this.networkSelect.value;
+            this.genisisHash = IdTable[this.networkSelect.value];
             
-          </center>`,
-          "title": "Select Network and Account",
-          "height":300,
-          "width":400,
-          callback:()=>{
-            this.network = document.getElementById("snapAlgoNetworkSelect").value;
-            this.account = document.getElementById("snapAlgoAccountSelect").value;
-            return {"network":this.network, "account":this.account};
-          },
-          confirmText: "Connect"
-      });
-          console.log(connectModal);
-          console.log(await connectModal.canceled);
-          if(await connectModal.canceled){
-            console.log("here")
-            throw("user Reject Connection");
           }
-          console.log("connection modal is");
-          console.log(connectModal);
-          console.log(await connectModal);
-          console.log(await connectModal.data.network);
-          this.genisisId = await connectModal.data.network;
-          this.genisisHash = IdTable[ await this.genisisId]
-          this.enabledAccounts = [await connectModal.data.account];
-          this.bubble.importAccounts([this.accounts[this.enabledAccounts[0]]]);
-          this.bubble.importNetwork(this.genisisId);
-          this.enabled = await connectModal.confirmed
-          this.bubble.open({
-            html:`
-            <center>
-              <p>Connected</p>
-              <img width="150px" height="150px" src="${connectedGif}"/>
-            </center>`,
-            height: 250
-          })
-          await ethereum.request({
-            method: 'wallet_invokeSnap',
-            params: ['npm:algorand', {
-              method: 'setAccount',
-              address: 	this.enabledAccounts[0]
-            }]        
-          })
-          this.bubble.walletUi.screen = 'base';
-          await this.bubble.preLoad();
-          await this.bubble.close();
-          setTimeout(
-            ()=>{
-              //close the screen then set screen to the wallet screen
-              //requires binding to the bubble
-              //this.bubble.showWalletScreen.bind(this.bubble)
-              
-            }, 
-            400 //leave connected message on for 700ms, and uses this time to load price data for the wallet screen
-          )
+          if(this.accountSelect){
+            this.enabledAccounts = [this.accountSelect.value];
+            this.account = this.accountSelect.value;
+          }
+          this.#connect();
+        }
+        connectButton.addEventListener('click', selectFunc.bind(this));
+        connectButton.style = "height: 35px; font-size: 15px;";
+        connectButton.className = "snapAlgoDefaultButton";
+        center.appendChild(connectButton);
+        mainDiv.appendChild(center);
+        this.bubble.setElement(masterDiv);
+        this.bubble.open();
       }
       
-
-
+          
+          
     }
+      
+    async #connect(){
+      this.bubble.importAccounts([this.accounts[this.enabledAccounts[0]]]);
+      this.bubble.importNetwork(this.genisisId);
+      this.enabled = true;
+      this.bubble.open({
+        html:`
+          <center>
+            <p>Connected</p>
+            <img width="150px" height="150px" src="${connectedGif}"/>
+          </center>`,
+          height: 250
+      })
+      await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: ['npm:algorand', {
+          method: 'setAccount',
+          address: 	this.enabledAccounts[0]
+        }]        
+      })
+      this.bubble.walletUi.screen = 'base';
+      await this.bubble.preLoad();
+      await setTimeout(()=>this.bubble.close(), 500);
+    }
+
+    
 
     #formatError(error){
       let err = error.message.split("\n");

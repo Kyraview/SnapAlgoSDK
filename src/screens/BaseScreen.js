@@ -1,8 +1,9 @@
-import sendImg from '../images/send.png';
-import qrImg from '../images/qr.png';
-import logImg from '../images/log.png';
-import AssetImg from '../images/art.png';
-import AccountImg from '../images/accounts.png';
+const IPFSURL = 'https://snapalgo-imgs.netlify.app/imgs' 
+const sendImg = IPFSURL+ "/send-outline.svg";
+const qrImg = IPFSURL+ "/receive-outline.svg";
+const logImg = IPFSURL+ "/ledger-outline.svg";
+const AssetImg = IPFSURL+ "/wallet-outline.svg";
+const AccountImg = IPFSURL+ "/account-outline.svg";
 
 export default class BaseScreen{
     constructor(walletUI, wallet){

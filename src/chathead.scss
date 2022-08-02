@@ -224,6 +224,10 @@
     animation-fill-mode: both;
   }
 
+  .snapAlgoHoverEffect{
+    cursor: pointer;
+  }
+
   .snapAlgoHoverEffect:hover{
     animation: buttonHover 0.3s;
     animation-direction: both;
