@@ -5,7 +5,7 @@ import HTTPClient from './HTTPClient.js';
 const IPFSURL = 'https://snapalgo-imgs.netlify.app/imgs' 
 const importIcon = IPFSURL + '/import-wallet.svg'
 const connectedGif = IPFSURL + '/connected.gif'
-export class Wallet{
+export default class Wallet{
     constructor(){
       this.enabled = false;
       this.genisisHash = null;

@@ -1,7 +1,7 @@
 {
   "name": "snapalgo-sdk",
-  "version": "1.0.12",
-  "description": "",
+  "version": "1.0.13",
+  "description": "SDK for the snapalgo algorand wallet",
   "main": "./dist/index_bundle.js",
   "files": [
     "dist"
