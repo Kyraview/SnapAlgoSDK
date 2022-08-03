@@ -163,8 +163,8 @@ export class Wallet{
         mainDiv.appendChild(center);
         this.bubble.setElement(masterDiv);
         this.width = 400;
-        this.setWidth(400);
-        this.setHeight(300);
+        this.bubble.setWidth(400);
+        this.bubble.setHeight(300);
         this.bubble.open();
       }
       
