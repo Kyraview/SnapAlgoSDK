@@ -189,7 +189,12 @@ export default class AssetScreen{
                 "unit-name": "Algo",                    
             }
         }]};
-        if(userAssets[0]['asset-id'] !== 0){
+        try{
+            if(userAssets[0]['asset-id'] !== 0){
+                userAssets.unshift(algo);
+            }
+        }
+        catch(e){
             userAssets.unshift(algo);
         }
         for(let Asset of userAssets){
