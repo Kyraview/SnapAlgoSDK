@@ -3,6 +3,9 @@
  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
  @import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300&display=swap');
  #snapAlgoWalletContainer{
+    /*
+    Todo: edit wallet to work with this property
+    all: initial;*/
     position: fixed;
     top: 20%;
     left: 50%;
@@ -177,11 +180,11 @@
     &::after {
       position: absolute;
       content: "";
-      top: calc(-1 * var(--border-width));
-      left: calc(-1 * var(--border-width));
+      top: calc(-1 * 3px);
+      left: calc(-1 * 3px);
       z-index: -1;
-      width: calc(100% + var(--border-width) * 2);
-      height: calc(100% + var(--border-width) * 2);
+      width: calc(100% + 3px * 2);
+      height: calc(100% + 3px * 2);
       /*
       background: linear-gradient(
         60deg,
@@ -208,7 +211,7 @@
       );
       background-size: 400% 400%;
       background-position: 0 50%;
-      border-radius: calc(2 * var(--border-width));
+      border-radius: calc(2 * 3px);
       animation: moveGradient 6s alternate infinite;
     }
   }

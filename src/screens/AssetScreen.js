@@ -189,7 +189,9 @@ export default class AssetScreen{
                 "unit-name": "Algo",                    
             }
         }]};
-        userAssets.unshift(algo);
+        if(userAssets[0]['asset-id'] !== 0){
+            userAssets.unshift(algo);
+        }
         for(let Asset of userAssets){
 
             
@@ -227,8 +229,12 @@ export default class AssetScreen{
             //asset name
             let assetName = document.createElement("p");
             assetName.style = "color: white; font-size: 10px; margin-left: 5px; margin-top: 7px; margin-bottom: 0px;";
+            try{
             assetName.innerHTML = Asset.asset[0].params['unit-name'].toUpperCase();
-
+            }
+            catch(e){
+                assetName.innerHTML = "unnamed";
+            }
             info.appendChild(assetName);
             info.appendChild(assetAmount);
             assetDiv.appendChild(info);
@@ -329,7 +335,12 @@ export default class AssetScreen{
         title.innerHTML = asset.asset[0].params['name']
         titleHolder.appendChild(title);
         let amount = document.createElement('p');
+        try{
         amount.innerHTML = `${Number(asset.amount)/(10**asset.asset[0].params.decimals)} ${asset.asset[0].params['unit-name'].toUpperCase()}`;
+        }
+        catch(e){
+            amount.innerHTML = asset.amount;
+        }
         amount.style = "margin: 0;";
         titleHolder.appendChild(amount);
         titleDiv.appendChild(titleHolder);
