@@ -111,6 +111,7 @@ export class Wallet{
         
         if(!genisisIdProvided || !genisisHashProvided){
           let networkTitle = document.createElement('p');
+          this.injector.inject(networkTitle, "margin-top: 20px;");
           networkTitle.innerHTML = "Select a Network";
           mainDiv.appendChild(networkTitle);
           this.networkSelect = document.createElement('select');
@@ -124,6 +125,7 @@ export class Wallet{
         }
         if(!accountsProvided){
           let accountsTitle = document.createElement('p');
+          this.injector.inject(accountsTitle, "margin-top: 20px;");
           accountsTitle.innerHTML = "Select an Account";
           mainDiv.appendChild(accountsTitle);
           this.accountSelect = document.createElement('select');

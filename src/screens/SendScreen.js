@@ -53,6 +53,7 @@ export default class SendScreen{
         let amountDiv = document.createElement('div');
         this.wallet.injector.inject(amountDiv, "display:flex; justify-content:start; margin-left: 25px; margin-right: 25px;");
         this.coinDropDown = document.createElement('select');
+        this.wallet.injector.inject(this.coinDropDown, "text-align: center;");
         this.coinDropDown.value = "algo";
         function setAsset(e){
             const index = e.target.selectedIndex;

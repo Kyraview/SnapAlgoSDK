@@ -63,7 +63,6 @@ export default class WalletBubble{
       const bubbleElement = document.createElement('div');
       bubbleElement.className = "bubble";
       bubbleElement.id = "snapAlgoChatHeadBubble";
-      
       const logo = document.createElement('img');
       logo.src = snapAlgoImg;
       //logo.style = "";
