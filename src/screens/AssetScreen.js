@@ -26,14 +26,17 @@ export default class AssetScreen{
     }
     #createImgButton(img){
         let button = document.createElement('button');
-        button.style =  `
+        button.className = "snapAlgoDefaultButton-alt";
+        const button_style =  `
         color:white; width:30px; height:30px; 
         min-width: 30px; min-height:30px; 
         border-radius: 100%;  border: black; cursor: pointer; margin: auto 0 auto 0;`;
+        this.wallet.injector.inject(button, button_style);
+
         let buttonImg = document.createElement('img');
         buttonImg.src = img;
-        buttonImg.style = `width: 15px; height: 15px; min-width: 15px; min-height: 15px; background-color: #0000;`;
-        button.className = "snapAlgoDefaultButton alt";
+        const buttonImg_style = `width: 15px; height: 15px; min-width: 15px; min-height: 15px; background-color: #0000;`;
+        this.wallet.injector.inject(buttonImg, buttonImg_style);
         button.appendChild(buttonImg);
         return button;
     }
@@ -56,13 +59,15 @@ export default class AssetScreen{
                 }
             }
             let searchResult = document.createElement("div");
-            searchResult.style = "display: flex;  justify-content: space-between;";
+            this.wallet.injector.inject(searchResult, "display: flex;  justify-content: space-between;")
             let termTitle = document.createElement("p");
             termTitle.innerHTML = searchTerm.ticker.toUpperCase();
-            termTitle.style = "font-size: 15px;";
+            this.wallet.injector.inject(termTitle, "font-size: 15px;")
             searchResult.coinId = searchTerm.id;
             searchResult.appendChild(termTitle);
             let optInButton = document.createElement("button");
+            
+
             if(optIn_optOut === "optIn"){
                 optInButton.innerHTML = "Opt In";
                 console.log("testnet is: ");
@@ -109,21 +114,22 @@ export default class AssetScreen{
                     );
                 });
             }
-            
-            optInButton.style = "height: 35px; width: 60px; border-radius: 5px; font-size: 10px; margin: auto 5px auto 0px;";
+            optInButton.className = "snapAlgoDefaultButton-alt";
+            this.wallet.injector.inject(optInButton, "height: 35px; width: 60px; border-radius: 5px; font-size: 10px; margin: auto 5px auto 0px;");
 
+            
             searchResult.appendChild(optInButton);
             searchTerms.appendChild(searchResult);
         }
     }
     async getSearchScreen(){
         let holder = document.createElement("div");
+        this.wallet.injector.inject(holder);
         let searchHolder = document.createElement("form");
-
-        searchHolder.style = "display:block;";
+        this.wallet.injector.inject(searchHolder, "display:block;")
         holder.appendChild(searchHolder);
         let search = document.createElement("input");
-        search.style = "margin-left: 30px"
+        this.wallet.injector.inject(search, "margin-left: 30px")
         search.placeholder = "asset Id or name";
         searchHolder.appendChild(search);
         search.addEventListener("keyup", async (e)=>{
@@ -141,13 +147,16 @@ export default class AssetScreen{
         }
 
         let optInDiv = document.createElement("div");
-        optInDiv.style = "display: flex; flex-direction: column; margin-top: 20px;";
+        this.wallet.injector.inject(optInDiv, "display: flex; flex-direction: column; margin-top: 20px;");
         holder.appendChild(optInDiv);
 
         
 
         let searchTerms = document.createElement("div");
-        searchTerms.style = "display: flex; flex-direction: column; overflow: auto; height: 150px; margin-left: 30px; margin-right: 30px;";
+        this.wallet.injector.inject(
+            searchTerms, 
+            "display: flex; flex-direction: column; overflow: auto; height: 150px; margin-left: 30px; margin-right: 30px;"
+        )
         searchTerms.className = "SnapAlgoLedgerContainer"
         optInDiv.appendChild(searchTerms);
         return holder;
@@ -157,19 +166,21 @@ export default class AssetScreen{
 
     async getAssetList(){
         let holder = document.createElement("div");
-        holder.style = `
+        holder.className = "SnapAlgoLedgerContainer";
+        this.wallet.injector.inject(holder, `
         display: flex; 
         flex-wrap: wrap; 
         justify-content: 
         space-between; 
         margin-left: 30px; 
-        margin-right: 30px; 
+        margin-right: 30px;
+        margin-top: 20px; 
         height: 110px; 
         overflow-y: scroll;
         overflow-x: hidden;
         padding: 5px;
-        `;
-        holder.className = "SnapAlgoLedgerContainer";
+        `)
+        
         let userAssets = this.walletUI.assets;
         console.log("userAssets is: ", userAssets);
         console.log(userAssets);
@@ -203,15 +214,16 @@ export default class AssetScreen{
             console.log("here")
             console.log(Asset);
             let assetDiv = document.createElement("div");
-            assetDiv.style = `    
+            assetDiv.className = "snapAlgoHoverEffect";
+            this.wallet.injector.inject(assetDiv,`    
             margin-left: 2.5px; 
             margin-right: 2.5px; 
             display: flex; 
             width: 100px; 
             height: 40px;
             cursor: pointer;
-            `;
-            assetDiv.className = "snapAlgoHoverEffect";
+            `);
+            
             let icon = document.createElement("img");
             icon.addEventListener('error', (e)=>{
                 e.target.src = coinImg;
@@ -224,16 +236,18 @@ export default class AssetScreen{
             else{
                 icon.src = "https://asa-list.tinyman.org/assets/"+Asset['asset-id']+"/icon.png";
             }
-            icon.style = "width: 30px; height: 30px; min-width: 30px; min-height: 30px;";
+            this.wallet.injector.inject(icon, "width: 30px; height: 30px; min-width: 30px; min-height: 30px;")
             assetDiv.appendChild(icon);
             let info = document.createElement("div");
+            this.wallet.injector.inject(info, "display: flex; flex-direction: column;");
             //asset amount
             let assetAmount = document.createElement("p");
-            assetAmount.style = "color: white; font-size: 10px; margin-left: 5px; margin-top: 0px; margin-bottom: 0px;";
+            this.wallet.injector.inject(assetAmount, "color: white; font-size: 10px; margin-left: 5px; margin-top: 0px; margin-bottom: 0px;")
             assetAmount.innerHTML = `${Number(Asset.amount)/(10**Asset.asset[0].params.decimals)}`;
             //asset name
             let assetName = document.createElement("p");
-            assetName.style = "color: white; font-size: 10px; margin-left: 5px; margin-top: 7px; margin-bottom: 0px;";
+            this.wallet.injector.inject(assetName, "color: white; font-size: 10px; margin-left: 5px; margin-top: 7px; margin-bottom: 0px;")
+            
             try{
             assetName.innerHTML = Asset.asset[0].params['unit-name'].toUpperCase();
             }
@@ -253,10 +267,7 @@ export default class AssetScreen{
         //create Ghosts divs to keep flexbox left aligned
         for(let i = 0; i<3-(userAssets.length%3); i++){
             let ghostDiv = document.createElement("div");
-            ghostDiv.style = `
-            width: 100px;
-            height: 40px;
-            `;
+            this.wallet.injector.inject(ghostDiv, `width: 100px; height: 40px;`);
             holder.appendChild(ghostDiv);
         }
         return holder;
@@ -299,34 +310,31 @@ export default class AssetScreen{
 
     async getAssetScreen(asset){
         let holder = document.createElement('div');
-        holder.style = `
-        margin-left: 30px;
-        margin-right: 30px;
-        `;
-        
+        this.wallet.injector.inject(holder, `margin-left: 30px; margin-right: 30px; display:block;`)
         let titleDiv = document.createElement('div');
-        titleDiv.style = "display: flex;";
+        this.wallet.injector.inject(titleDiv, "display: flex;")
         holder.appendChild(titleDiv)
 
         let backButton = document.createElement('img');
-        backButton.style = `
+        
+        backButton.src = backImg;
+        backButton.className = "snapAlgoDefaultButton-alt";
+        this.wallet.injector.inject(backButton, `
         position: absolute;
         width: 35px;
         height: 35px;
         border-radius: 100%;
         left: 32px;
-        top: 127px;
+        top: 135px;
         cursor: pointer;
-        `
-        backButton.src = backImg;
-        backButton.className = "snapAlgoDefaultButton alt";
+        `);
         backButton.addEventListener('click', ()=>{
             this.exitViewAssetScreen();
         });
         titleDiv.appendChild(backButton);
 
         let icon = document.createElement('img');
-        icon.style = "height: 100px; width: 100px";
+        this.wallet.injector.inject(icon, "height: 100px; width: 100px")
         icon.src = "https://asa-list.tinyman.org/assets/"+asset['asset-id']+"/icon.png";
         icon.addEventListener('error', (e)=>{
             e.target.src = coinImg;
@@ -334,9 +342,9 @@ export default class AssetScreen{
         titleDiv.appendChild(icon);
         
         let titleHolder = document.createElement("div");
-        titleHolder.style = "display: flex; flex-direction: column;  margin-top: 10px; margin-left: 20px;"
+        this.wallet.injector.inject(titleHolder, "display: flex; flex-direction: column;  margin-top: 10px; margin-left: 20px;");
         let title = document.createElement('p');
-        title.style = "font-size: 20px; margin:0px;"
+        this.wallet.injector.inject(title, "font-size: 20px; margin:0px;");
         title.innerHTML = asset.asset[0].params['name']
         titleHolder.appendChild(title);
         let amount = document.createElement('p');
@@ -346,25 +354,24 @@ export default class AssetScreen{
         catch(e){
             amount.innerHTML = asset.amount;
         }
-        amount.style = "margin: 0;";
+        this.wallet.injector.inject(amount, "margin: 0;");
         titleHolder.appendChild(amount);
         titleDiv.appendChild(titleHolder);
 
         let actionHolder = document.createElement("div");
-        actionHolder.style = "display: flex;";
-        
+        this.wallet.injector.inject(actionHolder, "display: flex;")
         let sendButton = document.createElement('img');
         sendButton.src = sendAltImg;
-        sendButton.style="width: 35px; height: 35px;";
         sendButton.className = "snapAlgoHoverEffect";
+        this.wallet.injector.inject(sendButton, "width: 35px; height: 35px;")
         sendButton.addEventListener('click', this.toggleSend.bind(this));
 
         actionHolder.appendChild(sendButton);
 
         let receiveButton = document.createElement('img');
         receiveButton.src = receiveImg;
-        receiveButton.style = "width: 35px; height: 35px;";
         receiveButton.className = "snapAlgoHoverEffect";
+        this.wallet.injector.inject(receiveButton, "width: 35px; height: 35px;")
         receiveButton.addEventListener('click', this.toggleReceive.bind(this));
         actionHolder.appendChild(receiveButton);
         
@@ -375,15 +382,15 @@ export default class AssetScreen{
 
         if(this.subScreen === "receive"){
             let receiveDiv = document.createElement("div");
-            receiveDiv.style = "display: flex; justify-content:center; margin-top: 20px;";
+            this.wallet.injector.inject(receiveDiv, "display: flex; justify-content:center; margin-top: 20px;");
             const address = this.wallet.accounts[0].addr
             let addressQR = (await QRCode.toDataURL(address));
             let qrCodeImage = document.createElement('img');
             qrCodeImage.src = addressQR;
-            qrCodeImage.style = "width: 100px; height: 100px; margin-left: 10px;";
+            this.wallet.injector.inject(qrCodeImage, "width: 100px; height: 100px; margin-left: 10px;");
             receiveDiv.appendChild(qrCodeImage);
             let addressText = document.createElement('p');
-            addressText.style = "color:white; font-size: 10px; width: 75px; margin-left:10px; word-break: break-all;";
+            this.wallet.injector.inject(addressText, "color:white; font-size: 10px; width: 75px; margin-left:10px; word-break: break-all;")
             addressText.innerHTML = address;
             receiveDiv.appendChild(addressText)
             holder.appendChild(receiveDiv);
@@ -393,20 +400,21 @@ export default class AssetScreen{
         if(this.subScreen === "send"){
             
             let sendDiv = document.createElement("div");
-            sendDiv.style = "display: flex; flex-direction: column; justify-content:center; margin-top: 20px;";
+            this.wallet.injector.inject(sendDiv, "display: flex; flex-direction: column; justify-content:center; margin-top: 20px;");
             let addressInput = document.createElement('input');
-            addressInput.style = "width: 90%; height: 30px; font-size: 9px; margin: auto;";
+            this.wallet.injector.inject(addressInput, "width: 90%; height: 30px; font-size: 9px; margin: auto;")
             addressInput.placeholder = "Address";
             sendDiv.appendChild(addressInput);
             let amountInput = document.createElement('input');
-            amountInput.style = "width: 90%; height: 30px; margin-left: 10px; margin: auto;";
+            this.wallet.injector.inject(amountInput, "width: 90%; height: 30px; margin-left: 10px; margin: auto;")
             amountInput.type = "number";
             amountInput.placeholder = "Amount";
             sendDiv.appendChild(amountInput);
 
             let sendButton = document.createElement('button');
-            sendButton.style = "width: 100px; height: 30px; margin: auto; margin-top: 10px;";
-            sendButton.className = "snapAlgoDefaultButton alt";
+            
+            sendButton.className = "snapAlgoDefaultButton-alt";
+            this.wallet.injector.inject(sendButton, "width: 100px; height: 30px; margin: auto; margin-top: 10px;");
             sendButton.innerHTML = "Send";
             sendDiv.appendChild(sendButton);
             sendButton.addEventListener('click', ()=>{
@@ -445,7 +453,7 @@ export default class AssetScreen{
 
     getTopDiv(){
         let topDiv = document.createElement("div");
-        topDiv.style = "display: flex; margin-left: 37px; margin-right: 30px;";
+        this.wallet.injector.inject(topDiv, "display: flex; margin-left: 37px; margin-right: 30px;");
         let searchButton = this.#createImgButton(searchImg);
         searchButton.addEventListener("click", (e)=>{
             this.searchOpen = !this.searchOpen;
@@ -461,7 +469,7 @@ export default class AssetScreen{
         topDiv.appendChild(searchButton);
         let title = document.createElement('p');
         title.innerHTML = "Assets";
-        title.style = "font-size: 20px; margin-left: 10px;";
+        this.wallet.injector.inject(title, "font-size: 20px; margin-left: 10px;");
         topDiv.appendChild(title);
 
         return topDiv
@@ -472,7 +480,9 @@ export default class AssetScreen{
             opts = {};
         }
         let holder = document.createElement("div");
-        holder.style = "margin-top: 10px;";
+        holder.id = "renderHolder";
+        this.wallet.injector.inject(holder, "margin-top: 20px; display: block;");
+        console.log(holder.style.marginTop);
         let viewHeight = 300;
 
         if(this.topDivOpen){
@@ -496,7 +506,7 @@ export default class AssetScreen{
             let assetView = await this.getAssetScreen(this.viewAsset);
             holder.appendChild(assetView);
             viewHeight = 250;
-            viewHeight = 275;
+            viewHeight = 300;
             if(this.subScreen === "receive"){
                 viewHeight = 400;
             }

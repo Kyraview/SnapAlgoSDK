@@ -10,14 +10,6 @@ export default class SendScreen{
         console.log(this.wallet)
     }
 
-    #createButton(text){
-        let button = document.createElement('button');
-        button.innerHTML = text;
-        button.style =  "background-color:white; color:black; width:80px; height:30px; border-radius: 20px;  border: white; cursor: pointer;"; 
-        button.className = "snapAlgoWalletButton";
-        return button;
-    }
-
     async updateAndRender(){
         await this.walletUi.preLoad();
         this.render();
@@ -28,14 +20,16 @@ export default class SendScreen{
             opts = {};
         }
         let holder = document.createElement("div");
+        this.wallet.injector.inject(holder, "display:block; margin-top: 20px;");
         let container = document.createElement('div');
-        container.style = "margin-left: 25px; margin-right: 25px;";
+        this.wallet.injector.inject(container, "margin-left: 25px; margin-right: 25px;")
         holder.appendChild(container);
 
         let sendDiv = document.createElement('div');
-        sendDiv.style = "display:flex; justify-content: center;";
+        this.wallet.injector.inject(sendDiv, "display:flex; margin-left: 25px; margin-right: 25px;");
         holder.appendChild(document.createElement('br'));
         let sendAddresLabel = document.createElement('p');
+        this.wallet.injector.inject(sendAddresLabel);
         sendAddresLabel.innerHTML = "recipient address";
         container.appendChild(sendAddresLabel);
         container.appendChild(sendDiv);
@@ -43,21 +37,23 @@ export default class SendScreen{
 
         let sendAddress = document.createElement('input');
         sendAddress.maxLength="58";
-        sendAddress.style = "width: 580px; border-radius: 5px; font-family: monospace;";
+        this.wallet.injector.inject(sendAddress, "width: 580px; height: 20px; border-radius: 5px; font-family: monospace; text-align:left; margin-top: 4px;")
         sendAddress.id = "SnapAlgoWalletSendAddress";
         sendDiv.appendChild(sendAddress);
         let pasteButton = document.createElement('img');
+        this.wallet.injector.inject(pasteButton, "display: block;");
         pasteButton.src = pasteImg;
         pasteButton.id = "SnapAlgoWalletSendPasteButton";
-        pasteButton.style = "width: 20px; border: white; cursor: pointer; background-color: white; border-radius: 100%; padding:3px;";
+        pasteButton.className = "snapAlgoHoverEffect";
+        this.wallet.injector.inject(pasteButton, "width: 30px; cursor: pointer; padding:3px;")
         sendDiv.appendChild(pasteButton);
         let sendAmountLabel = document.createElement('p');
+        this.wallet.injector.inject(sendAmountLabel, "margin-left: 25px; margin-top: 20px; display: block;");
         sendAmountLabel.innerHTML = "amount";
         container.appendChild(sendAmountLabel);
 
         let amountDiv = document.createElement('div');
-        amountDiv.style = "display:flex; justify-content: left;";
-
+        this.wallet.injector.inject(amountDiv, "display:flex; justify-content:start; margin-left: 25px; margin-right: 25px;");
         this.coinDropDown = document.createElement('select');
         this.coinDropDown.value = "algo";
         function setAsset(e){
@@ -70,6 +66,7 @@ export default class SendScreen{
         this.coinDropDown.addEventListener('change', setAsset.bind(this));
         let options = []
         let options1 = document.createElement('option');
+        this.wallet.injector.inject(options1);
         options1.value = "algo";
         options1.innerHTML = "ALGO";
         options1.dataset.decimals = "6";
@@ -81,6 +78,7 @@ export default class SendScreen{
             const assetId = asset['asset-id']
             console.log(data)
             let option = document.createElement("option");
+            this.wallet.injector.inject(option);
             option.value = assetId;
             option.innerHTML = data['unit-name'];
             option.dataset.decimals = data.decimals;
@@ -93,10 +91,11 @@ export default class SendScreen{
 
 
         let amount = document.createElement('input');
+
         amount.type = "number";
         amount.min = "0";
         amount.step = "0.1";
-        amount.style = "width: 100%; text-align: center; border-radius: 5px; font-family: monospace; font-size: 20px;";
+        this.wallet.injector.inject(amount, "text-align: left; width: 488px; height: 20px; margin-top: 2px; border-radius: 5px; font-family: monospace; font-size: 20px;");
         amount.id = "SnapAlgoWalletSendAmount";
 
         amountDiv.appendChild(this.coinDropDown);
@@ -107,12 +106,12 @@ export default class SendScreen{
         container.appendChild(document.createElement('br'));
         container.appendChild(document.createElement('br'));
         const sendButtonDiv = document.createElement('div');
-        sendButtonDiv.style = "display:flex; justify-content: center;";
+        this.wallet.injector.inject(sendButtonDiv, "display:flex; justify-content: center;");
         container.appendChild(sendButtonDiv);
         let sendButton = document.createElement('button');
         sendButton.innerHTML = "send";
-        sendButton.style = "font-size: 15px;"
-        sendButton.className = "snapAlgoDefaultButton alt";
+        sendButton.className = "snapAlgoDefaultButton-alt";
+        this.wallet.injector.inject(sendButton, "font-size: 15px; height: 35px;");
 
         
         const sendFunction = () => {

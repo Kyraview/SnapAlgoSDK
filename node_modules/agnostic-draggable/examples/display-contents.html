@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Display Contents</title>
+		<script type="text/javascript" src="../dist/agnostic-draggable.js"></script>
+		<style type="text/css">
+			body {
+				padding: 20px;
+			}
+			tr:after {
+				content: '';
+				clear: 'both';
+			}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			const app = document.createElement('div');
+
+			const data = [
+				{ name: 'foo', number: 100, date: new Date(Date.now() - 2 * 60 * 1000).toLocaleString() },
+				{ name: 'bar', number: 200, date: new Date(Date.now() - 60 * 1000).toLocaleString() },
+				{ name: 'baz', number: 300, date: new Date(Date.now()).toLocaleString() }
+			];
+
+			const table = document.createElement('table');
+			table.style.width = 'calc(100% - 40px)';
+			table.style.margin = '20px';
+			const thead = document.createElement('thead');
+			thead.style.display = 'contents';
+			const tbody = document.createElement('tbody');
+			tbody.style.display = 'contents';
+
+			const tr = document.createElement('tr');
+			tr.style.display = 'contents';
+			for (const col of Object.keys(data[0])) {
+				const th = document.createElement('th');
+				th.style.background = 'rgba(127, 127, 127, .1)';
+				th.style.padding = '8px';
+				th.style.border = 'solid rgb(127,127,127)';
+				th.style.borderWidth = '1px 0';
+				th.textContent = col;
+				tr.appendChild(th);
+			}
+			thead.appendChild(tr);
+
+			for (const row of data) {
+				const tr = document.createElement('tr');
+				tr.style.display = 'contents';
+				const cells = Object.values(row).map(cell => {
+					const td = document.createElement('td');
+					td.style.padding = '8px';
+					td.style.border = 'solid rgb(127,127,127)';
+					td.style.borderWidth = '1px 0';
+					td.textContent = cell;
+					tr.appendChild(td);
+				});
+				tbody.appendChild(tr);
+
+				new agnosticDraggable.Droppable(
+					tr,
+					{
+						tolerance: 'pointer'
+					},
+					{
+						'droppable:over': () => {
+							tr.style.background = 'blue';
+						},
+						'droppable:out': () => {
+							tr.style.background = '';
+						},
+						'droppable:drop': () => {
+							tr.style.background = '';
+							const td = tr.querySelector('td:nth-child(2)');
+							td.textContent = parseInt(td.textContent) + 1;
+						}
+					}
+				);
+			}
+
+			table.appendChild(thead);
+			table.appendChild(tbody);
+			app.appendChild(table);
+
+			const addDiv = document.createElement('div');
+			addDiv.style.display = 'inline-block';
+			addDiv.style.margin = '20px';
+			addDiv.style.padding = '8px';
+			addDiv.style.background = 'rgb(127,127,127)';
+			addDiv.style.userSelect = 'none';
+			addDiv.textContent = 'Drop me on a row to add 1';
+
+			app.appendChild(addDiv);
+
+			document.body.appendChild(app);
+
+			let listener = e => {
+				e.preventDefault();
+			};
+			new agnosticDraggable.Draggable(
+				addDiv,
+				{
+					revert: true
+				},
+				{
+					'drag:start': () => {
+						document.body.addEventListener('selectstart', listener);
+					},
+					'drag:stop': () => {
+						document.body.removeEventListener('selectstart', listener);
+					}
+				}
+			);
+		</script>
+	</body>
+</html>

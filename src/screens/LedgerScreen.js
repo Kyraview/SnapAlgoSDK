@@ -11,23 +11,22 @@ export default class LedgerScreen{
             return this.WalletUi.preLoadTransactions().then(this.render.bind(this));
         }
         let holder = document.createElement("div");
-        holder.style = "justify-content: center; display: flex; flex-direction: column; align-items: center;";
+        this.wallet.injector.inject(holder, "justify-content: center; display: flex; flex-direction: column; align-items: center;");
         let title = document.createElement('p');
         title.innerHTML = "Transaction History";
-        title.style = "font-size: 20px; margin-top: 20px; align-self: left;";
         title.className = "mainFont";
+        this.wallet.injector.inject(title, "font-size: 20px; margin-top: 20px; align-self: left;");
         holder.appendChild(title);
         let transactionContainer = document.createElement("div");
-        transactionContainer.style = "overflow-y: auto; height: 275px; width: 95%; display: flex; flex-direction: column; align-items: center;";
-        console.log(this.transactions);
         transactionContainer.className = "SnapAlgoLedgerContainer";
+        this.wallet.injector.inject(transactionContainer, transactionContainer.style = "overflow-y: auto; height: 275px; width: 95%; display: flex; flex-direction: column; align-items: center;");
         holder.appendChild(transactionContainer);
         
         for(let transaction of this.WalletUi.transactions.transactions){
             console.log(transaction);
             let transactionDiv = document.createElement('div');
             
-            transactionDiv.style = `
+            const transactionDiv_style = `
                 display: flex; 
                 flex-direction: row; 
                 justify-content: space-between; 
@@ -38,9 +37,10 @@ export default class LedgerScreen{
                 /*box-shadow: 0px 1px 5px rgba(255,255,255,0.2);*/
                 border-radius: 10px;
             `;
+            this.wallet.injector.inject(transactionDiv, transactionDiv_style);
             
             let type = document.createElement('p');
-            type.style = "font-size: 11px;";
+            this.wallet.injector.inject(type, "font-size: 11px;");
             if(transaction['tx-type'] == "pay"){
                 if(transaction.sender == this.wallet.accounts[0].addr){
                     type.innerHTML = `Sent ${transaction["payment-transaction"].amount/1000000} Algo to 
@@ -69,19 +69,19 @@ export default class LedgerScreen{
                 }
             
                 let sender = document.createElement('p');
-                sender.style = "font-size: 11px; word-break: break-all;";
+                this.wallet.injector.inject(sender, "font-size: 11px; word-break: break-all;");
                 sender.innerHTML = transaction.sender.substring(0,4)+"..."+transaction.sender.substring(54);
 
 
                 transactionDiv.appendChild(sender);
             }
             let link = document.createElement('a');
-            
+            this.wallet.injector.inject(link);
             link.href = `https://${this.wallet.testnet ? "testnet." : ""}algoexplorer.io/tx/${transaction.id}`;
             link.target = "_blank";
             const viewIcon = document.createElement('img');
             viewIcon.src = viewImg;
-            viewIcon.style="width: 20px; height: 20px;";
+            this.wallet.injector.inject(viewIcon, "width: 20px; height: 20px;")
             link.appendChild(viewIcon);
             transactionDiv.appendChild(type);
             transactionDiv.appendChild(link);

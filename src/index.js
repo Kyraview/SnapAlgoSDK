@@ -5,7 +5,9 @@ import HTTPClient from './HTTPClient.js';
 const IPFSURL = 'https://snapalgo-imgs.netlify.app/imgs' 
 const importIcon = IPFSURL + '/import-wallet.svg'
 const connectedGif = IPFSURL + '/connected.gif'
+import CSSInjector from './cssInjector.js';
 export class Wallet{
+    
     constructor(){
       this.enabled = false;
       this.genisisHash = null;
@@ -13,7 +15,8 @@ export class Wallet{
       this.enabledAccounts = [];
       this.accounts = []
       this.network = "";
-      this.bubble = new WalletBubble();
+      this.injector = new CSSInjector();
+      this.bubble = new WalletBubble(this.injector);
       window.algorand = this;
     }
     async enable(opts){
@@ -102,17 +105,13 @@ export class Wallet{
         importDiv.style = "display:flex; justify-content:right;";
         masterDiv.appendChild(importDiv);
         importWalletButton.src = importIcon;
-        importWalletButton.style.width = "50px";
-        importWalletButton.style.height = "50px";
-        importWalletButton.style.cursor = "pointer";
-        importWalletButton.style.margin = "5px";
+        this.injector.inject(importWalletButton,"width: 50px; height: 50px; cursor:pointer; margin: 5px;");
         importWalletButton.addEventListener('click', ()=>{window.open("https://snapalgo.com/importaccount", "_blank")})
         importDiv.appendChild(importWalletButton);
         let megaDiv = document.createElement('div');
-        megaDiv.style = "display:flex; justify-content:center; text-align: center; transform: translateY(-10%);";
+        this.injector.inject(megaDiv, "display:flex; justify-content:center; text-align: center; transform: translateY(-10%);")
         let mainDiv = document.createElement('div');
-        
-        mainDiv.style = "display:flex; justify-content:center; flex-direction: column; text-align: center;";
+        this.injector.inject(mainDiv, "display:flex; justify-content:center; flex-direction: column; text-align: center;")
         megaDiv.appendChild(mainDiv);
         masterDiv.appendChild(megaDiv);
         
@@ -121,7 +120,7 @@ export class Wallet{
           networkTitle.innerHTML = "Select a Network";
           mainDiv.appendChild(networkTitle);
           this.networkSelect = document.createElement('select');
-          this.networkSelect.style = "width: 200px; height: 25px; text-align: center;";
+          this.injector.inject(this.networkSelect, "width: 200px; height: 25px; text-align: center;");
           this.networkSelect.innerHTML = Object.keys(IdTable).map(key => `<option value="${key}">${
             key.split('-')[0][0].toUpperCase() //get just the network name and capitalize the first letter
             +
@@ -134,7 +133,7 @@ export class Wallet{
           accountsTitle.innerHTML = "Select an Account";
           mainDiv.appendChild(accountsTitle);
           this.accountSelect = document.createElement('select');
-          this.accountSelect.style = "width: 200px; height: 25px; text-align: center;";
+          this.injector.inject(this.accountSelect, "width: 200px; height: 25px; text-align: center;");
           const Addrs = Object.keys(this.accounts)
           this.accountSelect.innerHTML = Addrs.map((addr)=>`<option value="${addr}">${this.accounts[addr].name}</option>`).join("");
           mainDiv.appendChild(this.accountSelect);
@@ -157,8 +156,9 @@ export class Wallet{
           this.#connect();
         }
         connectButton.addEventListener('click', selectFunc.bind(this));
-        connectButton.style = "height: 35px; font-size: 15px;";
         connectButton.className = "snapAlgoDefaultButton";
+        
+        connectButton = this.injector.inject(connectButton, "height: 35px; font-size: 15px;");
         center.appendChild(connectButton);
         mainDiv.appendChild(center);
         this.bubble.setElement(masterDiv);

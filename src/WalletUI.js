@@ -33,11 +33,19 @@ export default class WalletUI{
     async preLoad(){
         console.log("wallet Screen preLoad");
         
-        let price = fetch("https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd")
+        let price = fetch("https://api.coincap.io/v2/assets/algorand" ,{
+            method: 'GET',
+            redirect: 'follow'
+          })
         .then((res)=>res.text())
         .then((text)=>{
-          this.price = Number(JSON.parse(text).algorand.usd)
+          console.log(text);
+          this.price = Number(JSON.parse(text).data.priceUsd)
         })
+        .catch((error)=>{
+            console.log(error);
+            this.price = 0;
+        });
         let balance = window.ethereum.request({
             method:  'wallet_invokeSnap',
             params: ['npm:algorand', {

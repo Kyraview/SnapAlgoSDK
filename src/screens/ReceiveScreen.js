@@ -11,52 +11,18 @@ export default class ReceiveScreen{
             opts = {};
         }          
         let holder = document.createElement("div");
-        holder.style = "display: flex; justify-content: center; margin-top: 20px;";
-        let assetcontainer = document.createElement('div');
-        document.createElement("p");
-        console.log("accounts is: ");
-        console.log(this.wallet.accounts);
-        let addressQR = (await QRCode.toDataURL(this.wallet.accounts[0].addr));
-        
+        this.wallet.injector.inject(holder, "display: flex; justify-content: center; margin-top: 20px;");
         let recDiv = document.createElement('div');
-        recDiv.style = "display:flex; justify-content: center;";
+        this.wallet.injector.inject(recDiv, "display:flex; justify-content: center;");
         holder.appendChild(document.createElement('br'));
         holder.appendChild(document.createElement('br'));
         holder.appendChild(recDiv);
         let reciveFlow = document.createElement('iframe');
-        reciveFlow.style = "width: 100%; height: 150px;";
+        this.wallet.injector.inject(reciveFlow, "width: 100%; height: 150px;");
         reciveFlow.src = "https://snapalgo.com/receive";
         reciveFlow.scrolling = "no";
         reciveFlow.frameBorder = "0";
         recDiv.appendChild(reciveFlow);
-        /*
-        let qrCodeImage = document.createElement('img');
-        qrCodeImage.src = addressQR;
-        qrCodeImage.style = "width: 150px; height: 150px; margin-left: 10px;";
-        recDiv.appendChild(qrCodeImage);
-
-        let addressDiv = document.createElement('div');
-        addressDiv.style = "display: flex; flex-direction: column; justify-content: center; margin-left: 10px; width: 150px;";
-        let address = document.createElement('p');
-        address.style = "font-size: 15px; word-break: break-all;";
-        address.innerHTML = this.wallet.accounts[0].addr;
-        let copyButton = document.createElement('button');
-        copyButton.id = "SnapAlgoWalletRecieveCopyButton";
-        copyButton.addEventListener('click',
-          ()=>{
-              
-              navigator.clipboard.writeText(this.wallet.accounts[0].addr);
-          }
-        );
-        
-
-        copyButton.style = "width: 100%; cursor: pointer;";
-        copyButton.className = "snapAlgoDefaultButton alt";
-        copyButton.innerHTML = "Copy Address";
-        addressDiv.appendChild(address);
-        addressDiv.appendChild(copyButton);
-        recDiv.appendChild(addressDiv);
-        */
         let screen = this.walletUI.getScreen();
         screen.element.appendChild(holder);
         screen.height = 350;

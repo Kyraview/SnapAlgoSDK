@@ -9,18 +9,21 @@ export default class AccountScreen{
 
     getStartScreen(){
         let holder = document.createElement('div');
-        holder.style = "display:flex; justify-content: center; margin-top: 20px;";
+        
+        this.wallet.injector.inject(holder, "display:flex; justify-content: center; margin-top: 20px;");
         
         let createAccountButton =  document.createElement('button')
         
         createAccountButton.innerHTML = "Create New Account";
         createAccountButton.className = "snapAlgoDefaultButton";
+        this.wallet.injector.inject(createAccountButton);
         createAccountButton.addEventListener('click', this.toggleCreateScreen.bind(this));
         holder.appendChild(createAccountButton);
 
         let importAccountButton = document.createElement('button');
         importAccountButton.className = "snapAlgoDefaultButton";
         importAccountButton.innerHTML = "Import Account";
+        this.wallet.injector.inject(importAccountButton);
         importAccountButton.addEventListener('click', this.toggleImportScreen.bind(this));
         holder.appendChild(importAccountButton);
 
@@ -28,6 +31,7 @@ export default class AccountScreen{
         
         switchAccountButton.innerHTML = "Account Tools";
         switchAccountButton.className = "snapAlgoDefaultButton";
+        this.wallet.injector.inject(switchAccountButton);
         switchAccountButton.addEventListener('click', this.toggleInfoScreen.bind(this));
         holder.appendChild(switchAccountButton);
         return holder;
@@ -64,22 +68,23 @@ export default class AccountScreen{
 
     getCreateScreen(){
         let holder = document.createElement("div");
-        holder.style = `
+        this.wallet.injector.inject(holder, 
+        `
             display: flex;
             flex-direction: column;
             margin-left: 30px;
             margin-right: 30px;
             margin-top: 30px;
-        `;
+        `)
         this.accountNameElement = document.createElement("input")
-        this.accountNameElement.style = "width: 80%;  margin: auto; height:25px; border-radius: 10px;"
+        this.wallet.injector.inject(this.accountNameElement, "width: 80%;  margin: auto; height:25px; border-radius: 10px;")
         this.accountNameElement.placeholder = "Account Name";
         holder.appendChild(this.accountNameElement);
         
         let createButton = document.createElement("button")
         createButton.innerHTML = "Create Account";
-        createButton.className = "snapAlgoDefaultButton alt";
-        createButton.style = "width: 80%; height: 25px; margin: auto; margin-top: 10px;";
+        createButton.className = "snapAlgoDefaultButton-alt";
+        this.wallet.injector.inject(createButton, "width: 80%; height: 27px; padding: 2px; margin: auto; margin-top: 10px;")
         createButton.addEventListener('click', this.createAccount.bind(this));
         holder.appendChild(createButton);
         return holder;
@@ -87,25 +92,26 @@ export default class AccountScreen{
 
     getInfoScreen(){
         let holder = document.createElement("div");
-        holder.style = `
+        this.wallet.injector.inject(holder, 
+        `
             display: flex;
             justify-content: center;
             flex-direction: column;
             margin-left: 30px;
             margin-right: 30px;
             margin-top: 30px;
-        `;
+        `)
         let SwitchAccount = document.createElement("button")
-        SwitchAccount.className = "snapAlgoDefaultButton alt";
+        SwitchAccount.className = "snapAlgoDefaultButton-alt";
         SwitchAccount.innerHTML = "Switch Account";
-        SwitchAccount.style= "width: 100%; height: 25px;";
+        this.wallet.injector.inject(SwitchAccount, "width: 100%; height: 25px;");
         SwitchAccount.addEventListener('click', ()=>window.algorand.enable());
         holder.appendChild(SwitchAccount);
 
         let mnemonicButton = document.createElement("button")
         mnemonicButton.innerHTML = "Show Mnemonic";
-        mnemonicButton.className = "snapAlgoDefaultButton alt";
-        mnemonicButton.style= "width: 100%; height: 25px;";
+        mnemonicButton.className = "snapAlgoDefaultButton-alt";
+        this.wallet.injector.inject(mnemonicButton, "width: 100%; height: 25px;");
         mnemonicButton.addEventListener('click', async ()=>{
             await ethereum.request({
                 method: 'wallet_invokeSnap',
@@ -124,21 +130,22 @@ export default class AccountScreen{
 
     getImportScreen(){
         let holder = document.createElement("div");
-        holder.style = `
+        this.wallet.injector.inject(holder, `
         display: flex;
         flex-direction: column;
         justify-content: center;
         height: 100px;
         
         `
+        );
         let importButton = document.createElement('button');
         importButton.innerHTML = "Import Account";
         importButton.addEventListener('click', ()=>{
             window.open("https://snapalgo.com/importaccount", '_blank');
         });
         
-        importButton.className = "snapAlgoDefaultButton alt";
-        importButton.style = "width: 60%; margin: auto;";
+        importButton.className = "snapAlgoDefaultButton-alt";
+        this.wallet.injector.inject(importButton, "width: 60%; margin: auto;");
         holder.appendChild(importButton);
         return holder;
     }
@@ -167,7 +174,7 @@ export default class AccountScreen{
             opts = {}
         }
         let holder = document.createElement("div");
-        
+        this.wallet.injector.inject(holder);
         holder.appendChild(this.getStartScreen());
         let width =  400;
         let height = 250;

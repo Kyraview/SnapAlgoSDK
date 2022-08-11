@@ -11,7 +11,8 @@ const connectedGif = IPFSURL+"/connected.gif";
 
 import WalletUI from "./WalletUI";
 export default class WalletBubble{
-    constructor(){        
+    constructor(injector){
+        this.injector = injector;        
         this.isMoving = false;
         this.isdragging = false;
         this.walletMode = false;
@@ -39,10 +40,12 @@ export default class WalletBubble{
         });
 
         this.bubble.addEventListener('mousemove',this.#mouseMove.bind(this));
+        this.bubble.addEventListener('touchmove', this.#mouseMove.bind(this));
         this.bubble.addEventListener('mouseup', this.#mouseUp.bind(this));
+        this.bubble.addEventListener('touchup', this.#mouseUp.bind(this));
         this.bubble.addEventListener('click',this.toggleUi.bind(this));
-    }
 
+    }
 
     importAccounts(acccounts){
       this.accounts = acccounts;
@@ -64,10 +67,12 @@ export default class WalletBubble{
       
       const logo = document.createElement('img');
       logo.src = snapAlgoImg;
-      logo.style = "width:100%; height:100%; margin:0px;";
+      //logo.style = "";
+      this.injector.inject(logo, "width:100%; height:100%; margin:0px;");
       document.body.appendChild(bubbleElement);
       bubbleElement.appendChild(logo);
       $("#snapAlgoChatHeadBubble").draggable();
+     
 
       //wallet container
       const walletContainer = document.createElement('div');
@@ -114,11 +119,11 @@ export default class WalletBubble{
 
       //Default Screen
       const defaultScreen = document.createElement('div');
-      defaultScreen.style = "width:100%; height:100%; display:flex; justify-content:center;";
+      this.injector.inject(defaultScreen, "width:100%; height:100%; display:flex; justify-content:center;");
       const enableButton = document.createElement('button');
-      enableButton.style = 'margin: auto;';
-      enableButton.className = "snapAlgoDefaultButton alt";
+      enableButton.className = "snapAlgoDefaultButton-alt";
       enableButton.innerHTML = "Enable Wallet";
+      this.injector.inject(enableButton, 'margin: auto;')
       enableButton.addEventListener('click', ()=>window.algorand.enable())
       defaultScreen.appendChild(enableButton);
       this.setElement(defaultScreen);
@@ -126,7 +131,7 @@ export default class WalletBubble{
     }
 
     #mouseUp(e){
-      
+        console.log("mouse move");
         e.preventDefault();
 
         let lastY = window.event.clientY;
@@ -148,10 +153,11 @@ export default class WalletBubble{
 
       $(this.bubble).css("transition", "all 0s");
       $(this.walletContainer)
+        .css("transition", "all 0s")
         .css("top", this.bubble.style.top)
         .css("left", this.bubble.style.left)
         .css("transform", "translate(20px,20px)")
-        .css("transition", "all 0s");
+        
       if(this.walletMode){ 
         $(this.walletContainer).css("transition-delay", "0s");
         this.lastX = this.bubble.style.left;
@@ -311,7 +317,7 @@ export default class WalletBubble{
       holder.appendChild(title);
       let loader = document.createElement("img");
       loader.src = connectedGif;
-      loader.style = "width: 150px; height: 150px;";
+      this.injector.inject(loader, "width: 150px; height: 150px;");
       holder.appendChild(loader);
       this.setHeight(250);
       this.setWidth(350);
