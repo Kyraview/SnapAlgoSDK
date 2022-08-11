@@ -23,7 +23,6 @@ export default class LedgerScreen{
         holder.appendChild(transactionContainer);
         
         for(let transaction of this.WalletUi.transactions.transactions){
-            console.log(transaction);
             let transactionDiv = document.createElement('div');
             
             const transactionDiv_style = `

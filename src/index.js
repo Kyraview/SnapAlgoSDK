@@ -30,17 +30,13 @@ export class Wallet{
         "testnet-v1.0":	"SGO1GKSzyE7IEPItTxCByw9x8FmnrCDexi9/cOUJOiI=",
         "betanet-v1.0":	"mFgazF+2uRS1tMiL9dsj01hJGySEmPN28B/TjjvpVW0="
       };
-      console.log("here")
       try{
-        console.log("inside try")
         const thing = await ethereum.request({
           method: 'wallet_enable',
           params: [{
             wallet_snap: { ["npm:algorand"]: {} },
           }]
         })
-        console.log('yes');
-        console.log(thing);
       }
       catch(e){
         if(e.code === 4001){
@@ -58,8 +54,6 @@ export class Wallet{
           method: 'getAccounts',
         }]
       })
-      console.log("this.accounts COMPLETED!");
-      console.log(this.accounts)
       let genisisIdProvided = false;
       let genisisHashProvided = false;
       let accountsProvided = false;
@@ -288,25 +282,17 @@ export class Wallet{
     async EZsign(txn){
       const b64 = require('base64-arraybuffer');
       txn = [{txn:this.encodeTxn(txn)}];
-      console.log(txn);
       let signedTxs = await this.signTxns(txn);
-      console.log("signedTxs");
-      console.log(signedTxs);
       return Array.from(signedTxs.map(stxB64 => b64.decode(stxB64).buffer));
     }
 
     base64Encode(arraybuffer){
-      console.log("recieved ArrayBuffer is ")
-      console.log(arraybuffer)
       const b64 = require('base64-arraybuffer');
       const base64Output = b64.encode(arraybuffer);
-      console.log("base64 output is ...");
-      console.log(base64Output);
       return base64Output;
     }
 
     base64Decode(arraybuffer){
-      console.log(arraybuffer);
       const b64 = require('base64-arraybuffer');
       arraybuffer = b64.decode(arraybuffer);
       return new Uint8Array(arraybuffer);
@@ -335,10 +321,8 @@ export class Wallet{
       }
       let encodedMsgPack = this.base64Decode(EncodedSignedAccount);
       let decodedMsgPack = msgpack.decode(encodedMsgPack);
-      console.log(decodedMsgPack);
       logicSigAccount.sigkey = decodedMsgPack.sigkey;
       logicSigAccount.lsig.sig = decodedMsgPack.lsig.sig;
-      console.log(logicSigAccount)
       return logicSigAccount
       
     }

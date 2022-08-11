@@ -6,8 +6,6 @@ export default class SendScreen{
         this.wallet = wallet;
         this.asset = "algo";
         this.assetSelectIndex = 0;
-        console.log(this.walletUi)
-        console.log(this.wallet)
     }
 
     async updateAndRender(){
@@ -57,9 +55,6 @@ export default class SendScreen{
         this.coinDropDown = document.createElement('select');
         this.coinDropDown.value = "algo";
         function setAsset(e){
-            console.log(e);
-            console.log(e.target);
-            console.log(e.target.value);
             const index = e.target.selectedIndex;
             this.asset = e.target.value;
         }
@@ -76,7 +71,6 @@ export default class SendScreen{
         for(let asset of this.walletUi.assets){
             let data = asset.asset[0].params
             const assetId = asset['asset-id']
-            console.log(data)
             let option = document.createElement("option");
             this.wallet.injector.inject(option);
             option.value = assetId;
@@ -115,12 +109,8 @@ export default class SendScreen{
 
         
         const sendFunction = () => {
-                console.log(this.wallet.testnet);
-                console.log(this.coinDropDown);
                 
                 let assetId = this.asset;
-                console.log(assetId)
-                console.log(this.asset)
                 
                 if(sendAddress.length < 0 || Number(amount.value) < 0){
                     console.log("invalid input");
@@ -138,7 +128,6 @@ export default class SendScreen{
                     }).then(this.updateAndRender.bind(this));
                 }
                 else{
-                    console.log(assetId);
                     window.ethereum.request({
                         method:  'wallet_invokeSnap',
                         params: ['npm:algorand', {
@@ -153,9 +142,6 @@ export default class SendScreen{
       };
       sendButton.addEventListener('click', sendFunction.bind(this));
       sendButtonDiv.appendChild(sendButton);
-      console.log("here in send render");
-      console.log(this.walletUi);
-      console.log("that was it");
       let screen = this.walletUi.getScreen();
       screen.element.appendChild(holder);
       screen.width = 650;

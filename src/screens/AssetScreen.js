@@ -44,7 +44,6 @@ export default class AssetScreen{
         const url = "https://free-api.vestige.fi/assets/search?query=" + search;
         let results = await fetch(url)
         this.currentSearch = await results.json();
-        console.log(this.currentSearch);
         return this.currentSearch;
 
     }
@@ -70,12 +69,7 @@ export default class AssetScreen{
 
             if(optIn_optOut === "optIn"){
                 optInButton.innerHTML = "Opt In";
-                console.log("testnet is: ");
-                console.log(this.walletUI.wallet.testnet)
                 optInButton.addEventListener("click", async (e)=>{
-                    console.log("opt in");
-                    console.log("testnet is: ");
-                    console.log(this.walletUI.wallet.testnet);
                     ethereum.request({
                         method: 'wallet_invokeSnap',
                         params: ['npm:algorand', {
@@ -85,8 +79,6 @@ export default class AssetScreen{
                         }]        
                       }).then(
                         async ()=>{
-                            console.log(this.walletUI);
-                            console.log(this);
                             await this.walletUI.preLoadAssets();
                             this.render();
                         }
@@ -96,7 +88,6 @@ export default class AssetScreen{
             else{
                 optInButton.innerHTML = "Opt Out";
                 optInButton.addEventListener("click", async (e)=>{  
-                    console.log(this.walletUI.wallet.testnet);
                     ethereum.request({
                         method: 'wallet_invokeSnap',
                         params: ['npm:algorand', {
@@ -106,8 +97,6 @@ export default class AssetScreen{
                         }]
                     }).then(
                         async ()=>{
-                            console.log(this.walletUI);
-                            console.log(this);
                             await this.walletUI.preLoadAssets();
                             this.render();
                         }
@@ -182,8 +171,6 @@ export default class AssetScreen{
         `)
         
         let userAssets = this.walletUI.assets;
-        console.log("userAssets is: ", userAssets);
-        console.log(userAssets);
         if(!userAssets){
             userAssets = await this.walletUI.preLoadAssets();
         }
@@ -209,10 +196,6 @@ export default class AssetScreen{
             userAssets.unshift(algo);
         }
         for(let Asset of userAssets){
-
-            
-            console.log("here")
-            console.log(Asset);
             let assetDiv = document.createElement("div");
             assetDiv.className = "snapAlgoHoverEffect";
             this.wallet.injector.inject(assetDiv,`    
@@ -229,9 +212,7 @@ export default class AssetScreen{
                 e.target.src = coinImg;
             })
             if(Asset['asset-id'] === 0){
-                console.log("is algo");
                 icon.src = "https://res.cloudinary.com/startup-grind/image/upload/c_fill,f_auto,g_center,q_auto:good/v1/gcs/platform-data-algorand/contentbuilder/C_Algorand-Event-Thumbnail-400x400_EjNd7dj.png";
-                console.log(icon.src);
             }
             else{
                 icon.src = "https://asa-list.tinyman.org/assets/"+Asset['asset-id']+"/icon.png";
@@ -395,8 +376,6 @@ export default class AssetScreen{
             receiveDiv.appendChild(addressText)
             holder.appendChild(receiveDiv);
         }
-        console.log("internal Asset is: ");
-        console.log(asset);
         if(this.subScreen === "send"){
             
             let sendDiv = document.createElement("div");
@@ -418,9 +397,6 @@ export default class AssetScreen{
             sendButton.innerHTML = "Send";
             sendDiv.appendChild(sendButton);
             sendButton.addEventListener('click', ()=>{
-                console.log("amount", amountInput.value);
-                console.log("address", addressInput.value);
-                console.log(asset);
                 const decimals = asset.asset[0].params.decimals;
                 if(asset.asset[0]['asset-id'] === 0){
                     return window.ethereum.request({
@@ -482,7 +458,6 @@ export default class AssetScreen{
         let holder = document.createElement("div");
         holder.id = "renderHolder";
         this.wallet.injector.inject(holder, "margin-top: 20px; display: block;");
-        console.log(holder.style.marginTop);
         let viewHeight = 300;
 
         if(this.topDivOpen){
@@ -492,8 +467,6 @@ export default class AssetScreen{
 
         if(this.searchOpen){
             let searchScreen = await this.getSearchScreen();
-            console.log("searchScreen is: ", searchScreen);
-            console.log(searchScreen);
             holder.appendChild(searchScreen);
             viewHeight = 475;
         }

@@ -56,7 +56,6 @@ export default class AccountScreen{
     }
 
     async toggleImportScreen(){
-        console.log("Importing account toggle");
         if(this.screen === 'importScreen'){
             this.screen = 'start';
         }

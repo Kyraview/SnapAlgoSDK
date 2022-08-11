@@ -21,17 +21,9 @@ export default class WalletUI{
         this.ledgerScreen = new LedgerScreen(this, this.wallet);
         this.assetScreen = new AssetScreen(this, this.wallet);
         this.accountscreen = new AccountScreen(this, this.wallet);
-        console.log("config wallet ui constructor");
-        console.log(this.baseScreen);
-        console.log(this.sendScreen);
-        console.log(this.receiveScreen);
-        console.log(this.ledgerScreen);
-        
-
     }
 
     async preLoad(){
-        console.log("wallet Screen preLoad");
         
         let price = fetch("https://api.coincap.io/v2/assets/algorand" ,{
             method: 'GET',
@@ -39,7 +31,6 @@ export default class WalletUI{
           })
         .then((res)=>res.text())
         .then((text)=>{
-          console.log(text);
           this.price = Number(JSON.parse(text).data.priceUsd)
         })
         .catch((error)=>{
@@ -54,9 +45,6 @@ export default class WalletUI{
             }]
           })
           .then((balance)=>{
-            console.log(balance);
-            console.log(this);
-            console.log("in balance");
             this.userBalance = balance;
           })
           .catch(console.log);
@@ -91,11 +79,7 @@ export default class WalletUI{
             ]
         })
         
-        console.log("preload assets");
-        
         this.assets = result;
-        console.log(this.assets);
-        console.log(this.assets);
         return result;
         
     }
@@ -107,8 +91,6 @@ export default class WalletUI{
             this.wallet.render(this.getScreen());
         }
         else{
-            console.log("toggle receive");
-            console.log(this.receiveScreen);
             this.screen = "receive";
             this.receiveScreen.render();
             //this.#generateReceiveScreen();
@@ -160,12 +142,9 @@ export default class WalletUI{
     }
 
     renderScreen(){
-        console.log(this.price)
-        console.log(this.userBalance)
         if(this.screen == "base"){
             let screen = this.getScreen();
             screen.silent = true;
-            console.log("refresh Screen");
             this.wallet.render(screen);
         }
         else if(this.screen == "receive"){

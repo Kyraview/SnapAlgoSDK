@@ -35,7 +35,6 @@ export default class WalletBubble{
         $(this.walletContainer).draggable({"handle":$(this.bubble)});
 
         this.bubble.addEventListener('mousedown',function(){
-            console.log("here");
             this.isdragging = false;
         });
 
@@ -131,7 +130,6 @@ export default class WalletBubble{
     }
 
     #mouseUp(e){
-        console.log("mouse move");
         e.preventDefault();
 
         let lastY = window.event.clientY;
@@ -182,8 +180,6 @@ export default class WalletBubble{
       $(this.walletBody).css("height", (pixels-4)+'px').css("transition", "all 0.3s");
     }
     setHtml(html){
-      console.log("set html called with this html: ")
-      console.log(html);
       this.html = html;
       this.walletHtmlBox.innerHTML = html;
     }
@@ -299,10 +295,6 @@ export default class WalletBubble{
   }
 
     showWalletScreen(){
-      //console.log("bubble show wallet called");
-      //console.log(this.walletScreen);
-      //return this.walletScreen.render(this.walletScreen.updateWalletScreen(), {"silent": true});
-      
       this.render(this.walletUi.getScreen());
     }
 
@@ -367,7 +359,6 @@ export default class WalletBubble{
         props.cancelText = "Cancel";
       }
       if(props.type === "confirm/cancel"){
-        console.log("cancel confirm type")
         props.html = '<div style="display:flex; flex-direction: column; justify-content: space-between; height:100%;">'+props.html+ `
             <div style="display:flex; justify-content: center; margin: 10px;">
               <button class="modal-button" id="snapAlgoConfirmButton">${props.confirmText}</button>
@@ -384,21 +375,17 @@ export default class WalletBubble{
           </div>
         `
       }
-      console.log(props.html);
       this.open({width:props.width, height:props.height, html:props.html});
       $("#snapAlgoCancelButton").on("click",()=>{
-        console.log("here is the cancel button");
         let output = {"canceled": true, "confirmed":false, "data": props.callback()};
         this.close();
         modalControl.resolve(output);
       });
       $("#snapAlgoConfirmButton").on("click", ()=>{
-        console.log("here is the confirm button");
         let output = {"canceled": false, "confirmed":true, "data": props.callback()};
         this.close();
         modalControl.resolve(output);
       })
-      console.log(props.html);
       
       return modalControl.promise();
     }
