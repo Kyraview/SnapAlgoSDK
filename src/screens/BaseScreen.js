@@ -32,11 +32,11 @@ export default class BaseScreen{
         this.wallet.injector.inject(networkDiv, `
         text-align: right; 
         height: 0px; 
-        padding-top: 5px; 
-        padding-right: 10px;
+        margin-top: 5px; 
+        margin-right: 10px;
         display: flex; 
         flex-direction: row-reverse;
-        width: 100%;
+        
         `);
         
         networkDiv.innerHTML = `${this.wallet.testnet?"Testnet":"Mainnet"}`
