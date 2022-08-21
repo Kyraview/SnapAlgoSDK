@@ -363,17 +363,12 @@ export default class AssetScreen{
 
         if(this.subScreen === "receive"){
             let receiveDiv = document.createElement("div");
-            this.wallet.injector.inject(receiveDiv, "display: flex; justify-content:center; margin-top: 20px;");
-            const address = this.wallet.accounts[0].addr
-            let addressQR = (await QRCode.toDataURL(address));
-            let qrCodeImage = document.createElement('img');
-            qrCodeImage.src = addressQR;
-            this.wallet.injector.inject(qrCodeImage, "width: 100px; height: 100px; margin-left: 10px;");
-            receiveDiv.appendChild(qrCodeImage);
-            let addressText = document.createElement('p');
-            this.wallet.injector.inject(addressText, "color:white; font-size: 10px; width: 75px; margin-left:10px; word-break: break-all;")
-            addressText.innerHTML = address;
-            receiveDiv.appendChild(addressText)
+            let reciveFlow = document.createElement('iframe');
+            this.wallet.injector.inject(reciveFlow, "width: 100%; height: 150px;");
+            reciveFlow.src = "https://snapalgo.com/receive";
+            reciveFlow.scrolling = "no";
+            reciveFlow.frameBorder = "0";
+            receiveDiv.appendChild(reciveFlow);
             holder.appendChild(receiveDiv);
         }
         if(this.subScreen === "send"){
