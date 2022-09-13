@@ -4,6 +4,7 @@ const qrImg = IPFSURL+ "/receive-outline.svg";
 const logImg = IPFSURL+ "/ledger-outline.svg";
 const AssetImg = IPFSURL+ "/wallet-outline.svg";
 const AccountImg = IPFSURL+ "/account-outline.svg";
+const SwapImg = IPFSURL+"/swap.svg"
 
 export default class BaseScreen{
     constructor(walletUI, wallet){
@@ -90,6 +91,12 @@ export default class BaseScreen{
         transactionsButton.id = "SnapAlgoWalletTransactionsButton";
         this.wallet.injector.inject(transactionsButton, "background: none; margin-right: 5px;");
         transactionsButton.addEventListener("click", this.walletUI.toggleLedgerScreen.bind(this.walletUI));
+        
+        let swapButton = this.#createImgButton(SwapImg);
+        swapButton.id = "SnapAlgoWalletExchangeButton";
+        this.wallet.injector.inject(swapButton, "background: none; margin-right: 5px;");
+        swapButton.addEventListener('click', this.walletUI.toggleExchangeScreen.bind(this.walletUI))
+
         let assetButton = this.#createImgButton(AssetImg);
         assetButton.id = "SnapAlgoWalletAssetButton";
         this.wallet.injector.inject(assetButton, "background: none; margin-right: 5px;");
@@ -102,6 +109,7 @@ export default class BaseScreen{
         functionsDiv.appendChild(assetButton);
         functionsDiv.appendChild(sendButton);
         functionsDiv.appendChild(receiveButton);
+        functionsDiv.appendChild(swapButton);
         functionsDiv.appendChild(transactionsButton);
         functionsDiv.appendChild(accountButton);
         

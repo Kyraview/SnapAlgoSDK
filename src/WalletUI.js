@@ -5,6 +5,7 @@ import LedgerScreen from './screens/LedgerScreen';
 import BaseScreen from './screens/BaseScreen';
 import AssetScreen from './screens/AssetScreen';
 import AccountScreen from './screens/AccountScreen';
+import ExchangeScreen from './screens/ExchangeScreen';
 
 export default class WalletUI{
     
@@ -21,6 +22,7 @@ export default class WalletUI{
         this.ledgerScreen = new LedgerScreen(this, this.wallet);
         this.assetScreen = new AssetScreen(this, this.wallet);
         this.accountscreen = new AccountScreen(this, this.wallet);
+        this.exchangeScreen = new ExchangeScreen(this, this.wallet);
     }
 
     async preLoad(){
@@ -105,6 +107,17 @@ export default class WalletUI{
         else{
             this.screen = "send";
             this.sendScreen.render();
+        }
+    }
+
+    toggleExchangeScreen(){
+        if(this.screen === "exchange"){
+            this.screen = "base";
+            this.wallet.render(this.getScreen());
+        }
+        else{
+            this.screen = "exchange";
+            this.exchangeScreen.render();
         }
     }
 

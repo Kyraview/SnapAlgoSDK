@@ -23,11 +23,26 @@ const masterCSS = `
   }
 
   select{
-    background-color: white;
-    color:black;
+    
+    background-color: #963beb;
+    color:white;
     font-family: 'Open Sans', sans-serif;
     appearance: auto;
+    border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
     
+    
+  }
+  select:hover{
+    background-color:#F00699;
+  }
+  option{
+    background-color:#963beb;
+    
+  }
+  option:hover{
+    box-shadow: 0 0 10px 100px #F00699 inset;
   }
 
   input{

@@ -152,7 +152,7 @@ export class Wallet{
           this.#connect();
         }
         connectButton.addEventListener('click', selectFunc.bind(this));
-        connectButton.className = "snapAlgoDefaultButton";
+        connectButton.className = "snapAlgoDefaultButton-alt";
         
         connectButton = this.injector.inject(connectButton, "height: 35px; font-size: 15px;");
         center.appendChild(connectButton);

@@ -53,7 +53,7 @@ export default class SendScreen{
         let amountDiv = document.createElement('div');
         this.wallet.injector.inject(amountDiv, "display:flex; justify-content:start; margin-left: 25px; margin-right: 25px;");
         this.coinDropDown = document.createElement('select');
-        this.wallet.injector.inject(this.coinDropDown, "text-align: center;");
+        this.wallet.injector.inject(this.coinDropDown, "text-align: center; margin-right:10px;");
         this.coinDropDown.value = "algo";
         function setAsset(e){
             const index = e.target.selectedIndex;
@@ -61,15 +61,19 @@ export default class SendScreen{
         }
         this.coinDropDown.addEventListener('change', setAsset.bind(this));
         let options = []
-        let options1 = document.createElement('option');
-        this.wallet.injector.inject(options1);
-        options1.value = "algo";
-        options1.innerHTML = "ALGO";
-        options1.dataset.decimals = "6";
-        options1.dataset.isAlgo = "true";
-        this.coinDropDown.appendChild(options1);
-        options.push(options1);
+        if(this.walletUi.assets.length < 1){
+            let options1 = document.createElement('option');
+            this.wallet.injector.inject(options1);
+            options1.value = "algo";
+            options1.innerHTML = "ALGO";
+            options1.dataset.decimals = "6";
+            options1.dataset.isAlgo = "true";
+            this.coinDropDown.appendChild(options1);
+            options.push(options1);
+        }
+        
         for(let asset of this.walletUi.assets){
+            console.log(asset);
             let data = asset.asset[0].params
             const assetId = asset['asset-id']
             let option = document.createElement("option");
@@ -78,6 +82,9 @@ export default class SendScreen{
             option.innerHTML = data['unit-name'];
             option.dataset.decimals = data.decimals;
             option.dataset.isAlgo = "false";
+            if(assetId === 0){
+                option.dataset.isAlgo = "false"; 
+            }
             option.id = "snapAlgoSendCoinOption"+assetId;
             this.coinDropDown.appendChild(option);
             options.push(option);
