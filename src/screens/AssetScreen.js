@@ -175,26 +175,6 @@ export default class AssetScreen{
             userAssets = await this.walletUI.preLoadAssets();
         }
         
-
-        const algo = {amount:this.walletUI.userBalance, "asset-id": 0, asset: [{
-            "index": 0,
-            "asset-id": 0,
-            deleted: false,
-            "created-at-round": 0,
-            "params": {
-                decimals: 6,
-                name: "Algorand",
-                "unit-name": "Algo",                    
-            }
-        }]};
-        try{
-            if(userAssets[0]['asset-id'] !== 0){
-                userAssets.unshift(algo);
-            }
-        }
-        catch(e){
-            userAssets.unshift(algo);
-        }
         for(let Asset of userAssets){
             let assetDiv = document.createElement("div");
             assetDiv.className = "snapAlgoHoverEffect";

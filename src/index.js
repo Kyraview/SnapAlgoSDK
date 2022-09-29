@@ -6,9 +6,13 @@ const IPFSURL = 'https://snapalgo-imgs.netlify.app/imgs'
 const importIcon = IPFSURL + '/import-wallet.svg'
 const connectedGif = IPFSURL + '/connected.gif'
 import CSSInjector from './cssInjector.js';
+import $ from "jquery";
 export class Wallet{
     
     constructor(){
+      
+      $('head').append('<meta name="viewport" content="width=device-width, initial-scale=0.5">');
+      
       this.enabled = false;
       this.genisisHash = null;
       this.genisisId = null;

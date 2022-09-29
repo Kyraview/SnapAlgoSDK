@@ -80,8 +80,23 @@ export default class WalletUI{
                 }
             ]
         })
+
+        const algo = {amount:this.userBalance, "asset-id": 0, asset: [{
+            "index": 0,
+            "asset-id": 0,
+            deleted: false,
+            "created-at-round": 0,
+            "params": {
+                decimals: 6,
+                name: "Algorand",
+                "unit-name": "Algo",                    
+            }
+        }]};
+
+        result.unshift(algo);
         
         this.assets = result;
+        console.log(this.assets);
         return result;
         
     }
@@ -155,22 +170,29 @@ export default class WalletUI{
     }
 
     renderScreen(){
+        console.log("rendering screen");
         if(this.screen == "base"){
             let screen = this.getScreen();
             screen.silent = true;
             this.wallet.render(screen);
         }
-        else if(this.screen == "receive"){
+        else if(this.screen === "receive"){
             this.receiveScreen.render({silent: true});
         }
-        else if(this.screen == "send"){
+        else if(this.screen === "send"){
             this.sendScreen.render({silent:true});
         }
-        else if(this.screen == "ledger"){
+        else if(this.screen === "ledger"){
             this.ledgerScreen.render({silent:true});
         }
-        else if(this.screen == 'account'){
+        else if(this.screen === 'account'){
             this.accountscreen.render({silent:true});
+        }
+        else if(this.screen === "exchange"){
+            this.exchangeScreen.render();
+        }
+        else{
+            console.log("no such screen");
         }
     } 
 

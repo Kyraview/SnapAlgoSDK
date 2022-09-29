@@ -39,9 +39,9 @@ export default class WalletBubble{
         });
 
         this.bubble.addEventListener('mousemove',this.#mouseMove.bind(this));
-        this.bubble.addEventListener('touchmove', this.#mouseMove.bind(this));
+        this.bubble.addEventListener('touchmove', this.#touchDrag.bind(this));
         this.bubble.addEventListener('mouseup', this.#mouseUp.bind(this));
-        this.bubble.addEventListener('touchup', this.#mouseUp.bind(this));
+        this.bubble.addEventListener('touchend', this.#touchend.bind(this));
         this.bubble.addEventListener('click',this.toggleUi.bind(this));
 
     }
@@ -62,6 +62,8 @@ export default class WalletBubble{
       //bubble chat head thing
       const bubbleElement = document.createElement('div');
       bubbleElement.className = "bubble";
+      console.log(window.matchMedia('(max-width: 600px)').matches);
+      
       bubbleElement.id = "snapAlgoChatHeadBubble";
       const logo = document.createElement('img');
       logo.src = snapAlgoImg;
@@ -144,6 +146,20 @@ export default class WalletBubble{
         }
       
     }
+    #touchend(e){
+      let lastX = this.lastBubbleX;
+      let lastY = this.lastBubbleY;
+      let swidth = $( window ).width();
+      if(this.isdragging && !this.walletMode){
+        
+        if(lastX > (swidth/2)){
+          $(this.bubble).css("top", lastY).css("left", (swidth-55) + "px").css("transition", "all 0.3s");
+        }else{
+          $(this.bubble).css("top", lastY).css("left", "-25px").css("transition", "all 0.3s");
+        }
+      }
+    
+  }
 
     #mouseMove(e){
       this.isdragging = true;
@@ -155,6 +171,26 @@ export default class WalletBubble{
         .css("left", this.bubble.style.left)
         .css("transform", "translate(20px,20px)")
         
+      if(this.walletMode){ 
+        $(this.walletContainer).css("transition-delay", "0s");
+        this.lastX = this.bubble.style.left;
+        this.lastY = this.bubble.style.top;
+      }
+    }
+    #touchDrag(e){
+      e.preventDefault();
+      this.isdragging = true;
+      let touchLocation = e.targetTouches[0];
+      this.lastBubbleX = touchLocation.pageX;
+      this.lastBubbleY = touchLocation.pageY;
+      $(this.walletContainer)
+      .css("transition", "all 0s")
+      .css("top", this.bubble.style.top)
+      .css("left", this.bubble.style.left)
+      .css("transform", "translate(20px,20px)")
+      $(this.bubble).css("transition", "all 0s");
+      this.bubble.style.left = this.lastBubbleX+"px";
+      this.bubble.style.top = this.lastBubbleY+"px";
       if(this.walletMode){ 
         $(this.walletContainer).css("transition-delay", "0s");
         this.lastX = this.bubble.style.left;
@@ -318,7 +354,8 @@ export default class WalletBubble{
       if(this.lastElement === null){
         this.lastElement = this.walletUi.getScreen();
       }
-      this.setElement(this.lastElement);
+      console.log("here in close loader");
+      this.walletUi.renderScreen();
     }
     
     /**

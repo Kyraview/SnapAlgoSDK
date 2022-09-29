@@ -11,18 +11,42 @@ export default class BaseScreen{
         this.wallet = wallet;
         this.walletUI = walletUI;
     }
-    #createImgButton(img){
+    #createImgButton(img, title){
+        let iconHolder = document.createElement('div');
+        this.wallet.injector.inject(iconHolder, "display: flex; flex-direction: column; justify-content: center; margin-left: 5px; margin-right: 5px;");
         let button = document.createElement('button');
         //button.style =  " color:white; width:35px; height:35px; border-radius: 100%;  border: white; cursor: pointer; margin: 5px;";
         button.className = "snapAlgoWalletButton";
-        this.wallet.injector.inject(button, "border: none; background: none;  margin: auto; ");
+        this.wallet.injector.inject(button, "border: none; background: none;  ");
 
         let buttonImg = document.createElement('img');
         buttonImg.src = img;
-        this.wallet.injector.inject(buttonImg,"width: 40px; height: 40px; cursor: pointer; margin: auto;");
-        
+        this.wallet.injector.inject(buttonImg,"width: 40px; height: 40px; cursor: pointer; background: none; margin-right: 5px;");
+        let text = document.createElement('p');
+        text.innerHTML = title;
+        text.dataset.title = title;
+        text.dataset.opacity = '0';
+        text.dataset.mouseOn = false;
+        this.wallet.injector.inject(text, `color:white; font-size: 10pt; text-align: center; opacity: 0; animation-fill-mode: forwards;`)
         button.appendChild(buttonImg);
-        return button;
+        iconHolder.appendChild(button);
+        iconHolder.appendChild(text);
+        buttonImg.addEventListener('mouseover', (e)=>{
+
+            let title = e.target.parentElement.parentElement.lastChild
+            console.log(title);
+            title.style.animation = "fadeIn 1s forwards"
+            
+        })
+        buttonImg.addEventListener('mouseout', (e)=>{
+            
+            
+            let title = e.target.parentElement.parentElement.lastChild;
+            title.style.animation = "";
+            title.style.opacity = "0";
+            
+        })
+        return iconHolder;
     }
     render(){
         let walletContainer = document.createElement("div");
@@ -78,32 +102,32 @@ export default class BaseScreen{
         );
         walletContainer.appendChild(functionsDiv);
 
-        let sendButton = this.#createImgButton(sendImg);
-        this.wallet.injector.inject(sendButton, "background: none; margin-right: 5px;");
+        let sendButton = this.#createImgButton(sendImg, "send");
+        
         sendButton.id = "SnapAlgoWalletSendButton";
         sendButton.addEventListener('click', this.walletUI.toggleSendScreen.bind(this.walletUI));
 
-        let receiveButton = this.#createImgButton(qrImg);
+        let receiveButton = this.#createImgButton(qrImg, "receive");
         receiveButton.id = "SnapAlgoWalletreceiveButton";
-        this.wallet.injector.inject(receiveButton, "background: none; margin-right: 5px;");
+        
         receiveButton.addEventListener('click',this.walletUI.toggleReceiveScreen.bind(this.walletUI));
-        let transactionsButton = this.#createImgButton(logImg);
+        let transactionsButton = this.#createImgButton(logImg,  "history");
         transactionsButton.id = "SnapAlgoWalletTransactionsButton";
-        this.wallet.injector.inject(transactionsButton, "background: none; margin-right: 5px;");
+        
         transactionsButton.addEventListener("click", this.walletUI.toggleLedgerScreen.bind(this.walletUI));
         
-        let swapButton = this.#createImgButton(SwapImg);
+        let swapButton = this.#createImgButton(SwapImg, "swap");
         swapButton.id = "SnapAlgoWalletExchangeButton";
-        this.wallet.injector.inject(swapButton, "background: none; margin-right: 5px;");
+       
         swapButton.addEventListener('click', this.walletUI.toggleExchangeScreen.bind(this.walletUI))
 
-        let assetButton = this.#createImgButton(AssetImg);
+        let assetButton = this.#createImgButton(AssetImg, "assets");
         assetButton.id = "SnapAlgoWalletAssetButton";
-        this.wallet.injector.inject(assetButton, "background: none; margin-right: 5px;");
+        
         assetButton.addEventListener("click", this.walletUI.toggleAssetScreen.bind(this.walletUI));
 
-        let accountButton = this.#createImgButton(AccountImg);
-        this.wallet.injector.inject(accountButton, "background: none; margin-right: 5px;");
+        let accountButton = this.#createImgButton(AccountImg, "user");
+        
         accountButton.addEventListener('click', this.walletUI.toggleAccountScreen.bind(this.walletUI));
 
         functionsDiv.appendChild(assetButton);

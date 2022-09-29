@@ -22,6 +22,8 @@ const masterCSS = `
     justify-content: center;
   }
 
+  
+
   select{
     
     background-color: #963beb;
@@ -36,6 +38,13 @@ const masterCSS = `
   }
   select:hover{
     background-color:#F00699;
+  }
+  .swapSelector{
+    transform:translateY(7px);
+  }
+  .swapSelector:hover{
+    background-color:#F00699;
+    transform:translateY(7px);
   }
   option{
     background-color:#963beb;
@@ -71,8 +80,6 @@ const masterCSS = `
 
   
   .bubble{
-    width: 75px;
-    height: 75px;
     border-radius: 50%;
     position: fixed;
     z-index: 1000000;
