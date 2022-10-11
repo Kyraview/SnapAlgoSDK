@@ -1,5 +1,5 @@
 const IPFSURL = 'https://snapalgo-imgs.netlify.app/imgs' 
-const exchangeImg = IPFSURL+"/exchange.svg"
+const exchangeImg = IPFSURL+"/AlgoIconDownArrow.svg"
 export default class ExchangeScreen{
     constructor(walletUi, wallet){
         this.walletUi = walletUi;

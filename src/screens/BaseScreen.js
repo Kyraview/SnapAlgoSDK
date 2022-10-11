@@ -4,7 +4,7 @@ const qrImg = IPFSURL+ "/receive-outline.svg";
 const logImg = IPFSURL+ "/ledger-outline.svg";
 const AssetImg = IPFSURL+ "/wallet-outline.svg";
 const AccountImg = IPFSURL+ "/account-outline.svg";
-const SwapImg = IPFSURL+"/swap.svg"
+const SwapImg = IPFSURL+"/AlgoIconExchange.svg"
 
 export default class BaseScreen{
     constructor(walletUI, wallet){
