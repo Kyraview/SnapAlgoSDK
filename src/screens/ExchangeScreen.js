@@ -289,7 +289,7 @@ export default class ExchangeScreen{
         holder.appendChild(this.wallet.masterBreak.cloneNode(true));
         
         holder.appendChild(outputInfo);
-        holder.appendChild(masterBreak.cloneNode(true));
+        holder.appendChild(this.wallet.masterBreak.cloneNode(true));
         
         holder.appendChild(emailInput);
         holder.appendChild(this.wallet.masterBreak.cloneNode(true));
