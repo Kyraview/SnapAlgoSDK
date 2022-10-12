@@ -64,6 +64,7 @@ export default class WalletBubble{
       bubbleElement.className = "bubble";
       console.log(window.matchMedia('(max-width: 600px)').matches);
       
+      
       bubbleElement.id = "snapAlgoChatHeadBubble";
       const logo = document.createElement('img');
       logo.src = snapAlgoImg;
@@ -79,23 +80,27 @@ export default class WalletBubble{
       walletContainer.id = "snapAlgoWalletContainer";
       walletContainer.className = "gradient-border";
       this.walletContainer = walletContainer;
+      this.injector.inject(this.walletContainer);
       document.body.appendChild(walletContainer);
       
       //wallet body
       this.walletBody = document.createElement('div');
       this.walletBody.className = "wallet-body";
+      this.injector.inject(this.walletBody);
       walletContainer.appendChild(this.walletBody);
 
       //html box
       this.walletHtmlBox = document.createElement('div');
       this.walletHtmlBox.id = "snapAlgoWalletHtmlBox";
       this.walletHtmlBox.className = "wallet-html-box";
+      this.injector.inject(this.walletHtmlBox);
       this.walletBody.appendChild(this.walletHtmlBox);
 
       //wallet footer
       this.walletFooter = document.createElement('div');
       this.walletFooter.className = "wallet-footer";
-      this.walletFooter.id = "snapAlgoWalletWalletFooter"
+      this.walletFooter.id = "snapAlgoWalletWalletFooter";
+      this.injector.inject(this.walletFooter);
       this.walletBody.appendChild(this.walletFooter);
       
       
