@@ -95,7 +95,7 @@ export default class WalletBubble{
       this.walletHtmlBox = document.createElement('div');
       this.walletHtmlBox.id = "snapAlgoWalletHtmlBox";
       this.walletHtmlBox.className = "wallet-html-box";
-      this.injector.inject(this.walletHtmlBox);
+      this.injector.inject(this.walletHtmlBox, "height: 95%;");
       this.walletBody.appendChild(this.walletHtmlBox);
 
       //wallet footer

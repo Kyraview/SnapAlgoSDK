@@ -18,7 +18,7 @@ export default class SendScreen{
             opts = {};
         }
         let holder = document.createElement("div");
-        this.wallet.injector.inject(holder, "display:block; margin-top: 20px;");
+        this.wallet.injector.inject(holder, "display:block; margin-top: 20px; height: 100%;");
         let container = document.createElement('div');
         this.wallet.injector.inject(container, "margin-left: 25px; margin-right: 25px;")
         holder.appendChild(container);

@@ -293,7 +293,6 @@ export default class ExchangeScreen{
         
         holder.appendChild(emailInput);
         holder.appendChild(this.wallet.masterBreak.cloneNode(true));
-        holder.appendChild(this.wallet.masterBreak.cloneNode(true));
         holder.appendChild(cancelButton);
         holder.appendChild(swapButton);
         
