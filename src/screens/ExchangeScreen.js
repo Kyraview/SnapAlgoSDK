@@ -1,5 +1,5 @@
 const IPFSURL = 'https://snapalgo-imgs.netlify.app/imgs' 
-const exchangeImg = IPFSURL+"/exchange.svg"
+const exchangeImg = IPFSURL+"/AlgoIconDownArrow.svg"
 export default class ExchangeScreen{
     constructor(walletUi, wallet){
         this.walletUi = walletUi;
@@ -156,7 +156,7 @@ export default class ExchangeScreen{
         swapImg.src = exchangeImg;
         swapImg.width = "50"
         swapImg.height = "50"
-        this.wallet.injector.inject(swapImg, "width: 50px; height: 50px;");
+        this.wallet.injector.inject(swapImg, "width: 50px; height: 50px; border-radius: 100%; margin: 8px;");
         let swapHolder = document.createElement('div');
         this.wallet.injector.inject(swapHolder, "display: flex; justify-content: center;");
         swapHolder.appendChild(swapImg)
@@ -274,31 +274,26 @@ export default class ExchangeScreen{
         this.wallet.injector.inject(cancelButton, "width: 75px; height: 35px;");
         cancelButton.addEventListener('click', this.cancelSwap.bind(this));
 
-        const initBreak = document.createElement('br');
-        const masterBreak = this.wallet.injector.inject(initBreak, "display: block;");
-        const initSpacer = document.createElement('br');
-        const masterSpacer = this.wallet.injector.inject(initSpacer, "display: block;");
+        
 
         
         
         
         holder.appendChild(inputTitle)
-        holder.appendChild(masterBreak.cloneNode(true));
+        holder.appendChild(this.wallet.masterBreak.cloneNode(true));
         
         holder.appendChild(inputInfo);
-        holder.appendChild(masterBreak.cloneNode(true));
+        holder.appendChild(this.wallet.masterBreak.cloneNode(true));
         
         holder.appendChild(outputTitle)
-        holder.appendChild(masterBreak.cloneNode(true));
+        holder.appendChild(this.wallet.masterBreak.cloneNode(true));
         
         holder.appendChild(outputInfo);
         holder.appendChild(masterBreak.cloneNode(true));
         
         holder.appendChild(emailInput);
-        holder.appendChild(masterBreak.cloneNode(true));
-        holder.appendChild(masterBreak.cloneNode(true));
-        holder.appendChild(masterBreak.cloneNode(true));
-        holder.appendChild(masterBreak.cloneNode(true));
+        holder.appendChild(this.wallet.masterBreak.cloneNode(true));
+        holder.appendChild(this.wallet.masterBreak.cloneNode(true));
         holder.appendChild(cancelButton);
         holder.appendChild(swapButton);
         

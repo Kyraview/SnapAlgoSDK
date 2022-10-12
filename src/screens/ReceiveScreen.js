@@ -14,8 +14,8 @@ export default class ReceiveScreen{
         this.wallet.injector.inject(holder, "display: flex; justify-content: center; margin-top: 20px;");
         let recDiv = document.createElement('div');
         this.wallet.injector.inject(recDiv, "display:flex; justify-content: center;");
-        holder.appendChild(document.createElement('br'));
-        holder.appendChild(document.createElement('br'));
+        holder.appendChild(this.wallet.masterBreak.cloneNode(true));
+        holder.appendChild(this.wallet.masterBreak.cloneNode(true));
         holder.appendChild(recDiv);
         let reciveFlow = document.createElement('iframe');
         this.wallet.injector.inject(reciveFlow, "width: 100%; height: 150px;");

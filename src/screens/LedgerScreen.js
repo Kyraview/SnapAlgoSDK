@@ -11,15 +11,15 @@ export default class LedgerScreen{
             return this.WalletUi.preLoadTransactions().then(this.render.bind(this));
         }
         let holder = document.createElement("div");
-        this.wallet.injector.inject(holder, "justify-content: center; display: flex; flex-direction: column; align-items: center;");
+        this.wallet.injector.inject(holder, "justify-content: center; display: flex; flex-direction: column; align-items: center; height:55%;");
         let title = document.createElement('p');
         title.innerHTML = "Transaction History";
         title.className = "mainFont";
-        this.wallet.injector.inject(title, "font-size: 20px; margin-top: 25px; margin-bottom: 10px display: block; align-self: left;");
+        this.wallet.injector.inject(title, "font-size: 20px; margin-top: 10px; margin-bottom: 10px display: block; align-self: left;");
         holder.appendChild(title);
         let transactionContainer = document.createElement("div");
         transactionContainer.className = "SnapAlgoLedgerContainer";
-        this.wallet.injector.inject(transactionContainer, transactionContainer.style = "overflow-y: auto; height: 300px; width: 95%; display: flex; flex-direction: column; align-items: center;");
+        this.wallet.injector.inject(transactionContainer, "overflow-y: auto; height: 350px; margin-top: 10px; width: 95%; display: flex; flex-direction: column; align-items: center;");
         holder.appendChild(transactionContainer);
         
         for(let transaction of this.WalletUi.transactions.transactions){

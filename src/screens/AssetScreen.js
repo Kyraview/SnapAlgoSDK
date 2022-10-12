@@ -280,13 +280,12 @@ export default class AssetScreen{
         
         backButton.src = backImg;
         backButton.className = "snapAlgoDefaultButton-alt";
+        backButton.id = "assetBackButton"
         this.wallet.injector.inject(backButton, `
-        position: absolute;
         width: 35px;
         height: 35px;
         border-radius: 100%;
-        left: 32px;
-        top: 135px;
+        transform: translate(100%, 10%);
         cursor: pointer;
         `);
         backButton.addEventListener('click', ()=>{
@@ -456,7 +455,7 @@ export default class AssetScreen{
             viewHeight = 250;
             viewHeight = 300;
             if(this.subScreen === "receive"){
-                viewHeight = 400;
+                viewHeight = 460;
             }
             if(this.subScreen === "send"){
                 viewHeight = 450;

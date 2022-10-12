@@ -37,6 +37,8 @@ export default class WalletBubble{
         this.bubble.addEventListener('mousedown',function(){
             this.isdragging = false;
         });
+        const initBreak = document.createElement('div');
+        this.masterBreak = this.injector.inject(initBreak, "display: block; height: 25px;");
 
         this.bubble.addEventListener('mousemove',this.#mouseMove.bind(this));
         this.bubble.addEventListener('touchmove', this.#touchDrag.bind(this));
@@ -80,7 +82,7 @@ export default class WalletBubble{
       walletContainer.id = "snapAlgoWalletContainer";
       walletContainer.className = "gradient-border";
       this.walletContainer = walletContainer;
-      this.injector.inject(this.walletContainer);
+      this.injector.inject(walletContainer);
       document.body.appendChild(walletContainer);
       
       //wallet body

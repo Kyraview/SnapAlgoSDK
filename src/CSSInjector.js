@@ -186,6 +186,28 @@ const masterCSS = `
     transition: all .4s ease-in-out;
   }
 
+  #assetBackButton{
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    transform: translate(100%, 10%);
+    cursor: pointer;
+  }
+  #assetBackButton:hover {
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    cursor: pointer;
+    background-position: 70% -0%;
+    background-size: 500% 500%;
+    color: white;
+    transform: translate(100%, 10%);
+    moz-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    -webkit-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+  }
+
   .snapAlgoDefaultButton:hover {
     background-position: 70% -0%;
     background-size: 500% 500%;
@@ -278,7 +300,7 @@ export default class CSSInjector {
         return output;
     }
     inject(element, css){
-        let injectedCSS = 'all:unset;';
+        let injectedCSS = "all:unset; font-family: 'Kantumruy Pro', sans-serif;";
         const elCSS = this.cssTree[element.nodeName.toLowerCase()]
         const classCSS = this.cssTree['.'+element.className]
         const idCSS = this.cssTree['#'+element.id]
@@ -287,6 +309,7 @@ export default class CSSInjector {
         injectedCSS += (classCSS && classCSS.css)? classCSS.css : '' 
         injectedCSS += (idCSS && idCSS.css)? idCSS.css : ''
         injectedCSS += inlineCSS? inlineCSS : ''
+        
         if(elCSS){
             element = this.#injectPsudo(element, elCSS, injectedCSS)
         }

@@ -25,7 +25,7 @@ export default class SendScreen{
 
         let sendDiv = document.createElement('div');
         this.wallet.injector.inject(sendDiv, "display:flex; margin-left: 25px; margin-right: 25px;");
-        holder.appendChild(document.createElement('br'));
+        holder.appendChild(this.wallet.masterBreak.cloneNode(true));
         let sendAddresLabel = document.createElement('p');
         this.wallet.injector.inject(sendAddresLabel);
         sendAddresLabel.innerHTML = "recipient address";
@@ -91,8 +91,8 @@ export default class SendScreen{
         
         
         container.appendChild(amountDiv);
-        container.appendChild(document.createElement('br'));
-        container.appendChild(document.createElement('br'));
+        container.appendChild(this.wallet.masterBreak.cloneNode(true));
+        container.appendChild(this.wallet.masterBreak.cloneNode(true));
         const sendButtonDiv = document.createElement('div');
         this.wallet.injector.inject(sendButtonDiv, "display:flex; justify-content: center;");
         container.appendChild(sendButtonDiv);
