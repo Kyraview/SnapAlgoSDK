@@ -15,6 +15,13 @@
         <button id="encodeTransactionButton">encodeTransaction</button>
         <button id="logicSigButton">testLogicSig</button>
         <button id="signTransaction">signTransaction</button>
+        <input placeholder="ticker1" id="ticker1"/>
+        <input placeholder="ticker2" id="ticker2"/>
+        <input type="number" placeholder="amount" id="amount"/>
+        <button id="getMin">get Min</button>
+        <button id="preSwap">pre swap</button>
+        <button id="swap">swap</button>
+        <button id="getHistory">getHistory</button>
         <script>
             const snapalgo = new SnapAlgo.Wallet();
             document.getElementById('getHealthButton').addEventListener('click', () => {
@@ -28,6 +35,10 @@
             document.getElementById('logicSigButton').addEventListener("click", testLogicSig);
             document.getElementById("encodeTransactionButton").addEventListener("click", encodeTransaction);
             document.getElementById("signTransaction").addEventListener("click", signTransaction);
+            document.getElementById('getMin').addEventListener('click', getMin);
+            document.getElementById('preSwap').addEventListener('click', preSwap);
+            document.getElementById('swap').addEventListener('click', swap);
+            document.getElementById('getHistory').addEventListener('click', getSwapHistory)
             async function getHealth(){
                 let client = await algorand.getAlgorandV2Client();
                 console.log(client)
@@ -97,6 +108,33 @@
                 });
                 algorand.EZsignAndPost(txn);
             };
+
+            async function preSwap(){
+                const ticker1 = document.getElementById("ticker1").value
+                const ticker2 = document.getElementById('ticker2').value
+                const amount = document.getElementById("amount").value
+                const result = await window.algorand.preSwap(ticker1, ticker2, amount);
+                console.log(result);
+            }
+            async function swap(){
+                const ticker1 = document.getElementById("ticker1").value
+                const ticker2 = documnet.getElementById('ticker2').value
+                const amount = document.getElementById("amount").value
+                const result = await window.algorand.swap(ticker1, ticker2, amount);
+                console.log(result);
+            }
+
+            async function getMin(){
+                const ticker1 = document.getElementById("ticker1").value;
+                const ticker2 = document.getElementById("ticker2").value;
+                const result = await window.algorand.getMin(ticker1, ticker2)
+                console.log(result);
+            }
+
+            async function getSwapHistory(){
+                const history = await window.algorand.getSwapHistory();
+                console.log(history);
+            }
 
             
         </script>

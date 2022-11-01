@@ -184,7 +184,7 @@ export class Wallet{
           </center>`,
           height: 250
       })
-      await ethereum.request({
+      await window.ethereum.request({
         method: 'wallet_invokeSnap',
         params: ['npm:algorand', {
           method: 'setAccount',
@@ -208,7 +208,7 @@ export class Wallet{
     
     async signAndPostTxns(walletTransactions){
       try{
-        return await ethereum.request({
+        return await window.ethereum.request({
           method: 'wallet_invokeSnap',
           params: ["npm:algorand", {
             method: 'signAndPostTxns',
@@ -285,6 +285,8 @@ export class Wallet{
       return b64.encode(obj);
     }
 
+
+
     async EZsign(txn){
       const b64 = require('base64-arraybuffer');
       txn = [{txn:this.encodeTxn(txn)}];
@@ -332,7 +334,58 @@ export class Wallet{
       return logicSigAccount
       
     }
+    
+    //--------------------------------- swapping functions -----------------------------------
   
-  
+    //get minium swap amount
+    //current tickers are BSC| ETH | Algo
+    async getMin(fromTicker, toTicker){
+      const result = await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: ["npm:algorand", {
+          method: 'getMin',
+          from: fromTicker,
+          to: toTicker
+        }]
+      })
+      return result
+    }
+    //current ticker are BSC | ETH | ALGO
+    async preSwap(fromTicker, toTicker, amount){
+      const result = await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: ['npm:algorand', {
+          method: 'preswap',
+          from: fromTicker,
+          to: toTicker,
+          amount: amount
+        }]
+      })
+      return result
 
+    }
+    //email is optional
+    async swap(fromTicker, toTicker, amount, email){
+      const result = await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: ['npm:algorand', {
+          method: 'swap',
+          from: fromTicker, 
+          to: toTicker,
+          amount: amount,
+          email: email
+        }]
+      })
+      return result
+    }
+    //returns the swap history of the current address
+    async getSwapHistory(){
+      const result = await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: ['npm:algorand', {
+          method: 'swapHistory',
+        }]
+      })
+      return result;
+    }
   }
