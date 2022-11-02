@@ -73,7 +73,7 @@ export default class AssetScreen{
                     ethereum.request({
                         method: 'wallet_invokeSnap',
                         params: ['npm:algorand', {
-                          method: 'AssetOptIn',
+                          method: 'assetOptIn',
                           assetIndex: Number(searchTerm.id),
                           testnet : this.walletUI.wallet.testnet
                         }]        
@@ -91,9 +91,11 @@ export default class AssetScreen{
                     ethereum.request({
                         method: 'wallet_invokeSnap',
                         params: ['npm:algorand', {
-                            method: 'AssetOptOut',
-                            assetIndex: Number(searchTerm.id),
-                            testnet: this.walletUI.wallet.testnet
+                            method: 'assetOptOut',
+                            params:{
+                                assetIndex: Number(searchTerm.id),
+                                testnet: this.walletUI.wallet.testnet
+                            }
                         }]
                     }).then(
                         async ()=>{
@@ -377,9 +379,11 @@ export default class AssetScreen{
                         method: 'wallet_invokeSnap',
                         params: ["npm:algorand",{
                             method: 'transfer',
-                            to: addressInput.value,
-                            amount: Number(amountInput.value)*(10**6),
-                            testnet: this.wallet.testnet,
+                            params:{
+                                to: addressInput.value,
+                                amount: Number(amountInput.value)*(10**6),
+                                testnet: this.wallet.testnet,
+                            }
                         }]
                     });
                 }
@@ -388,10 +392,12 @@ export default class AssetScreen{
                     params: ['npm:algorand', {
                         
                         method:  'transferAsset',
-                        assetIndex: Number(asset['asset-id']),
-                        to: addressInput.value,
-                        amount: Number(amountInput.value)*(10**Number(decimals)),
-                        testnet: this.wallet.testnet,
+                        params:{
+                            assetIndex: Number(asset['asset-id']),
+                            to: addressInput.value,
+                            amount: Number(amountInput.value)*(10**Number(decimals)),
+                            testnet: this.wallet.testnet,
+                        }
                     }]
                 })
             });

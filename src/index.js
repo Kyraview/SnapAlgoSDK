@@ -188,7 +188,9 @@ export class Wallet{
         method: 'wallet_invokeSnap',
         params: ['npm:algorand', {
           method: 'setAccount',
-          address: 	this.enabledAccounts[0]
+          params:{
+            address: 	this.enabledAccounts[0]
+          }
         }]        
       })
       this.bubble.walletUi.screen = 'base';
@@ -212,7 +214,9 @@ export class Wallet{
           method: 'wallet_invokeSnap',
           params: ["npm:algorand", {
             method: 'signAndPostTxns',
-            txns: walletTransactions
+            params:{
+              txns: walletTransactions
+            }
           }]
         })
       }
@@ -248,7 +252,9 @@ export class Wallet{
           method: 'wallet_invokeSnap',
           params: ["npm:algorand", {
             method: 'signTxns',
-            txns: walletTransactions
+            params:{
+              txns: walletTransactions
+            }
           }]
         })
       }
@@ -263,7 +269,9 @@ export class Wallet{
           method: 'wallet_invokeSnap',
           params: ["npm:algorand", {
             method: 'postTxns',
-            stxns: stxns
+            params:{
+              stxns: stxns
+            }
           }]
         })
       }
@@ -320,7 +328,9 @@ export class Wallet{
           method: 'wallet_invokeSnap',
           params: ["npm:algorand", {
             method: 'signLogicSig',
-            logicSigAccount: EncodedLogicSigAccount,
+            params:{
+              logicSigAccount: EncodedLogicSigAccount,
+            }
           }]
         })
       }
@@ -344,8 +354,10 @@ export class Wallet{
         method: 'wallet_invokeSnap',
         params: ["npm:algorand", {
           method: 'getMin',
-          from: fromTicker,
-          to: toTicker
+          params:{
+            from: fromTicker,
+            to: toTicker
+          }
         }]
       })
       return result
@@ -356,9 +368,11 @@ export class Wallet{
         method: 'wallet_invokeSnap',
         params: ['npm:algorand', {
           method: 'preswap',
-          from: fromTicker,
-          to: toTicker,
-          amount: amount
+          params:{
+            from: fromTicker,
+            to: toTicker,
+            amount: amount
+          }
         }]
       })
       return result
@@ -370,10 +384,12 @@ export class Wallet{
         method: 'wallet_invokeSnap',
         params: ['npm:algorand', {
           method: 'swap',
-          from: fromTicker, 
-          to: toTicker,
-          amount: amount,
-          email: email
+          params:{
+            from: fromTicker, 
+            to: toTicker,
+            amount: amount,
+            email: email
+          }
         }]
       })
       return result

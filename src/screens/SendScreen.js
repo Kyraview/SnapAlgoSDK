@@ -115,9 +115,11 @@ export default class SendScreen{
                         method:  'wallet_invokeSnap',
                         params: ['npm:algorand', {
                             method:  'transfer',
-                            testnet:  this.wallet.testnet,
-                            to: sendAddress.value,
-                            amount: Number(amount.value)*1000000
+                            params:{
+                                testnet:  this.wallet.testnet,
+                                to: sendAddress.value,
+                                amount: Number(amount.value)*1000000
+                            }
                         }]
                     }).then(this.updateAndRender.bind(this));
                 }
@@ -127,9 +129,11 @@ export default class SendScreen{
                         params: ['npm:algorand', {
                             
                             method:  'transferAsset',
-                            assetIndex: Number(assetId),
-                            to: sendAddress.value,
-                            amount: Number(amount.value)*(10**Number(document.getElementById("snapAlgoSendCoinOption"+assetId).dataset.decimals))
+                            params:{
+                                assetIndex: Number(assetId),
+                                to: sendAddress.value,
+                                amount: Number(amount.value)*(10**Number(document.getElementById("snapAlgoSendCoinOption"+assetId).dataset.decimals))
+                            }
                         }]
                     })
                 }

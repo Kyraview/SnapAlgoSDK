@@ -157,7 +157,9 @@ export default class AccountScreen{
             params: [
               "npm:algorand", {
                 method: 'createAccount',
-                name: accountName
+                params:{
+                    name: accountName
+                }
               }
             ]
         });

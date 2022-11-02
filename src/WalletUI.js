@@ -43,7 +43,9 @@ export default class WalletUI{
             method:  'wallet_invokeSnap',
             params: ['npm:algorand', {
               method:  'getBalance',
-              testnet:  this.wallet.testnet
+              params:{
+                testnet:  this.wallet.testnet
+              }
             }]
           })
           .then((balance)=>{
@@ -62,7 +64,9 @@ export default class WalletUI{
             params: ['npm:algorand',
                 {
                     method: 'getTransactions',
-                    testnet: this.wallet.testnet
+                    params:{
+                        testnet: this.wallet.testnet
+                    }
                 }
             ] 
         }).then((result)=>{
@@ -76,7 +80,9 @@ export default class WalletUI{
             params: ['npm:algorand',
                 {
                     method: 'getAssets',
-                    testnet: this.wallet.testnet
+                    params:{
+                        testnet: this.wallet.testnet
+                    }
                 }
             ]
         })
