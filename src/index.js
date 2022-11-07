@@ -168,7 +168,7 @@ export class Wallet{
               this.account = this.accountSelect.value;
             }
             this.#connect();
-            resolve({enabledAccounts: [this.account], genisisId: this.genisisId, genisisHash: this.genisisHash});
+            resolve({accounts: [this.account], genisisID: this.genisisId, genisisHash: this.genisisHash});
             
           }
           connectButton.addEventListener('click', selectFunc.bind(this));
