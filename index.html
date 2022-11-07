@@ -28,9 +28,9 @@
                 getHealth();
             });
             console.log(window.algorand)
-            document.getElementById('enableButton').addEventListener('click', function() {
+            document.getElementById('enableButton').addEventListener('click', async function() {
                 
-                algorand.enable();
+                console.log(await algorand.enable())
             });
             document.getElementById('logicSigButton').addEventListener("click", testLogicSig);
             document.getElementById("encodeTransactionButton").addEventListener("click", encodeTransaction);

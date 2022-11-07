@@ -52,12 +52,14 @@ export class Wallet{
           throw(e);
         }
       }
+      console.log("about to load accounts")
       this.accounts = await ethereum.request({
         method: 'wallet_invokeSnap',
         params: ["npm:algorand", {
-          method: 'getAccounts',
+          method: 'getAccounts'
         }]
       })
+      console.log(this.accounts);
       let genisisIdProvided = false;
       let genisisHashProvided = false;
       let accountsProvided = false;
@@ -143,19 +145,7 @@ export class Wallet{
         
         let connectButton = document.createElement('button');
         connectButton.innerHTML = "Connect";
-        const selectFunc = () => {
-          if(this.networkSelect){
-            this.genisisId = this.networkSelect.value;
-            this.genisisHash = IdTable[this.networkSelect.value];
-            
-          }
-          if(this.accountSelect){
-            this.enabledAccounts = [this.accountSelect.value];
-            this.account = this.accountSelect.value;
-          }
-          this.#connect();
-        }
-        connectButton.addEventListener('click', selectFunc.bind(this));
+
         connectButton.className = "snapAlgoDefaultButton-alt";
         
         connectButton = this.injector.inject(connectButton, "height: 35px; font-size: 15px;");
@@ -166,6 +156,23 @@ export class Wallet{
         this.bubble.setWidth(400);
         this.bubble.setHeight(300);
         this.bubble.open();
+        return new Promise(((resolve, reject)=>{
+          const selectFunc = async () => {
+            if(this.networkSelect){
+              this.genisisId = this.networkSelect.value;
+              this.genisisHash = IdTable[this.networkSelect.value];
+              
+            }
+            if(this.accountSelect){
+              this.enabledAccounts = [this.accountSelect.value];
+              this.account = this.accountSelect.value;
+            }
+            this.#connect();
+            resolve({enabledAccounts: [this.account], genisisId: this.genisisId, genisisHash: this.genisisHash});
+            
+          }
+          connectButton.addEventListener('click', selectFunc.bind(this));
+        }).bind(this))
       }
       
           
