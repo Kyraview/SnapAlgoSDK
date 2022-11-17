@@ -217,12 +217,17 @@ export class Wallet{
     
     async signAndPostTxns(walletTransactions){
       try{
+        let testnet = false;
+        if(this.genisisHash === "SGO1GKSzyE7IEPItTxCByw9x8FmnrCDexi9/cOUJOiI="){
+          testnet = true;
+        }
         return await window.ethereum.request({
           method: 'wallet_invokeSnap',
           params: ["npm:algorand", {
             method: 'signAndPostTxns',
             params:{
-              txns: walletTransactions
+              txns: walletTransactions,
+              testnet: testnet
             }
           }]
         })
@@ -256,12 +261,17 @@ export class Wallet{
         throw("not enabled");
       }
       try{
+        let testnet = false;
+        if(this.genisisHash === "SGO1GKSzyE7IEPItTxCByw9x8FmnrCDexi9/cOUJOiI="){
+          testnet = true;
+        }
         return await ethereum.request({
           method: 'wallet_invokeSnap',
           params: ["npm:algorand", {
             method: 'signTxns',
             params:{
-              txns: walletTransactions
+              txns: walletTransactions,
+              testnet: testnet
             }
           }]
         })
@@ -386,6 +396,10 @@ export class Wallet{
     }
     //email is optional
     async swap(fromTicker, toTicker, amount, email){
+      let testnet = false;
+      if(this.genisisHash === "SGO1GKSzyE7IEPItTxCByw9x8FmnrCDexi9/cOUJOiI="){
+        testnet = true;
+      }
       const result = await ethereum.request({
         method: 'wallet_invokeSnap',
         params: ['npm:algorand', {
@@ -394,7 +408,8 @@ export class Wallet{
             from: fromTicker, 
             to: toTicker,
             amount: amount,
-            email: email
+            email: email,
+            testnet: testnet
           }
         }]
       })
