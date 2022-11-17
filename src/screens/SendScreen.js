@@ -143,7 +143,7 @@ export default class SendScreen{
       let screen = this.walletUi.getScreen();
       screen.element.appendChild(holder);
       screen.width = 650;
-      screen.height = 400;
+      screen.height = 450;
       if(opts.hasOwnProperty("silent")){
         if(opts.silent){
           screen.silent = true;

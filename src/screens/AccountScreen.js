@@ -178,22 +178,22 @@ export default class AccountScreen{
         this.wallet.injector.inject(holder);
         holder.appendChild(this.getStartScreen());
         let width =  400;
-        let height = 250;
+        let height = 300;
 
         if(this.screen === 'createScreen'){
             holder.appendChild(this.getCreateScreen());
-            height = 350;
+            height = 365;
         }
 
         if(this.screen === 'infoScreen'){
             holder.appendChild(this.getInfoScreen());
-            height = 350;
+            height = 365;
         }
 
         if(this.screen === 'importScreen'){
             
             holder.appendChild(this.getImportScreen());
-            height = 350;
+            height = 365;
         }
 
         let screen = this.walletUI.getScreen();

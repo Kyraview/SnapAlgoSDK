@@ -89,7 +89,7 @@ export default class LedgerScreen{
         }
 
         let screen = this.WalletUi.getScreen();
-        screen.height = 500;
+        screen.height = 550;
         screen.element.appendChild(holder);
         this.wallet.render(screen);
 

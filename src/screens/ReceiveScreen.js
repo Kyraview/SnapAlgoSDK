@@ -25,7 +25,7 @@ export default class ReceiveScreen{
         recDiv.appendChild(reciveFlow);
         let screen = this.walletUI.getScreen();
         screen.element.appendChild(holder);
-        screen.height = 350;
+        screen.height = 450;
         screen.width = 400;
         if(opts.hasOwnProperty('silent')){
             if(opt.silent){

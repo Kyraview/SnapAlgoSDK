@@ -250,6 +250,7 @@ export class Wallet{
       const network = networkTable[this.genisisId];
       return new HTTPClient().get("index", network);
     }
+    
     async signTxns(walletTransactions){
       if(!this.enabled){
         throw("not enabled");
@@ -285,10 +286,6 @@ export class Wallet{
       catch(error){
         this.#formatError(error);
       }
-    }
-
-    openBubble(){
-      
     }
 
     encodeTxn(txn){
@@ -351,6 +348,8 @@ export class Wallet{
       return logicSigAccount
       
     }
+
+    
     
     //--------------------------------- swapping functions -----------------------------------
   
@@ -409,6 +408,15 @@ export class Wallet{
           method: 'swapHistory',
         }]
       })
+      return result;
+    }
+    async getAddress(){
+      const result = await window.ethereum.request({
+        method: 'wallet_invokeSnap',
+        params:['npm:algorand',{
+            method: 'getAddress'
+        }]
+      });
       return result;
     }
   }
