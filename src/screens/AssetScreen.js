@@ -74,8 +74,10 @@ export default class AssetScreen{
                         method: 'wallet_invokeSnap',
                         params: ['npm:algorand', {
                           method: 'assetOptIn',
-                          assetIndex: Number(searchTerm.id),
-                          testnet : this.walletUI.wallet.testnet
+                          params:{
+                            assetIndex: Number(searchTerm.id),
+                            testnet : this.walletUI.wallet.testnet
+                          }
                         }]        
                       }).then(
                         async ()=>{
