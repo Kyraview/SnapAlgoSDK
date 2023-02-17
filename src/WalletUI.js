@@ -41,12 +41,15 @@ export default class WalletUI{
         });
         let balance = window.ethereum.request({
             method:  'wallet_invokeSnap',
-            params: ['npm:algorand', {
-              method:  'getBalance',
-              params:{
-                testnet:  this.wallet.testnet
-              }
-            }]
+            params: {
+                snapId:'npm:algorand', 
+                request:{
+                    method:  'getBalance',
+                    params:{
+                        testnet:  this.wallet.testnet
+                    }
+                }
+            }
           })
           .then((balance)=>{
             this.userBalance = balance;
@@ -61,14 +64,15 @@ export default class WalletUI{
 
     async preLoadTransactions(){
         return await window.ethereum.request({ method: 'wallet_invokeSnap', 
-            params: ['npm:algorand',
-                {
+            params: {
+                snapId:'npm:algorand',
+                request:{
                     method: 'getTransactions',
                     params:{
                         testnet: this.wallet.testnet
                     }
                 }
-            ] 
+            } 
         }).then((result)=>{
             this.transactions = result;
             return result;
@@ -77,14 +81,15 @@ export default class WalletUI{
 
     async preLoadAssets(){
         const result = await window.ethereum.request({ method: 'wallet_invokeSnap',
-            params: ['npm:algorand',
-                {
+            params: {
+                snapId:'npm:algorand',
+                request:{
                     method: 'getAssets',
                     params:{
                         testnet: this.wallet.testnet
                     }
                 }
-            ]
+            }
         })
 
         const algo = {amount:this.userBalance, "asset-id": 0, asset: [{

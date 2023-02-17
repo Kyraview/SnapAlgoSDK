@@ -35,12 +35,12 @@ export class Wallet{
         "betanet-v1.0":	"mFgazF+2uRS1tMiL9dsj01hJGySEmPN28B/TjjvpVW0="
       };
       try{
-        const thing = await ethereum.request({
-          method: 'wallet_enable',
-          params: [{
-            wallet_snap: { ["npm:algorand"]: {} },
-          }]
-        })
+        await ethereum.request({
+          method: 'wallet_requestSnaps',
+          params: {
+            'npm:algorand': {},
+          },
+        });
       }
       catch(e){
         if(e.code === 4001){
@@ -55,9 +55,12 @@ export class Wallet{
       console.log("about to load accounts")
       this.accounts = await ethereum.request({
         method: 'wallet_invokeSnap',
-        params: ["npm:algorand", {
-          method: 'getAccounts'
-        }]
+        params: {
+          snapId:"npm:algorand", 
+          request:{
+            method: 'getAccounts'
+          }
+        }
       })
       console.log(this.accounts);
       let genisisIdProvided = false;
@@ -193,12 +196,15 @@ export class Wallet{
       })
       await window.ethereum.request({
         method: 'wallet_invokeSnap',
-        params: ['npm:algorand', {
-          method: 'setAccount',
-          params:{
-            address: 	this.enabledAccounts[0]
+        params: {
+          snapId:'npm:algorand', 
+          request:{
+            method: 'setAccount',
+            params:{
+              address: 	this.enabledAccounts[0]
+            }
           }
-        }]        
+        }        
       })
       this.bubble.walletUi.screen = 'base';
       await this.bubble.preLoad();
@@ -223,13 +229,15 @@ export class Wallet{
         }
         return await window.ethereum.request({
           method: 'wallet_invokeSnap',
-          params: ["npm:algorand", {
-            method: 'signAndPostTxns',
-            params:{
-              txns: walletTransactions,
-              testnet: testnet
-            }
-          }]
+          params: {
+            snapId: "npm:algorand", 
+            request: {
+              method: 'signAndPostTxns',
+              params:{
+                txns: walletTransactions,
+                testnet: testnet
+              }
+          }}
         })
       }
       catch(error){
@@ -267,13 +275,15 @@ export class Wallet{
         }
         return await ethereum.request({
           method: 'wallet_invokeSnap',
-          params: ["npm:algorand", {
+          params: {
+            snapId:"npm:algorand", 
+            request:{
             method: 'signTxns',
             params:{
               txns: walletTransactions,
               testnet: testnet
             }
-          }]
+          }}
         })
       }
       catch(error){
@@ -285,12 +295,14 @@ export class Wallet{
       try{
         return await ethereum.request({
           method: 'wallet_invokeSnap',
-          params: ["npm:algorand", {
-            method: 'postTxns',
-            params:{
-              stxns: stxns
-            }
-          }]
+          params: {
+            snapId:"npm:algorand", 
+            request:{
+              method: 'postTxns',
+              params:{
+                stxns: stxns
+              }
+          }}
         })
       }
       catch(error){
@@ -340,12 +352,14 @@ export class Wallet{
       try{
         const EncodedSignedAccount = await ethereum.request({
           method: 'wallet_invokeSnap',
-          params: ["npm:algorand", {
+          params: {
+            snapId:"npm:algorand", 
+            request:{
             method: 'signLogicSig',
             params:{
               logicSigAccount: EncodedLogicSigAccount,
             }
-          }]
+          }}
         })
       }
       catch(error){
@@ -368,13 +382,15 @@ export class Wallet{
     async getMin(fromTicker, toTicker){
       const result = await ethereum.request({
         method: 'wallet_invokeSnap',
-        params: ["npm:algorand", {
-          method: 'getMin',
-          params:{
-            from: fromTicker,
-            to: toTicker
-          }
-        }]
+        params: {
+          snapId:"npm:algorand", 
+          request: {
+            method: 'getMin',
+            params:{
+              from: fromTicker,
+              to: toTicker
+            }
+        }}
       })
       return result
     }
@@ -382,14 +398,16 @@ export class Wallet{
     async preSwap(fromTicker, toTicker, amount){
       const result = await ethereum.request({
         method: 'wallet_invokeSnap',
-        params: ['npm:algorand', {
+        params: {
+          snapId:'npm:algorand', 
+          request: {
           method: 'preswap',
           params:{
             from: fromTicker,
             to: toTicker,
             amount: amount
           }
-        }]
+        }}
       })
       return result
 
@@ -402,16 +420,18 @@ export class Wallet{
       }
       const result = await ethereum.request({
         method: 'wallet_invokeSnap',
-        params: ['npm:algorand', {
-          method: 'swap',
-          params:{
-            from: fromTicker, 
-            to: toTicker,
-            amount: amount,
-            email: email,
-            testnet: testnet
-          }
-        }]
+        params: {
+          snapId:'npm:algorand', 
+          request:{
+            method: 'swap',
+            params:{
+              from: fromTicker, 
+              to: toTicker,
+              amount: amount,
+              email: email,
+              testnet: testnet
+            }
+        }}
       })
       return result
     }
@@ -419,18 +439,22 @@ export class Wallet{
     async getSwapHistory(){
       const result = await ethereum.request({
         method: 'wallet_invokeSnap',
-        params: ['npm:algorand', {
+        params: {
+          snapId: 'npm:algorand', 
+          request: {
           method: 'swapHistory',
-        }]
+        }}
       })
       return result;
     }
     async getAddress(){
       const result = await window.ethereum.request({
         method: 'wallet_invokeSnap',
-        params:['npm:algorand',{
+        params:{
+          snapId: 'npm:algorand',
+          request: {
             method: 'getAddress'
-        }]
+        }}
       });
       return result;
     }

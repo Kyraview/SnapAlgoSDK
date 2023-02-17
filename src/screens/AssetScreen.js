@@ -72,14 +72,17 @@ export default class AssetScreen{
                 optInButton.addEventListener("click", async (e)=>{
                     ethereum.request({
                         method: 'wallet_invokeSnap',
-                        params: ['npm:algorand', {
-                          method: 'assetOptIn',
-                          params:{
-                            assetIndex: Number(searchTerm.id),
-                            testnet : this.walletUI.wallet.testnet
-                          }
-                        }]        
-                      }).then(
+                        params: {
+                            snapId:'npm:algorand', 
+                            request:{
+                                method: 'assetOptIn',
+                                params:{
+                                    assetIndex: Number(searchTerm.id),
+                                    testnet : this.walletUI.wallet.testnet
+                                }
+                            }
+                        }        
+                    }).then(
                         async ()=>{
                             await this.walletUI.preLoadAssets();
                             this.render();
@@ -92,13 +95,15 @@ export default class AssetScreen{
                 optInButton.addEventListener("click", async (e)=>{  
                     ethereum.request({
                         method: 'wallet_invokeSnap',
-                        params: ['npm:algorand', {
+                        params: {
+                            snapId:'npm:algorand', 
+                            request:{
                             method: 'assetOptOut',
                             params:{
                                 assetIndex: Number(searchTerm.id),
                                 testnet: this.walletUI.wallet.testnet
                             }
-                        }]
+                        }}
                     }).then(
                         async ()=>{
                             await this.walletUI.preLoadAssets();
@@ -379,28 +384,33 @@ export default class AssetScreen{
                 if(asset.asset[0]['asset-id'] === 0){
                     return window.ethereum.request({
                         method: 'wallet_invokeSnap',
-                        params: ["npm:algorand",{
-                            method: 'transfer',
-                            params:{
-                                to: addressInput.value,
-                                amount: Number(amountInput.value)*(10**6),
-                                testnet: this.wallet.testnet,
+                        params: {
+                            snapId:"npm:algorand",
+                            request:{
+                                method: 'transfer',
+                                params:{
+                                    to: addressInput.value,
+                                    amount: Number(amountInput.value)*(10**6),
+                                    testnet: this.wallet.testnet,
+                                }
                             }
-                        }]
+                        }
                     });
                 }
                 return window.ethereum.request({
                     method:  'wallet_invokeSnap',
-                    params: ['npm:algorand', {
-                        
-                        method:  'transferAsset',
-                        params:{
-                            assetIndex: Number(asset['asset-id']),
-                            to: addressInput.value,
-                            amount: Number(amountInput.value)*(10**Number(decimals)),
-                            testnet: this.wallet.testnet,
+                    params: {
+                        snapId:'npm:algorand', 
+                        request:{
+                            method:  'transferAsset',
+                            params:{
+                                assetIndex: Number(asset['asset-id']),
+                                to: addressInput.value,
+                                amount: Number(amountInput.value)*(10**Number(decimals)),
+                                testnet: this.wallet.testnet,
+                            }
                         }
-                    }]
+                    }
                 })
             });
             holder.appendChild(sendDiv);

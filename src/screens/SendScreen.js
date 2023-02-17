@@ -113,20 +113,24 @@ export default class SendScreen{
                 if(assetId === "algo"){
                     return window.ethereum.request({
                         method:  'wallet_invokeSnap',
-                        params: ['npm:algorand', {
+                        params: {
+                            snapId:'npm:algorand', 
+                            request:{
                             method:  'transfer',
                             params:{
                                 testnet:  this.wallet.testnet,
                                 to: sendAddress.value,
                                 amount: Number(amount.value)*1000000
                             }
-                        }]
+                        }}
                     }).then(this.updateAndRender.bind(this));
                 }
                 else{
                     window.ethereum.request({
                         method:  'wallet_invokeSnap',
-                        params: ['npm:algorand', {
+                        params: {
+                            snapId:'npm:algorand', 
+                            request:{
                             
                             method:  'transferAsset',
                             params:{
@@ -134,7 +138,7 @@ export default class SendScreen{
                                 to: sendAddress.value,
                                 amount: Number(amount.value)*(10**Number(document.getElementById("snapAlgoSendCoinOption"+assetId).dataset.decimals))
                             }
-                        }]
+                        }}
                     })
                 }
       };

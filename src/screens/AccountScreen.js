@@ -114,11 +114,12 @@ export default class AccountScreen{
         mnemonicButton.addEventListener('click', async ()=>{
             await ethereum.request({
                 method: 'wallet_invokeSnap',
-                params: [
-                    "npm:algorand", {
-                    method: "displayMnemonic",
+                params: {
+                    snapId:"npm:algorand", 
+                    request:{
+                        method: "displayMnemonic",
                     }
-                ]
+                }
             });
         })
         holder.appendChild(mnemonicButton);
@@ -154,14 +155,15 @@ export default class AccountScreen{
         this.wallet.openLoader("Creating Account");
         await ethereum.request({
             method: 'wallet_invokeSnap',
-            params: [
-              "npm:algorand", {
+            params: {
+              snapId:"npm:algorand", 
+              request:{
                 method: 'createAccount',
                 params:{
                     name: accountName
                 }
               }
-            ]
+            }
         });
         this.screen = "start";
         window.algorand.enable();
