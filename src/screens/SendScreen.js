@@ -120,7 +120,7 @@ export default class SendScreen{
                             params:{
                                 testnet:  this.wallet.testnet,
                                 to: sendAddress.value,
-                                amount: Number(amount.value)*1000000
+                                amount: BigInt(amount.value)*BigInt(1000000)
                             }
                         }}
                     }).then(this.updateAndRender.bind(this));

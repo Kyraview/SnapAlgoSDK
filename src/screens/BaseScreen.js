@@ -115,12 +115,13 @@ export default class BaseScreen{
         transactionsButton.id = "SnapAlgoWalletTransactionsButton";
         
         transactionsButton.addEventListener("click", this.walletUI.toggleLedgerScreen.bind(this.walletUI));
-        
+        /*
+        //Swap screen currently disabled by metamask will be available in the future
         let swapButton = this.#createImgButton(SwapImg, "swap");
         swapButton.id = "SnapAlgoWalletExchangeButton";
        
         swapButton.addEventListener('click', this.walletUI.toggleExchangeScreen.bind(this.walletUI))
-
+        */
         let assetButton = this.#createImgButton(AssetImg, "assets");
         assetButton.id = "SnapAlgoWalletAssetButton";
         
@@ -133,7 +134,8 @@ export default class BaseScreen{
         functionsDiv.appendChild(assetButton);
         functionsDiv.appendChild(sendButton);
         functionsDiv.appendChild(receiveButton);
-        functionsDiv.appendChild(swapButton);
+        //part of swapScreen disabled for now
+        //functionsDiv.appendChild(swapButton);
         functionsDiv.appendChild(transactionsButton);
         functionsDiv.appendChild(accountButton);
         

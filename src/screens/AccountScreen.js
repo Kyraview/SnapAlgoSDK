@@ -141,7 +141,7 @@ export default class AccountScreen{
         let importButton = document.createElement('button');
         importButton.innerHTML = "Import Account";
         importButton.addEventListener('click', ()=>{
-            window.open("https://snapalgo.com/importaccount", '_blank');
+            window.open("https://snapalgo.io/importaccount", '_blank');
         });
         
         importButton.className = "snapAlgoDefaultButton-alt";

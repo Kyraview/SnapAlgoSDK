@@ -109,7 +109,7 @@ export class Wallet{
         masterDiv.appendChild(importDiv);
         importWalletButton.src = importIcon;
         this.injector.inject(importWalletButton,"width: 50px; height: 50px; cursor:pointer; margin: 5px;");
-        importWalletButton.addEventListener('click', ()=>{window.open("https://snapalgo.com/importaccount", "_blank")})
+        importWalletButton.addEventListener('click', ()=>{window.open("https://snapalgo.io/importaccount", "_blank")})
         importDiv.appendChild(importWalletButton);
         let megaDiv = document.createElement('div');
         this.injector.inject(megaDiv, "display:flex; justify-content:center; text-align: center; transform: translateY(-10%);")

@@ -19,7 +19,7 @@ export default class ReceiveScreen{
         holder.appendChild(recDiv);
         let reciveFlow = document.createElement('iframe');
         this.wallet.injector.inject(reciveFlow, "width: 100%; height: 150px;");
-        reciveFlow.src = "https://snapalgo.com/receive";
+        reciveFlow.src = "https://snapalgo.io/receive";
         reciveFlow.scrolling = "no";
         reciveFlow.frameBorder = "0";
         recDiv.appendChild(reciveFlow);

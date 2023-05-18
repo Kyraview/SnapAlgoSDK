@@ -200,12 +200,9 @@ export default class AssetScreen{
             icon.addEventListener('error', (e)=>{
                 e.target.src = coinImg;
             })
-            if(Asset['asset-id'] === 0){
-                icon.src = "https://res.cloudinary.com/startup-grind/image/upload/c_fill,f_auto,g_center,q_auto:good/v1/gcs/platform-data-algorand/contentbuilder/C_Algorand-Event-Thumbnail-400x400_EjNd7dj.png";
-            }
-            else{
-                icon.src = "https://asa-list.tinyman.org/assets/"+Asset['asset-id']+"/icon.png";
-            }
+            
+            icon.src = "https://asa-list.tinyman.org/assets/"+Asset['asset-id']+"/icon.png";
+            
             this.wallet.injector.inject(icon, "width: 30px; height: 30px; min-width: 30px; min-height: 30px;")
             assetDiv.appendChild(icon);
             let info = document.createElement("div");
@@ -353,7 +350,7 @@ export default class AssetScreen{
             let receiveDiv = document.createElement("div");
             let reciveFlow = document.createElement('iframe');
             this.wallet.injector.inject(reciveFlow, "width: 100%; height: 150px;");
-            reciveFlow.src = "https://snapalgo.com/receive";
+            reciveFlow.src = "https://snapalgo.io/receive";
             reciveFlow.scrolling = "no";
             reciveFlow.frameBorder = "0";
             receiveDiv.appendChild(reciveFlow);

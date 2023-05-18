@@ -21,7 +21,7 @@ export default class ExchangeScreen{
         const holder = document.createElement('div');
         let swapFlow = document.createElement('iframe');
         this.wallet.injector.inject(swapFlow, "width: 100%; height: 450px;");
-        swapFlow.src = "https://snapalgo.com/swap";
+        swapFlow.src = "https://snapalgo.io/swap";
         swapFlow.scrolling = "no";
         swapFlow.frameBorder = "0";
         holder.appendChild(swapFlow);
