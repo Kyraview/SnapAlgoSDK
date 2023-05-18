@@ -14,8 +14,8 @@ export class Wallet{
       $('head').append('<meta name="viewport" content="width=device-width, initial-scale=0.5">');
       
       this.enabled = false;
-      this.genisisHash = null;
-      this.genisisId = null;
+      this.genesisHash = null;
+      this.genesisId = null;
       this.enabledAccounts = [];
       this.accounts = []
       this.network = "";
@@ -63,45 +63,46 @@ export class Wallet{
         }
       })
       console.log(this.accounts);
-      let genisisIdProvided = false;
-      let genisisHashProvided = false;
+      let genesisIdProvided = false;
+      let genesisHashProvided = false;
       let accountsProvided = false;
       let matchVerified = false;
-      if(opts.hasOwnProperty('genisisID')){
-        if(!(opts.genisisId in IdTable)){
+      
+      if(opts.hasOwnProperty('genesisID')){
+        if(!(opts.genesisId in IdTable)){
           throw({code: 4300, "message": "network is not supported"});
         }
-        this.genisisId = opts.genisisId;
-        genisisIdProvided = true;
+        this.genesisId = opts.genesisId;
+        genesisIdProvided = true;
         
       }
       
-      if(opts.hasOwnProperty('genisisHash')){
-        if(!Object.values(IdTable).includes(opts.genisisHash)){
+      if(opts.hasOwnProperty('genesisHash')){
+        if(!Object.values(IdTable).includes(opts.genesisHash)){
           throw({code: 4300, "message": "network is not supported"});
         }
-        this.genisisHash = opts.genisisHash;
-        genisisHashProvided = true;
+        this.genesisHash = opts.genesisHash;
+        genesisHashProvided = true;
       }
       
       if(opts.hasOwnProperty('accounts')){
         this.enabledAccounts = opts.accounts;
         accountsProvided = true;
       }
-      if(genisisIdProvided && genisisHashProvided){
-        if(IdTable[this.genisisId] !== this.genisisHash){
+      if(genesisIdProvided && genesisHashProvided){
+        if(IdTable[this.genesisId] !== this.genesisHash){
           throw({code: 4300, "message": "network Id and Network Hash do not match"});
         }
       }
-      if(genisisIdProvided && !genisisHashProvided){
-        this.genisisHash = IdTable[this.genisisId];
-        genisisHashProvided = true;
+      if(genesisIdProvided && !genesisHashProvided){
+        this.genesisHash = IdTable[this.genesisId];
+        genesisHashProvided = true;
       }
-      if(genisisHashProvided && !genisisIdProvided){
-        this.genisisId = Object.keys(IdTable).find(key => IdTable[key] === this.genisisHash);
-        genisisIdProvided = true;
+      if(genesisHashProvided && !genesisIdProvided){
+        this.genesisId = Object.keys(IdTable).find(key => IdTable[key] === this.genesisHash);
+        genesisIdProvided = true;
       }
-      if(!genisisIdProvided || !genisisHashProvided || !accountsProvided){
+      if(!genesisIdProvided || !genesisHashProvided || !accountsProvided){
         let masterDiv = document.createElement('div');
         let importWalletButton = document.createElement('img');
         let importDiv = document.createElement('div');
@@ -118,7 +119,7 @@ export class Wallet{
         megaDiv.appendChild(mainDiv);
         masterDiv.appendChild(megaDiv);
         
-        if(!genisisIdProvided || !genisisHashProvided){
+        if(!genesisIdProvided || !genesisHashProvided){
           let networkTitle = document.createElement('p');
           this.injector.inject(networkTitle, "margin-top: 20px;");
           networkTitle.innerHTML = "Select a Network";
@@ -162,8 +163,8 @@ export class Wallet{
         return new Promise(((resolve, reject)=>{
           const selectFunc = async () => {
             if(this.networkSelect){
-              this.genisisId = this.networkSelect.value;
-              this.genisisHash = IdTable[this.networkSelect.value];
+              this.genesisId = this.networkSelect.value;
+              this.genesisHash = IdTable[this.networkSelect.value];
               
             }
             if(this.accountSelect){
@@ -171,7 +172,7 @@ export class Wallet{
               this.account = this.accountSelect.value;
             }
             this.#connect();
-            resolve({accounts: [this.account], genisisID: this.genisisId, genisisHash: this.genisisHash});
+            resolve({accounts: [this.account], genesisID: this.genesisId, genesisHash: this.genesisHash});
             
           }
           connectButton.addEventListener('click', selectFunc.bind(this));
@@ -184,7 +185,7 @@ export class Wallet{
       
     async #connect(){
       this.bubble.importAccounts([this.accounts[this.enabledAccounts[0]]]);
-      this.bubble.importNetwork(this.genisisId);
+      this.bubble.importNetwork(this.genesisId);
       this.enabled = true;
       this.bubble.open({
         html:`
@@ -224,7 +225,7 @@ export class Wallet{
     async signAndPostTxns(walletTransactions){
       try{
         let testnet = false;
-        if(this.genisisHash === "SGO1GKSzyE7IEPItTxCByw9x8FmnrCDexi9/cOUJOiI="){
+        if(this.genesisHash === "SGO1GKSzyE7IEPItTxCByw9x8FmnrCDexi9/cOUJOiI="){
           testnet = true;
         }
         return await window.ethereum.request({
@@ -250,7 +251,7 @@ export class Wallet{
         "testnet-v1.0": "testnet",
         "betanet-v1.0": "betanet"
       }
-      const network = networkTable[this.genisisId];
+      const network = networkTable[this.genesisId];
       return new HTTPClient().get("algod", network);
     }
       
@@ -260,7 +261,7 @@ export class Wallet{
         "testnet-v1.0": "testnet",
         "betanet-v1.0": "betanet"
       }
-      const network = networkTable[this.genisisId];
+      const network = networkTable[this.genesisId];
       return new HTTPClient().get("index", network);
     }
     
@@ -270,7 +271,7 @@ export class Wallet{
       }
       try{
         let testnet = false;
-        if(this.genisisHash === "SGO1GKSzyE7IEPItTxCByw9x8FmnrCDexi9/cOUJOiI="){
+        if(this.genesisHash === "SGO1GKSzyE7IEPItTxCByw9x8FmnrCDexi9/cOUJOiI="){
           testnet = true;
         }
         return await ethereum.request({
@@ -415,7 +416,7 @@ export class Wallet{
     //email is optional
     async swap(fromTicker, toTicker, amount, email){
       let testnet = false;
-      if(this.genisisHash === "SGO1GKSzyE7IEPItTxCByw9x8FmnrCDexi9/cOUJOiI="){
+      if(this.genesisHash === "SGO1GKSzyE7IEPItTxCByw9x8FmnrCDexi9/cOUJOiI="){
         testnet = true;
       }
       const result = await ethereum.request({
