@@ -15,7 +15,7 @@ export class Wallet{
       
       this.enabled = false;
       this.genesisHash = null;
-      this.genesisId = null;
+      this.genesisID = null;
       this.enabledAccounts = [];
       this.accounts = []
       this.network = "";
@@ -63,17 +63,17 @@ export class Wallet{
         }
       })
       console.log(this.accounts);
-      let genesisIdProvided = false;
+      let genesisIDProvided = false;
       let genesisHashProvided = false;
       let accountsProvided = false;
       let matchVerified = false;
       
       if(opts.hasOwnProperty('genesisID')){
-        if(!(opts.genesisId in IdTable)){
+        if(!(opts.genesisID in IdTable)){
           throw({code: 4300, "message": "network is not supported"});
         }
-        this.genesisId = opts.genesisId;
-        genesisIdProvided = true;
+        this.genesisID = opts.genesisID;
+        genesisIDProvided = true;
         
       }
       
@@ -89,20 +89,20 @@ export class Wallet{
         this.enabledAccounts = opts.accounts;
         accountsProvided = true;
       }
-      if(genesisIdProvided && genesisHashProvided){
-        if(IdTable[this.genesisId] !== this.genesisHash){
+      if(genesisIDProvided && genesisHashProvided){
+        if(IdTable[this.genesisID] !== this.genesisHash){
           throw({code: 4300, "message": "network Id and Network Hash do not match"});
         }
       }
-      if(genesisIdProvided && !genesisHashProvided){
-        this.genesisHash = IdTable[this.genesisId];
+      if(genesisIDProvided && !genesisHashProvided){
+        this.genesisHash = IdTable[this.genesisID];
         genesisHashProvided = true;
       }
-      if(genesisHashProvided && !genesisIdProvided){
-        this.genesisId = Object.keys(IdTable).find(key => IdTable[key] === this.genesisHash);
-        genesisIdProvided = true;
+      if(genesisHashProvided && !genesisIDProvided){
+        this.genesisID = Object.keys(IdTable).find(key => IdTable[key] === this.genesisHash);
+        genesisIDProvided = true;
       }
-      if(!genesisIdProvided || !genesisHashProvided || !accountsProvided){
+      if(!genesisIDProvided || !genesisHashProvided || !accountsProvided){
         let masterDiv = document.createElement('div');
         let importWalletButton = document.createElement('img');
         let importDiv = document.createElement('div');
@@ -119,7 +119,7 @@ export class Wallet{
         megaDiv.appendChild(mainDiv);
         masterDiv.appendChild(megaDiv);
         
-        if(!genesisIdProvided || !genesisHashProvided){
+        if(!genesisIDProvided || !genesisHashProvided){
           let networkTitle = document.createElement('p');
           this.injector.inject(networkTitle, "margin-top: 20px;");
           networkTitle.innerHTML = "Select a Network";
@@ -163,7 +163,7 @@ export class Wallet{
         return new Promise(((resolve, reject)=>{
           const selectFunc = async () => {
             if(this.networkSelect){
-              this.genesisId = this.networkSelect.value;
+              this.genesisID = this.networkSelect.value;
               this.genesisHash = IdTable[this.networkSelect.value];
               
             }
@@ -172,7 +172,7 @@ export class Wallet{
               this.account = this.accountSelect.value;
             }
             this.#connect();
-            resolve({accounts: [this.account], genesisID: this.genesisId, genesisHash: this.genesisHash});
+            resolve({accounts: [this.account], genesisID: this.genesisID, genesisHash: this.genesisHash});
             
           }
           connectButton.addEventListener('click', selectFunc.bind(this));
@@ -185,7 +185,7 @@ export class Wallet{
       
     async #connect(){
       this.bubble.importAccounts([this.accounts[this.enabledAccounts[0]]]);
-      this.bubble.importNetwork(this.genesisId);
+      this.bubble.importNetwork(this.genesisID);
       this.enabled = true;
       this.bubble.open({
         html:`
@@ -251,7 +251,7 @@ export class Wallet{
         "testnet-v1.0": "testnet",
         "betanet-v1.0": "betanet"
       }
-      const network = networkTable[this.genesisId];
+      const network = networkTable[this.genesisID];
       return new HTTPClient().get("algod", network);
     }
       
@@ -261,7 +261,7 @@ export class Wallet{
         "testnet-v1.0": "testnet",
         "betanet-v1.0": "betanet"
       }
-      const network = networkTable[this.genesisId];
+      const network = networkTable[this.genesisID];
       return new HTTPClient().get("index", network);
     }
     
