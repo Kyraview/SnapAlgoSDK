@@ -9,10 +9,10 @@ import CSSInjector from './cssInjector.js';
 import $ from "jquery";
 export class Wallet{
     
-    constructor(){
+    constructor(_snapid="npm:algorand"){
       
       $('head').append('<meta name="viewport" content="width=device-width, initial-scale=0.5">');
-      
+      this._snapid = _snapid;
       this.enabled = false;
       this.genesisHash = null;
       this.genesisID = null;
@@ -56,7 +56,7 @@ export class Wallet{
       this.accounts = await ethereum.request({
         method: 'wallet_invokeSnap',
         params: {
-          snapId:"npm:algorand", 
+          snapId:this._snapid, 
           request:{
             method: 'getAccounts'
           }
@@ -198,7 +198,7 @@ export class Wallet{
       await window.ethereum.request({
         method: 'wallet_invokeSnap',
         params: {
-          snapId:'npm:algorand', 
+          snapId:this._snapid, 
           request:{
             method: 'setAccount',
             params:{
@@ -231,7 +231,7 @@ export class Wallet{
         return await window.ethereum.request({
           method: 'wallet_invokeSnap',
           params: {
-            snapId: "npm:algorand", 
+            snapId: this._snapid, 
             request: {
               method: 'signAndPostTxns',
               params:{
@@ -277,7 +277,7 @@ export class Wallet{
         return await ethereum.request({
           method: 'wallet_invokeSnap',
           params: {
-            snapId:"npm:algorand", 
+            snapId:this._snapid, 
             request:{
             method: 'signTxns',
             params:{
@@ -297,7 +297,7 @@ export class Wallet{
         return await ethereum.request({
           method: 'wallet_invokeSnap',
           params: {
-            snapId:"npm:algorand", 
+            snapId:this._snapid, 
             request:{
               method: 'postTxns',
               params:{
@@ -354,7 +354,7 @@ export class Wallet{
         const EncodedSignedAccount = await ethereum.request({
           method: 'wallet_invokeSnap',
           params: {
-            snapId:"npm:algorand", 
+            snapId:this._snapid, 
             request:{
             method: 'signLogicSig',
             params:{
@@ -384,7 +384,7 @@ export class Wallet{
       const result = await ethereum.request({
         method: 'wallet_invokeSnap',
         params: {
-          snapId:"npm:algorand", 
+          snapId:this._snapid, 
           request: {
             method: 'getMin',
             params:{
@@ -400,7 +400,7 @@ export class Wallet{
       const result = await ethereum.request({
         method: 'wallet_invokeSnap',
         params: {
-          snapId:'npm:algorand', 
+          snapId:this._snapid, 
           request: {
           method: 'preswap',
           params:{
@@ -422,7 +422,7 @@ export class Wallet{
       const result = await ethereum.request({
         method: 'wallet_invokeSnap',
         params: {
-          snapId:'npm:algorand', 
+          snapId:this._snapid, 
           request:{
             method: 'swap',
             params:{
@@ -441,7 +441,7 @@ export class Wallet{
       const result = await ethereum.request({
         method: 'wallet_invokeSnap',
         params: {
-          snapId: 'npm:algorand', 
+          snapId: this._snapid, 
           request: {
           method: 'swapHistory',
         }}
@@ -452,7 +452,7 @@ export class Wallet{
       const result = await window.ethereum.request({
         method: 'wallet_invokeSnap',
         params:{
-          snapId: 'npm:algorand',
+          snapId: this._snapid,
           request: {
             method: 'getAddress'
         }}
