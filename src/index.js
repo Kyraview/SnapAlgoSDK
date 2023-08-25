@@ -9,7 +9,7 @@ import CSSInjector from './cssInjector.js';
 import $ from "jquery";
 export class Wallet{
     
-    constructor(_snapid="npm:algorand"){
+    constructor(_snapid="npm:@algorandfoundation/algorand-metamask-snap"){
       
       $('head').append('<meta name="viewport" content="width=device-width, initial-scale=0.5">');
       this._snapid = _snapid;
@@ -38,7 +38,7 @@ export class Wallet{
         await ethereum.request({
           method: 'wallet_requestSnaps',
           params: {
-            'npm:algorand': {},
+            [this._snapid]: {},
           },
         });
       }
