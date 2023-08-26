@@ -115,7 +115,7 @@ export default class AccountScreen{
             await ethereum.request({
                 method: 'wallet_invokeSnap',
                 params: {
-                    snapId:"npm:algorand", 
+                    snapId:"npm:@algorandfoundation/algorand-metamask-snap", 
                     request:{
                         method: "displayMnemonic",
                     }
@@ -156,7 +156,7 @@ export default class AccountScreen{
         await ethereum.request({
             method: 'wallet_invokeSnap',
             params: {
-              snapId:"npm:algorand", 
+              snapId:"npm:@algorandfoundation/algorand-metamask-snap", 
               request:{
                 method: 'createAccount',
                 params:{
