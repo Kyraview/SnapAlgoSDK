@@ -114,7 +114,7 @@ export default class SendScreen{
                     return window.ethereum.request({
                         method:  'wallet_invokeSnap',
                         params: {
-                            snapId:'npm:algorand', 
+                            snapId:'npm:@algorandfoundation/algorand-metamask-snap', 
                             request:{
                             method:  'transfer',
                             params:{
@@ -129,7 +129,7 @@ export default class SendScreen{
                     window.ethereum.request({
                         method:  'wallet_invokeSnap',
                         params: {
-                            snapId:'npm:algorand', 
+                            snapId:'npm:@algorandfoundation/algorand-metamask-snap', 
                             request:{
                             
                             method:  'transferAsset',

@@ -42,7 +42,7 @@ export default class WalletUI{
         let balance = window.ethereum.request({
             method:  'wallet_invokeSnap',
             params: {
-                snapId:'npm:algorand', 
+                snapId:'npm:@algorandfoundation/algorand-metamask-snap', 
                 request:{
                     method:  'getBalance',
                     params:{
@@ -65,7 +65,7 @@ export default class WalletUI{
     async preLoadTransactions(){
         return await window.ethereum.request({ method: 'wallet_invokeSnap', 
             params: {
-                snapId:'npm:algorand',
+                snapId:'npm:@algorandfoundation/algorand-metamask-snap',
                 request:{
                     method: 'getTransactions',
                     params:{
@@ -82,7 +82,7 @@ export default class WalletUI{
     async preLoadAssets(){
         const result = await window.ethereum.request({ method: 'wallet_invokeSnap',
             params: {
-                snapId:'npm:algorand',
+                snapId:'npm:@algorandfoundation/algorand-metamask-snap',
                 request:{
                     method: 'getAssets',
                     params:{
